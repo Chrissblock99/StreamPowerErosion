@@ -36,80 +36,52 @@ uniform float dt = 50.0f;
 const ivec2 next8[8] = ivec2[8](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, -1),
                                 ivec2(0, -1), ivec2(-1, -1), ivec2(-1, 0), ivec2(-1, 1));
 
-int ToIndex1D(int i, int j) { return i + nx * j; }
 
-int ToIndex1D(ivec2 p) { return p.x + nx * p.y; }
+float cellSize = cellDiag.x;
 
-float Height(ivec2 p) { return hf[ToIndex1D(p)]; }
+int toIndex(int i, int j) { return i + nx * j; }
+int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
-float UpliftAt(int i, int j) { return upliftBuffer[ToIndex1D(i, j)]; }
-
-vec2 ArrayPoint(ivec2 p) { return a.xy + vec2(p) * cellDiag; }
-
-vec3 Point3D(ivec2 p) {
-    return vec3(ArrayPoint(p), Height(p));
-}
-
-vec4 Read(ivec2 p) {
-    if (p.x < 0 || p.x >= nx || p.y < 0 || p.y >= ny)
-        return vec4(0);
-    int id = ToIndex1D(p);
-    vec4 ret;
-    ret.x = hf[id];                // Bedrock elevation
-    ret.y = stream[id];            // Stream area
-    ret.z = upliftBuffer[id];      // Uplift factor
-    return ret;
-}
-
-void Write(int id, vec4 data) {
-    out_hf[id] = data.x;
-    out_stream[id] = data.y;
-}
-
-float Slope(ivec2 p, ivec2 q) {
-    if (p.x < 0 || p.x >= nx || p.y < 0 || p.y >= ny) return 0.0f;
-    if (q.x < 0 || q.x >= nx || q.y < 0 || q.y >= ny) return 0.0f;
-    if (p == q) return 0.0f;
-    int index_p = ToIndex1D(p.x, p.y);
-    int index_q = ToIndex1D(q.x, q.y);
-    float d = length(ArrayPoint(q) - ArrayPoint(p));
+float slope(ivec2 p, ivec2 q) {
+    if (p.x < 0 || p.x >= nx || p.y < 0 || p.y >= ny) return 0.0;
+    if (q.x < 0 || q.x >= nx || q.y < 0 || q.y >= ny) return 0.0;
+    if (p == q) return 0.0;
+    int index_p = toIndex(p.x, p.y);
+    int index_q = toIndex(q.x, q.y);
+    float d = cellSize * length(vec2(p)-vec2(q));
     return (hf[index_q] - hf[index_p]) / d;
 }
 
-float Stream(ivec2 p) {
-    if (p.x < 0 || p.x >= nx || p.y < 0 || p.y >= ny) return 0.0f;
-    int index_p = ToIndex1D(p.x, p.y);
-    return stream[index_p];
-}
 
-
-float Laplacian(ivec2 p) {
-    float lapl = 0.0f;
+float laplacian_h(ivec2 p) {
+    float lapl = 0.0;
     int i = p.x;
     int j = p.y;
 
     if (i == 0)
-        lapl += (hf[ToIndex1D(i, j)] - 2.0f * hf[ToIndex1D(i + 1, j)] + hf[ToIndex1D(i + 2, j)]) / (cellDiag.x * cellDiag.x);
+        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i + 1, j)] + hf[toIndex(i + 2, j)]);
     else if (i == nx - 1)
-        lapl += (hf[ToIndex1D(i, j)] - 2.0f * hf[ToIndex1D(i - 1, j)] + hf[ToIndex1D(i - 2, j)]) / (cellDiag.x * cellDiag.x);
+        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i - 1, j)] + hf[toIndex(i - 2, j)]);
     else
-        lapl += (hf[ToIndex1D(i + 1, j)] - 2.0f * hf[ToIndex1D(i, j)] + hf[ToIndex1D(i - 1, j)]) / (cellDiag.x * cellDiag.x);
+        lapl += (hf[toIndex(i + 1, j)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i - 1, j)]);
 
     if (j == 0)
-        lapl += (hf[ToIndex1D(i, j)] - 2.0f * hf[ToIndex1D(i, j + 1)] + hf[ToIndex1D(i, j + 2)]) / (cellDiag.y * cellDiag.y);
+        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i, j + 1)] + hf[toIndex(i, j + 2)]);
     else if (j == ny - 1)
-        lapl += (hf[ToIndex1D(i, j)] - 2.0f * hf[ToIndex1D(i, j - 1)] + hf[ToIndex1D(i, j - 2)]) / (cellDiag.y * cellDiag.y);
+        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i, j - 1)] + hf[toIndex(i, j - 2)]);
     else
-        lapl += (hf[ToIndex1D(i, j + 1)] - 2.0f * hf[ToIndex1D(i, j)] + hf[ToIndex1D(i, j - 1)]) / (cellDiag.y * cellDiag.y);
+        lapl += (hf[toIndex(i, j + 1)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i, j - 1)]);
+
+    lapl /= cellSize*cellSize;
 
     return lapl;
 }
 
-ivec2 GetFlowSteepest(ivec2 p) {
+ivec2 getOffsetToDownstream(ivec2 p) {
     ivec2 d = ivec2(0, 0);
-    float maxSlope = 0.0f;
+    float maxSlope = 0.0;
     for (int i = 0; i < 8; i++) {
-        float ss = Slope(p + next8[i], p);
+        float ss = slope(p + next8[i], p);
         if (ss > maxSlope) {
             maxSlope = ss;
             d = next8[i];
@@ -118,13 +90,13 @@ ivec2 GetFlowSteepest(ivec2 p) {
     return d;
 }
 
-float WaterSteepest(ivec2 p) {
-    float water = 0.0f;
+float getDiffDrainageArea(ivec2 p) {
+    float water = 0.0;
     for (int i = 0; i < 8; i++) {
         ivec2 q = p + next8[i];
-        ivec2 fd = GetFlowSteepest(q);
+        ivec2 fd = getOffsetToDownstream(q);
         if (q + fd == p) {
-            water += Stream(q);
+            water += q.x < 0 || q.x >= nx || q.y < 0 || q.y >= ny ? 0.0 : stream[toIndex(q)];
         }
     }
     return water;
@@ -132,51 +104,39 @@ float WaterSteepest(ivec2 p) {
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 void main() {
-    int x = int(gl_GlobalInvocationID.x);
-    int y = int(gl_GlobalInvocationID.y);
-    if (x < 0)   return;
-    if (y < 0)   return;
-    if (x >= nx) return;
-    if (y >= ny) return;
+    ivec2 p = ivec2(gl_GlobalInvocationID.xy);
+    if (p.x >= nx || p.y >= ny) return;
 
-    int id = ToIndex1D(x, y);
-    ivec2 p = ivec2(x, y);
-    vec4 data = Read(p);
+    int id = toIndex(p);
 
     // Border nodes are fixed to zero (elevation and drainage)
-    if (p.x == 0 || p.x == nx - 1 || p.y == 0 || p.y == ny - 1)
-    {
-        data.x = 0.0f;
-        data.y = 1.0f * length(cellDiag);
-        Write(id, data);
+    if (p.x == 0 || p.x == nx - 1 || p.y == 0 || p.y == ny - 1) {
+        out_hf[id] = 0.0;
+        out_stream[id] = sqrt(2.0) * cellSize;
         return;
     }
 
-    // Flows accumulation at p
-    float waterIncr = WaterSteepest(p);
-
-    data.y = 1.0f * length(cellDiag);
-    data.y += waterIncr;
+    float h = hf[id];
+    float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
    
     // Erosion at p (relative to steepest)
-    ivec2 d = GetFlowSteepest(p);
-    vec4 receiver = Read(p + d);
-    float pslope = abs(Slope(p + d, p));
+    ivec2 downstream = p+getOffsetToDownstream(p);
+    float pslope = abs(slope(downstream, p));
 
-    float spe = k * pow(data.y, p_sa) * pow(pslope, p_sl);
+    float spe = k * pow(da, p_sa) * pow(pslope, p_sl);
 
-    float newH = data.x;
+    
     if (erosionMode == 0)       // Stream power
-        newH -= dt * (spe);
+        h -= dt * (spe);
     else if (erosionMode == 1)  // Stream power + Hillslope erosion (Laplacian)
-        newH -= dt * (spe - k_h * Laplacian(p));
+        h -= dt * (spe - k_h * laplacian_h(p));
     else if (erosionMode == 2)  // Stream power + Hillslope erosion (Laplacian) + Debris flow
-        newH -= dt * (spe - k_h * Laplacian(p) - k_d * pslope);
-    newH = max(newH, receiver.x);
-    newH += dt * uplift * data.z;
+        h -= dt * (spe - k_h * laplacian_h(p) - k_d * pslope);
+    h = max(h, hf[toIndex(downstream)]);
+    h += dt * uplift * upliftBuffer[id];
 
-    data.x = newH;
-    Write(id, data);
+    out_hf[id] = h;
+    out_stream[id] = da;
 }
 
 #endif
