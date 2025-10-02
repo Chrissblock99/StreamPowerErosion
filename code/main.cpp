@@ -75,6 +75,10 @@ static void GUI()
 		// Hardcoded examples
 		{
 			ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "Premade Uplifts");
+			if (ImGui::Button("No uplift")) {
+				uplift = ScalarField2(Box2(Vector2::Null, 150 * 1000), 256, 256, 0);
+				gpu_spe.SetUplift(uplift);
+			}
 			if (ImGui::Button("Uplift 0")) {
 				uplift = ScalarField2(Box2(Vector2::Null, 150 * 1000), 256, 256, 0.2);
 				gpu_spe.SetUplift(uplift);
