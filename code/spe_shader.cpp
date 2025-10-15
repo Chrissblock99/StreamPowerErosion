@@ -10,6 +10,8 @@ GPU_SPE::~GPU_SPE() {
 
 	glDeleteBuffers(1, &upliftBuffer);
 
+	glDeleteBuffers(1, &steepestBuffer);
+
 	release_program(simulationShader);
 }
 
@@ -24,7 +26,7 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	for (int i = 0; i < totalBufferSize; i++)
 		tmpData[i] = hf.at(i);
 
-	std::vector<float> tmpZeros(totalBufferSize, 0.);
+	std::vector<float> tmpZeros(2 * totalBufferSize, 0.);
 
 	// Prepare shader & Init buffer - Just done once
 	std::string fullPath = "./data/shaders/spe_shader.glsl";
@@ -52,6 +54,10 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, upliftBuffer);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
 
+	if (steepestBuffer == 0) glGenBuffers(1, &steepestBuffer);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, steepestBuffer);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, 2 * sizeof(int) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
+
 	// Uniforms - just once
 	glUseProgram(simulationShader);
 
@@ -77,6 +83,7 @@ void GPU_SPE::Step(int n) {
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, tempBedrockBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, upliftBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
 
 		glDispatchCompute(dispatchSize, dispatchSize, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);

@@ -20,6 +20,8 @@ private:
 
 	GLuint upliftBuffer = 0;		//!< Uplift buffer
 
+	GLuint steepestBuffer = 0;
+
 	int nx = 0;
 	int ny = 0;
 	int totalBufferSize = 0;					//!< Total buffer size defined as nx * ny
