@@ -13,6 +13,7 @@ GPU_SPE::~GPU_SPE() {
 	glDeleteBuffers(1, &steepestBuffer);
 
 	release_program(simulationShader);
+	release_program(precalcShader);
 }
 
 void GPU_SPE::Init(const ScalarField2& hf) {
@@ -33,6 +34,9 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	//std::string fullPath = "D:/temp_files/StreamPowerErosion/data/shaders/spe_shader.glsl";
 
 	simulationShader = read_program(fullPath.c_str());
+
+	std::string fullPathPrecalc = "./data/shaders/spe_shader_precalc.glsl";
+	precalcShader = read_program(fullPathPrecalc.c_str());
 
 	if (bedrockBuffer == 0) glGenBuffers(1, &bedrockBuffer);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, bedrockBuffer);
@@ -69,13 +73,32 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glUniform2f(glGetUniformLocation(simulationShader, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
 	glUniform2f(glGetUniformLocation(simulationShader, "a"), float(box[0][0]), float(box[0][1]));
 	glUniform2f(glGetUniformLocation(simulationShader, "b"), float(box[1][0]), float(box[1][1]));
-	
+
+	glUseProgram(0);
+
+	// Uniforms - just once
+	glUseProgram(precalcShader);
+
+	glUniform1i(glGetUniformLocation(precalcShader, "nx"), nx);
+	glUniform1i(glGetUniformLocation(precalcShader, "ny"), ny);
+	glUniform2f(glGetUniformLocation(precalcShader, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
+	glUniform2f(glGetUniformLocation(precalcShader, "a"), float(box[0][0]), float(box[0][1]));
+	glUniform2f(glGetUniformLocation(precalcShader, "b"), float(box[1][0]), float(box[1][1]));
+
 	glUseProgram(0);
 }
 
 void GPU_SPE::Step(int n) {
 
 	for (int i = 0; i < n; i++) {
+
+		glUseProgram(precalcShader);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, bedrockBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
+
+		glDispatchCompute(dispatchSize, dispatchSize, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
 		glUseProgram(simulationShader);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, bedrockBuffer);
@@ -98,6 +121,8 @@ void GPU_SPE::Step(int n) {
 
 void GPU_SPE::SetDt(float dt) const {
 	glUseProgram(simulationShader);
+	glUniform1f(glGetUniformLocation(simulationShader, "dt"), dt);
+	glUseProgram(precalcShader);
 	glUniform1f(glGetUniformLocation(simulationShader, "dt"), dt);
 	glUseProgram(0);
 }
