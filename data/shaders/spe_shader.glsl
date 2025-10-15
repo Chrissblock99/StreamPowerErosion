@@ -12,6 +12,8 @@ layout(binding = 3, std430) writeonly buffer OutStreamArea { float out_stream[];
 
 layout(binding = 4, std430) readonly buffer Uplift { float upliftBuffer[]; };
 
+layout(binding = 5, std430) readonly buffer Steepest { ivec2 steepestBuffer[]; };
+
 
 
 uniform int nx;
@@ -94,7 +96,7 @@ float getDiffDrainageArea(ivec2 p) {
     float water = 0.0;
     for (int i = 0; i < 8; i++) {
         ivec2 q = p + next8[i];
-        ivec2 fd = getOffsetToDownstream(q);
+        ivec2 fd = steepestBuffer[toIndex(q)];
         if (q + fd == p) {
             water += q.x < 0 || q.x >= nx || q.y < 0 || q.y >= ny ? 0.0 : stream[toIndex(q)];
         }
@@ -120,7 +122,7 @@ void main() {
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
    
     // Erosion at p (relative to steepest)
-    ivec2 downstream = p+getOffsetToDownstream(p);
+    ivec2 downstream = p+steepestBuffer[id];
     float pslope = abs(slope(downstream, p));
 
     float spe = k * pow(da, p_sa) * pow(pslope, p_sl);
