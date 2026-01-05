@@ -19,7 +19,7 @@ private:
 	GLuint streamBuffer = 0;				//!< Water elevation buffer
 	GLuint tempStreamBuffer = 0;				//!< Output water elevation buffer
 
-	GLuint upliftBuffer = 0;		//!< Uplift buffer
+	GLuint upliftTexture = 0;		//!< Uplift buffer
 
 	GLuint steepestBuffer = 0;
 

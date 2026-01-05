@@ -10,7 +10,7 @@ layout(binding = 1, std430) readonly buffer InStreamArea { float stream[]; };
 layout(binding = 2, std430) writeonly buffer OutElevation { float out_hf[]; };
 layout(binding = 3, std430) writeonly buffer OutStreamArea { float out_stream[]; };
 
-layout(binding = 4, std430) readonly buffer Uplift { float upliftBuffer[]; };
+layout(binding = 4, r32f) readonly uniform image2D upliftMap;
 
 layout(binding = 5, std430) readonly buffer Steepest { ivec2 steepestBuffer[]; };
 
@@ -119,7 +119,7 @@ void main() {
     else if (erosionMode == 2)  // Stream power + Hillslope erosion (Laplacian) + Debris flow
         h -= dt * (spe - k_h * laplacian_h(p) - k_d * pslope);
     h = max(h, hf[toIndex(downstream)]);
-    h += dt * uplift * upliftBuffer[id];
+    h += dt * uplift * imageLoad(upliftMap, p).x;
 
     out_hf[id] = h;
     out_stream[id] = da;

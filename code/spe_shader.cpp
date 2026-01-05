@@ -8,7 +8,7 @@ GPU_SPE::~GPU_SPE() {
 	glDeleteBuffers(1, &streamBuffer);
 	glDeleteBuffers(1, &tempStreamBuffer);
 
-	glDeleteBuffers(1, &upliftBuffer);
+	glDeleteTextures(1, &upliftTexture);
 
 	glDeleteBuffers(1, &steepestBuffer);
 
@@ -57,10 +57,11 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tempStreamBuffer);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
 
-	if (upliftBuffer == 0) glGenBuffers(1, &upliftBuffer);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, upliftBuffer);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
-
+	if (upliftTexture == 0) glGenTextures(1, &upliftTexture);
+	glBindTexture(GL_TEXTURE_2D, upliftTexture);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
+	
 	if (steepestBuffer == 0) glGenBuffers(1, &steepestBuffer);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, steepestBuffer);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, 2 * sizeof(int) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
@@ -120,11 +121,12 @@ void GPU_SPE::Step(int n) {
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, tempBedrockBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, upliftBuffer);
+        glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F);
+        glUniform1i(glGetUniformLocation(simulationShader, "upliftMap"), 4);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 		// dual buffering
 		std::swap(bedrockBuffer, tempBedrockBuffer);
@@ -145,8 +147,8 @@ void GPU_SPE::SetDt(float dt) const {
 void GPU_SPE::SetUplift(const ScalarField2& uplift) const {
 	glUseProgram(simulationShader);
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, upliftBuffer);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * uplift.VertexSize(), &uplift.GetFloatData()[0], GL_STREAM_READ);
+	glBindTexture(GL_TEXTURE_2D, upliftTexture);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &uplift.GetFloatData()[0]);
 
 	glUseProgram(0);
 }
