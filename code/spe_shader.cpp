@@ -18,10 +18,13 @@ GPU_SPE::~GPU_SPE() {
 
 void GPU_SPE::Init(const ScalarField2& hf) {
 	// Prepare data for first step
+
+	srcPos = Vec2I(0, 0);
+	size = Vec2I(hf.GetSizeX(), hf.GetSizeY());
+
 	nx = hf.GetSizeX();
 	ny = hf.GetSizeY();
 	totalBufferSize = hf.VertexSize();
-	dispatchSize = (max(nx, ny) / 8) + 1;
 
 	tmpData.resize(totalBufferSize);
 	for (int i = 0; i < totalBufferSize; i++)
@@ -67,10 +70,15 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 
 	Box2 box = hf.Array2::GetBox();
 	Vector2 cellDiag = hf.CellDiagonal();
+	std::cout << "srcPos: " << srcPos[0] << " " << srcPos[1] << std::endl;
+	std::cout << "size: " << size[0] << " " << size[1] << std::endl;
 	std::cout << "nx ny: " << nx << " " << ny << std::endl;
 	std::cout << "cellDiag: " << float(cellDiag[0]) << " " << float(cellDiag[1]) << std::endl;
 	std::cout << "a: " << float(box[0][0]) << " " << float(box[0][1]) << std::endl;
 	std::cout << "b: " << float(box[1][0]) << " " << float(box[1][1]) << std::endl;
+
+	glUniform2i(glGetUniformLocation(simulationShader, "srcPos"), srcPos[0], srcPos[1]);
+	glUniform2i(glGetUniformLocation(simulationShader, "size"), size[0], size[1]);
 
 	glUniform1i(glGetUniformLocation(simulationShader, "nx"), nx);
 	glUniform1i(glGetUniformLocation(simulationShader, "ny"), ny);
@@ -82,6 +90,9 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 
 	// Uniforms - just once
 	glUseProgram(precalcShader);
+
+	glUniform2i(glGetUniformLocation(precalcShader, "srcPos"), srcPos[0], srcPos[1]);
+	glUniform2i(glGetUniformLocation(precalcShader, "size"), size[0], size[1]);
 
 	glUniform1i(glGetUniformLocation(precalcShader, "nx"), nx);
 	glUniform1i(glGetUniformLocation(precalcShader, "ny"), ny);
@@ -101,7 +112,7 @@ void GPU_SPE::Step(int n) {
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
 
-		glDispatchCompute(dispatchSize, dispatchSize, 1);
+		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
 		glUseProgram(simulationShader);
@@ -112,7 +123,7 @@ void GPU_SPE::Step(int n) {
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, upliftBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
 
-		glDispatchCompute(dispatchSize, dispatchSize, 1);
+		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
 		// dual buffering

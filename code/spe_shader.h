@@ -23,10 +23,11 @@ private:
 
 	GLuint steepestBuffer = 0;
 
+	Vec2I srcPos = Vec2I(0);
+	Vec2I size = Vec2I(0);
 	int nx = 0;
 	int ny = 0;
 	int totalBufferSize = 0;					//!< Total buffer size defined as nx * ny
-	int dispatchSize = 0;						//!< Single dispatch size
 	std::vector<float> tmpData;			//!< Temporary array for retreiving GPU data
 public:
 	GPU_SPE() {};

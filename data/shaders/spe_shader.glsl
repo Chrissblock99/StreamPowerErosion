@@ -16,6 +16,9 @@ layout(binding = 5, std430) readonly buffer Steepest { ivec2 steepestBuffer[]; }
 
 
 
+uniform ivec2 srcPos;
+uniform ivec2 size;
+
 uniform int nx;
 uniform int ny;
 uniform vec2 a;
@@ -45,8 +48,8 @@ int toIndex(int i, int j) { return i + nx * j; }
 int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
-    if (p.x < 0 || p.x >= nx || p.y < 0 || p.y >= ny) return 0.0;
-    if (q.x < 0 || q.x >= nx || q.y < 0 || q.y >= ny) return 0.0;
+    if (p.x < 0 || p.x >= size.x || p.y < 0 || p.y >= size.y) return 0.0;
+    if (q.x < 0 || q.x >= size.x || q.y < 0 || q.y >= size.y) return 0.0;
     if (p == q) return 0.0;
     int index_p = toIndex(p.x, p.y);
     int index_q = toIndex(q.x, q.y);
@@ -62,14 +65,14 @@ float laplacian_h(ivec2 p) {
 
     if (i == 0)
         lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i + 1, j)] + hf[toIndex(i + 2, j)]);
-    else if (i == nx - 1)
+    else if (i == size.x - 1)
         lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i - 1, j)] + hf[toIndex(i - 2, j)]);
     else
         lapl += (hf[toIndex(i + 1, j)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i - 1, j)]);
 
     if (j == 0)
         lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i, j + 1)] + hf[toIndex(i, j + 2)]);
-    else if (j == ny - 1)
+    else if (j == size.y - 1)
         lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i, j - 1)] + hf[toIndex(i, j - 2)]);
     else
         lapl += (hf[toIndex(i, j + 1)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i, j - 1)]);
@@ -98,7 +101,7 @@ float getDiffDrainageArea(ivec2 p) {
         ivec2 q = p + next8[i];
         ivec2 fd = steepestBuffer[toIndex(q)];
         if (q + fd == p) {
-            water += q.x < 0 || q.x >= nx || q.y < 0 || q.y >= ny ? 0.0 : stream[toIndex(q)];
+            water += q.x < 0 || q.x >= size.x || q.y < 0 || q.y >= size.y ? 0.0 : stream[toIndex(q)];
         }
     }
     return water;
@@ -106,13 +109,13 @@ float getDiffDrainageArea(ivec2 p) {
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 void main() {
-    ivec2 p = ivec2(gl_GlobalInvocationID.xy);
-    if (p.x >= nx || p.y >= ny) return;
+    ivec2 p = srcPos + ivec2(gl_GlobalInvocationID.xy);
+    if (p.x >= size.x || p.y >= size.y) return;
 
     int id = toIndex(p);
 
     // Border nodes are fixed to zero (elevation and drainage)
-    if (p.x == 0 || p.x == nx - 1 || p.y == 0 || p.y == ny - 1) {
+    if (p.x == 0 || p.x == size.x - 1 || p.y == 0 || p.y == size.y - 1) {
         out_hf[id] = 0.0;
         out_stream[id] = sqrt(2.0) * cellSize;
         return;
