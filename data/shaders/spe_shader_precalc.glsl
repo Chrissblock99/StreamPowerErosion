@@ -42,8 +42,6 @@ int toIndex(int i, int j) { return i + nx * j; }
 int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
-    if (p.x < 0 || p.x >= size.x || p.y < 0 || p.y >= size.y) return 0.0;
-    if (q.x < 0 || q.x >= size.x || q.y < 0 || q.y >= size.y) return 0.0;
     if (p == q) return 0.0;
     int index_p = toIndex(p.x, p.y);
     int index_q = toIndex(q.x, q.y);
@@ -57,19 +55,9 @@ float laplacian_h(ivec2 p) {
     int i = p.x;
     int j = p.y;
 
-    if (i == 0)
-        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i + 1, j)] + hf[toIndex(i + 2, j)]);
-    else if (i == size.x - 1)
-        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i - 1, j)] + hf[toIndex(i - 2, j)]);
-    else
-        lapl += (hf[toIndex(i + 1, j)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i - 1, j)]);
+    lapl += (hf[toIndex(i + 1, j)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i - 1, j)]);
 
-    if (j == 0)
-        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i, j + 1)] + hf[toIndex(i, j + 2)]);
-    else if (j == size.y - 1)
-        lapl += (hf[toIndex(i, j)] - 2.0 * hf[toIndex(i, j - 1)] + hf[toIndex(i, j - 2)]);
-    else
-        lapl += (hf[toIndex(i, j + 1)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i, j - 1)]);
+    lapl += (hf[toIndex(i, j + 1)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i, j - 1)]);
 
     lapl /= cellSize*cellSize;
 
@@ -95,11 +83,6 @@ void main() {
     if (p.x >= size.x || p.y >= size.y) return;
 
     int id = toIndex(p);
-
-    // Border nodes are fixed to zero (elevation and drainage)
-    if (p.x == 0 || p.x == size.x - 1 || p.y == 0 || p.y == size.y - 1) {
-        return;
-    }
 
     steepestBuffer[id] = getOffsetToDownstream(p);
 }

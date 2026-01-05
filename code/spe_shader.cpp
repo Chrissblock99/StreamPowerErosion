@@ -19,8 +19,8 @@ GPU_SPE::~GPU_SPE() {
 void GPU_SPE::Init(const ScalarField2& hf) {
 	// Prepare data for first step
 
-	srcPos = Vec2I(0, 0);
-	size = Vec2I(hf.GetSizeX(), hf.GetSizeY());
+	srcPos = Vec2I(1, 1);
+	size = Vec2I(hf.GetSizeX()-1, hf.GetSizeY()-1);
 
 	nx = hf.GetSizeX();
 	ny = hf.GetSizeY();
