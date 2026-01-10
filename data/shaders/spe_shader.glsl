@@ -70,19 +70,6 @@ float laplacian_h(ivec2 p) {
     return lapl;
 }
 
-ivec2 getOffsetToDownstream(ivec2 p) {
-    ivec2 d = ivec2(0, 0);
-    float maxSlope = 0.0;
-    for (int i = 0; i < 8; i++) {
-        float ss = slope(p + next8[i], p);
-        if (ss > maxSlope) {
-            maxSlope = ss;
-            d = next8[i];
-        }
-    }
-    return d;
-}
-
 float getDiffDrainageArea(ivec2 p) {
     float water = 0.0;
     for (int i = 0; i < 8; i++) {

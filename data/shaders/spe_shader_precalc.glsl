@@ -4,7 +4,6 @@
 
 // In
 layout(binding = 0, std430) readonly buffer InElevation { float hf[]; };
-layout(binding = 1, std430) readonly buffer InStreamArea { float stream[]; };
 
 layout(binding = 5, std430) writeonly buffer Steepest { ivec2 steepestBuffer[]; };
 
@@ -47,21 +46,6 @@ float slope(ivec2 p, ivec2 q) {
     int index_q = toIndex(q.x, q.y);
     float d = cellSize * length(vec2(p)-vec2(q));
     return (hf[index_q] - hf[index_p]) / d;
-}
-
-
-float laplacian_h(ivec2 p) {
-    float lapl = 0.0;
-    int i = p.x;
-    int j = p.y;
-
-    lapl += (hf[toIndex(i + 1, j)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i - 1, j)]);
-
-    lapl += (hf[toIndex(i, j + 1)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i, j - 1)]);
-
-    lapl /= cellSize*cellSize;
-
-    return lapl;
 }
 
 ivec2 getOffsetToDownstream(ivec2 p) {

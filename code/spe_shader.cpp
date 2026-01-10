@@ -110,7 +110,6 @@ void GPU_SPE::Step(int n) {
 
 		glUseProgram(precalcShader);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, bedrockBuffer);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
@@ -121,8 +120,7 @@ void GPU_SPE::Step(int n) {
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, tempBedrockBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
-        glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F);
-        glUniform1i(glGetUniformLocation(simulationShader, "upliftMap"), 4);
+        glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "upliftMap"), 4);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
