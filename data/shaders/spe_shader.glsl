@@ -12,7 +12,7 @@ layout(binding = 3, std430) writeonly buffer OutStreamArea { float out_stream[];
 
 layout(binding = 4, r32f) readonly uniform image2D upliftMap;
 
-layout(binding = 5, std430) readonly buffer Steepest { ivec2 steepestBuffer[]; };
+layout(binding = 5, r8i) readonly uniform iimage2D steepestMap;
 
 
 
@@ -38,8 +38,9 @@ uniform float p_sa = 0.8f;
 uniform float p_sl = 2.0f;
 uniform float dt = 50.0f;
 
-const ivec2 next8[8] = ivec2[8](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, -1),
-                                ivec2(0, -1), ivec2(-1, -1), ivec2(-1, 0), ivec2(-1, 1));
+const ivec2 next9[9] = ivec2[9](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, -1),
+                                ivec2(0, -1), ivec2(-1, -1), ivec2(-1, 0), ivec2(-1, 1),
+                                ivec2(0, 0));
 
 
 float cellSize = cellDiag.x;
@@ -73,8 +74,8 @@ float laplacian_h(ivec2 p) {
 float getDiffDrainageArea(ivec2 p) {
     float water = 0.0;
     for (int i = 0; i < 8; i++) {
-        ivec2 q = p + next8[i];
-        ivec2 fd = steepestBuffer[toIndex(q)];
+        ivec2 q = p + next9[i];
+        ivec2 fd = next9[imageLoad(steepestMap, q).x];
         if (q + fd == p) {
             water += stream[toIndex(q)];
         }
@@ -93,7 +94,7 @@ void main() {
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
    
     // Erosion at p (relative to steepest)
-    ivec2 downstream = p+steepestBuffer[id];
+    ivec2 downstream = p+next9[imageLoad(steepestMap, p).x];
     float pslope = abs(slope(downstream, p));
 
     float spe = k * pow(da, p_sa) * pow(pslope, p_sl);

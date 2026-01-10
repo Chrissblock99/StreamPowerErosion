@@ -10,7 +10,7 @@ GPU_SPE::~GPU_SPE() {
 
 	glDeleteTextures(1, &upliftTexture);
 
-	glDeleteBuffers(1, &steepestBuffer);
+	glDeleteTextures(1, &steepestTexture);
 
 	release_program(simulationShader);
 	release_program(precalcShader);
@@ -30,7 +30,7 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	for (int i = 0; i < totalBufferSize; i++)
 		tmpData[i] = hf.at(i);
 
-	std::vector<float> tmpZeros(2 * totalBufferSize, 0.);
+	std::vector<float> tmpZeros(totalBufferSize, 0.);
 
 	// Prepare shader & Init buffer - Just done once
 	std::string fullPath = "./data/shaders/spe_shader.glsl";
@@ -62,9 +62,10 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 	
-	if (steepestBuffer == 0) glGenBuffers(1, &steepestBuffer);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, steepestBuffer);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, 2 * sizeof(int) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
+	if (steepestTexture == 0) glGenTextures(1, &steepestTexture);
+	glBindTexture(GL_TEXTURE_2D, steepestTexture);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R8I, nx, ny);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_BYTE, &tmpZeros.front());
 
 	// Uniforms - just once
 	glUseProgram(simulationShader);
@@ -110,7 +111,7 @@ void GPU_SPE::Step(int n) {
 
 		glUseProgram(precalcShader);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, bedrockBuffer);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
+        glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
@@ -121,7 +122,7 @@ void GPU_SPE::Step(int n) {
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, tempBedrockBuffer);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
         glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "upliftMap"), 4);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, steepestBuffer);
+        glBindImageTexture(5, steepestTexture, 0, false, 0, GL_READ_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);

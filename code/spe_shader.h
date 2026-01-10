@@ -21,7 +21,7 @@ private:
 
 	GLuint upliftTexture = 0;		//!< Uplift buffer
 
-	GLuint steepestBuffer = 0;
+	GLuint steepestTexture = 0;
 
 	Vec2I srcPos = Vec2I(0);
 	Vec2I size = Vec2I(0);

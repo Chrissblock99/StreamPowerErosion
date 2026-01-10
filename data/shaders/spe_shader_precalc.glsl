@@ -5,7 +5,7 @@
 // In
 layout(binding = 0, std430) readonly buffer InElevation { float hf[]; };
 
-layout(binding = 5, std430) writeonly buffer Steepest { ivec2 steepestBuffer[]; };
+layout(binding = 5, r8i) writeonly uniform iimage2D steepestMap;
 
 
 
@@ -31,8 +31,9 @@ uniform float p_sa = 0.8f;
 uniform float p_sl = 2.0f;
 uniform float dt = 50.0f;
 
-const ivec2 next8[8] = ivec2[8](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, -1),
-                                ivec2(0, -1), ivec2(-1, -1), ivec2(-1, 0), ivec2(-1, 1));
+const ivec2 next9[9] = ivec2[9](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, -1),
+                                ivec2(0, -1), ivec2(-1, -1), ivec2(-1, 0), ivec2(-1, 1),
+                                ivec2(0, 0));
 
 
 float cellSize = cellDiag.x;
@@ -48,17 +49,17 @@ float slope(ivec2 p, ivec2 q) {
     return (hf[index_q] - hf[index_p]) / d;
 }
 
-ivec2 getOffsetToDownstream(ivec2 p) {
-    ivec2 d = ivec2(0, 0);
+int getOffsetToDownstream(ivec2 p) {
+    int index = 8;
     float maxSlope = 0.0;
     for (int i = 0; i < 8; i++) {
-        float ss = slope(p + next8[i], p);
+        float ss = slope(p + next9[i], p);
         if (ss > maxSlope) {
             maxSlope = ss;
-            d = next8[i];
+            index = i;
         }
     }
-    return d;
+    return index;
 }
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
@@ -66,9 +67,8 @@ void main() {
     ivec2 p = srcPos + ivec2(gl_GlobalInvocationID.xy);
     if (p.x >= size.x || p.y >= size.y) return;
 
-    int id = toIndex(p);
-
-    steepestBuffer[id] = getOffsetToDownstream(p);
+    int index = getOffsetToDownstream(p);
+    imageStore(steepestMap, p, ivec4(index));
 }
 
 #endif
