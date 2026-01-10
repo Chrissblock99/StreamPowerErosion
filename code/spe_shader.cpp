@@ -14,6 +14,8 @@ GPU_SPE::~GPU_SPE() {
 
 	release_program(simulationShader);
 	release_program(precalcShader);
+	release_program(simulationShader2);
+	release_program(precalcShader2);
 }
 
 void GPU_SPE::Init(const ScalarField2& hf) {
@@ -34,12 +36,16 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 
 	// Prepare shader & Init buffer - Just done once
 	std::string fullPath = "./data/shaders/spe_shader.glsl";
-	//std::string fullPath = "D:/temp_files/StreamPowerErosion/data/shaders/spe_shader.glsl";
-
 	simulationShader = read_program(fullPath.c_str());
 
 	std::string fullPathPrecalc = "./data/shaders/spe_shader_precalc.glsl";
 	precalcShader = read_program(fullPathPrecalc.c_str());
+
+	std::string fullPath2 = "./data/shaders/spe_shader2.glsl";
+	simulationShader2 = read_program(fullPath2.c_str());
+
+	std::string fullPathPrecalc2 = "./data/shaders/spe_shader_precalc2.glsl";
+	precalcShader2 = read_program(fullPathPrecalc2.c_str());
 
 	if (bedrockBuffer == 0) glGenBuffers(1, &bedrockBuffer);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, bedrockBuffer);
@@ -68,7 +74,6 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_BYTE, &tmpZeros.front());
 
 	// Uniforms - just once
-	glUseProgram(simulationShader);
 
 	Box2 box = hf.Array2::GetBox();
 	Vector2 cellDiag = hf.CellDiagonal();
@@ -78,6 +83,8 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	std::cout << "cellDiag: " << float(cellDiag[0]) << " " << float(cellDiag[1]) << std::endl;
 	std::cout << "a: " << float(box[0][0]) << " " << float(box[0][1]) << std::endl;
 	std::cout << "b: " << float(box[1][0]) << " " << float(box[1][1]) << std::endl;
+
+	glUseProgram(simulationShader);
 
 	glUniform2i(glGetUniformLocation(simulationShader, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(simulationShader, "size"), size[0], size[1]);
@@ -90,7 +97,6 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 
 	glUseProgram(0);
 
-	// Uniforms - just once
 	glUseProgram(precalcShader);
 
 	glUniform2i(glGetUniformLocation(precalcShader, "srcPos"), srcPos[0], srcPos[1]);
@@ -103,15 +109,40 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glUniform2f(glGetUniformLocation(precalcShader, "b"), float(box[1][0]), float(box[1][1]));
 
 	glUseProgram(0);
+
+	glUseProgram(simulationShader2);
+
+	glUniform2i(glGetUniformLocation(simulationShader2, "srcPos"), srcPos[0], srcPos[1]);
+	glUniform2i(glGetUniformLocation(simulationShader2, "size"), size[0], size[1]);
+
+	glUniform1i(glGetUniformLocation(simulationShader2, "nx"), nx);
+	glUniform1i(glGetUniformLocation(simulationShader2, "ny"), ny);
+	glUniform2f(glGetUniformLocation(simulationShader2, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
+	glUniform2f(glGetUniformLocation(simulationShader2, "a"), float(box[0][0]), float(box[0][1]));
+	glUniform2f(glGetUniformLocation(simulationShader2, "b"), float(box[1][0]), float(box[1][1]));
+
+	glUseProgram(0);
+
+	glUseProgram(precalcShader2);
+
+	glUniform2i(glGetUniformLocation(precalcShader2, "srcPos"), srcPos[0], srcPos[1]);
+	glUniform2i(glGetUniformLocation(precalcShader2, "size"), size[0], size[1]);
+
+	glUniform1i(glGetUniformLocation(precalcShader2, "nx"), nx);
+	glUniform1i(glGetUniformLocation(precalcShader2, "ny"), ny);
+	glUniform2f(glGetUniformLocation(precalcShader2, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
+	glUniform2f(glGetUniformLocation(precalcShader2, "a"), float(box[0][0]), float(box[0][1]));
+	glUniform2f(glGetUniformLocation(precalcShader2, "b"), float(box[1][0]), float(box[1][1]));
+
+	glUseProgram(0);
 }
 
 void GPU_SPE::Step(int n) {
 
 	for (int i = 0; i < n; i++) {
-
 		glUseProgram(precalcShader);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, bedrockBuffer);
-        glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader, "steepestMap"), 5);
+        glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(precalcShader, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
@@ -128,8 +159,23 @@ void GPU_SPE::Step(int n) {
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 		// dual buffering
-		std::swap(bedrockBuffer, tempBedrockBuffer);
-		std::swap(streamBuffer, tempStreamBuffer);
+		glUseProgram(precalcShader2);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, tempBedrockBuffer);
+        glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(precalcShader2, "steepestMap"), 5);
+
+		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+		glUseProgram(simulationShader2);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, bedrockBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, tempBedrockBuffer);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
+        glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "upliftMap"), 4);
+        glBindImageTexture(5, steepestTexture, 0, false, 0, GL_READ_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader2, "steepestMap"), 5);
+
+		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	}
 
 	glUseProgram(0);
@@ -139,12 +185,21 @@ void GPU_SPE::SetDt(float dt) const {
 	glUseProgram(simulationShader);
 	glUniform1f(glGetUniformLocation(simulationShader, "dt"), dt);
 	glUseProgram(precalcShader);
-	glUniform1f(glGetUniformLocation(simulationShader, "dt"), dt);
+	glUniform1f(glGetUniformLocation(precalcShader, "dt"), dt);
+	glUseProgram(simulationShader2);
+	glUniform1f(glGetUniformLocation(simulationShader2, "dt"), dt);
+	glUseProgram(precalcShader2);
+	glUniform1f(glGetUniformLocation(precalcShader2, "dt"), dt);
 	glUseProgram(0);
 }
 
 void GPU_SPE::SetUplift(const ScalarField2& uplift) const {
 	glUseProgram(simulationShader);
+
+	glBindTexture(GL_TEXTURE_2D, upliftTexture);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &uplift.GetFloatData()[0]);
+
+	glUseProgram(simulationShader2);
 
 	glBindTexture(GL_TEXTURE_2D, upliftTexture);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &uplift.GetFloatData()[0]);

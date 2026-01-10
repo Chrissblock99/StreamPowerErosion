@@ -12,6 +12,8 @@ class GPU_SPE {
 private:
 	GLuint simulationShader = 0;			//!< Compute shader
 	GLuint precalcShader = 0;
+	GLuint simulationShader2 = 0;
+	GLuint precalcShader2 = 0;
 
 	GLuint bedrockBuffer = 0;				//!< Bedrock elevation buffer
 	GLuint tempBedrockBuffer = 0;			//!< Output bedrock elevation buffer
