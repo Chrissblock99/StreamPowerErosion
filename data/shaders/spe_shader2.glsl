@@ -3,7 +3,7 @@
 #ifdef COMPUTE_SHADER
 
 // In
-layout(binding = 0, std430) writeonly buffer InElevation { float hf[]; };
+layout(binding = 0, r32f) writeonly uniform image2D bedrockMap;
 layout(binding = 1, std430) writeonly buffer InStreamArea { float stream[]; };
 
 // Out
@@ -109,7 +109,7 @@ void main() {
     h = max(h, out_hf[toIndex(downout_stream)]);
     h += dt * uplift * imageLoad(upliftMap, p).x;
 
-    hf[id] = h;
+    imageStore(bedrockMap, p, vec4(h));
     stream[id] = da;
 }
 

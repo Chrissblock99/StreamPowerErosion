@@ -3,7 +3,7 @@
 #ifdef COMPUTE_SHADER
 
 // In
-layout(binding = 0, std430) readonly buffer InElevation { float hf[]; };
+layout(binding = 0, r32f) readonly uniform image2D bedrockMap;
 layout(binding = 1, std430) readonly buffer InStreamArea { float stream[]; };
 
 // Out
@@ -50,10 +50,8 @@ int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
     if (p == q) return 0.0;
-    int index_p = toIndex(p.x, p.y);
-    int index_q = toIndex(q.x, q.y);
     float d = cellSize * length(vec2(p)-vec2(q));
-    return (hf[index_q] - hf[index_p]) / d;
+    return (imageLoad(bedrockMap, q).x - imageLoad(bedrockMap, p).x) / d;
 }
 
 
@@ -62,9 +60,9 @@ float laplacian_h(ivec2 p) {
     int i = p.x;
     int j = p.y;
 
-    lapl += (hf[toIndex(i + 1, j)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i - 1, j)]);
+    lapl += (imageLoad(bedrockMap, ivec2(i+1, j)).x - 2.0 * imageLoad(bedrockMap, ivec2(i, j)).x + imageLoad(bedrockMap, ivec2(i-1, j)).x);
 
-    lapl += (hf[toIndex(i, j + 1)] - 2.0 * hf[toIndex(i, j)] + hf[toIndex(i, j - 1)]);
+    lapl += (imageLoad(bedrockMap, ivec2(i, j+1)).x - 2.0 * imageLoad(bedrockMap, ivec2(i, j)).x + imageLoad(bedrockMap, ivec2(i, j-1)).x);
 
     lapl /= cellSize*cellSize;
 
@@ -90,7 +88,7 @@ void main() {
 
     int id = toIndex(p);
 
-    float h = hf[id];
+    float h = imageLoad(bedrockMap, p).x;
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
    
     // Erosion at p (relative to steepest)
@@ -106,7 +104,7 @@ void main() {
         h -= dt * (spe - k_h * laplacian_h(p));
     else if (erosionMode == 2)  // Stream power + Hillslope erosion (Laplacian) + Debris flow
         h -= dt * (spe - k_h * laplacian_h(p) - k_d * pslope);
-    h = max(h, hf[toIndex(downstream)]);
+    h = max(h, imageLoad(bedrockMap, downstream).x);
     h += dt * uplift * imageLoad(upliftMap, p).x;
 
     out_hf[id] = h;

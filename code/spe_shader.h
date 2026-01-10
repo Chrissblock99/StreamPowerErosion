@@ -15,7 +15,7 @@ private:
 	GLuint simulationShader2 = 0;
 	GLuint precalcShader2 = 0;
 
-	GLuint bedrockBuffer = 0;				//!< Bedrock elevation buffer
+	GLuint bedrockTexture = 0;				//!< Bedrock elevation buffer
 	GLuint tempBedrockBuffer = 0;			//!< Output bedrock elevation buffer
 
 	GLuint streamBuffer = 0;				//!< Water elevation buffer
