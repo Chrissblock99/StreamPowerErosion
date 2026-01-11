@@ -7,7 +7,7 @@ layout(binding = 0, r32f) readonly uniform image2D bedrockMap;
 layout(binding = 1, std430) readonly buffer InStreamArea { float stream[]; };
 
 // Out
-layout(binding = 2, std430) writeonly buffer OutElevation { float out_hf[]; };
+layout(binding = 2, r32f) writeonly uniform image2D tempBedrockMap;
 layout(binding = 3, std430) writeonly buffer OutStreamArea { float out_stream[]; };
 
 layout(binding = 4, r32f) readonly uniform image2D upliftMap;
@@ -107,7 +107,7 @@ void main() {
     h = max(h, imageLoad(bedrockMap, downstream).x);
     h += dt * uplift * imageLoad(upliftMap, p).x;
 
-    out_hf[id] = h;
+    imageStore(tempBedrockMap, p, vec4(h));
     out_stream[id] = da;
 }
 

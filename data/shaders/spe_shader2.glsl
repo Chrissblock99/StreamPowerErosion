@@ -7,7 +7,7 @@ layout(binding = 0, r32f) writeonly uniform image2D bedrockMap;
 layout(binding = 1, std430) writeonly buffer InStreamArea { float stream[]; };
 
 // Out
-layout(binding = 2, std430) readonly buffer OutElevation { float out_hf[]; };
+layout(binding = 2, r32f) readonly uniform image2D tempBedrockMap;
 layout(binding = 3, std430) readonly buffer OutStreamArea { float out_stream[]; };
 
 layout(binding = 4, r32f) readonly uniform image2D upliftMap;
@@ -50,10 +50,8 @@ int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
     if (p == q) return 0.0;
-    int index_p = toIndex(p.x, p.y);
-    int index_q = toIndex(q.x, q.y);
     float d = cellSize * length(vec2(p)-vec2(q));
-    return (out_hf[index_q] - out_hf[index_p]) / d;
+    return (imageLoad(tempBedrockMap, q).x - imageLoad(tempBedrockMap, p).x) / d;
 }
 
 
@@ -62,9 +60,9 @@ float laplacian_h(ivec2 p) {
     int i = p.x;
     int j = p.y;
 
-    lapl += (out_hf[toIndex(i + 1, j)] - 2.0 * out_hf[toIndex(i, j)] + out_hf[toIndex(i - 1, j)]);
+    lapl += (imageLoad(tempBedrockMap, ivec2(i+1, j)).x - 2.0 * imageLoad(tempBedrockMap, ivec2(i, j)).x + imageLoad(tempBedrockMap, ivec2(i-1, j)).x);
 
-    lapl += (out_hf[toIndex(i, j + 1)] - 2.0 * out_hf[toIndex(i, j)] + out_hf[toIndex(i, j - 1)]);
+    lapl += (imageLoad(tempBedrockMap, ivec2(i, j+1)).x - 2.0 * imageLoad(tempBedrockMap, ivec2(i, j)).x + imageLoad(tempBedrockMap, ivec2(i, j-1)).x);
 
     lapl /= cellSize*cellSize;
 
@@ -90,7 +88,7 @@ void main() {
 
     int id = toIndex(p);
 
-    float h = out_hf[id];
+    float h = imageLoad(tempBedrockMap, p).x;
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
    
     // Erosion at p (relative to steepest)
@@ -106,7 +104,7 @@ void main() {
         h -= dt * (spe - k_h * laplacian_h(p));
     else if (erosionMode == 2)  // Stream power + Hillslope erosion (Laplacian) + Debris flow
         h -= dt * (spe - k_h * laplacian_h(p) - k_d * pslope);
-    h = max(h, out_hf[toIndex(downout_stream)]);
+    h = max(h, imageLoad(tempBedrockMap, downout_stream).x);
     h += dt * uplift * imageLoad(upliftMap, p).x;
 
     imageStore(bedrockMap, p, vec4(h));

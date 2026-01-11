@@ -3,7 +3,7 @@
 #ifdef COMPUTE_SHADER
 
 // In
-layout(binding = 2, std430) readonly buffer InElevation { float hf[]; };
+layout(binding = 2, r32f) readonly uniform image2D tempBedrockMap;
 
 layout(binding = 5, r8i) writeonly uniform iimage2D steepestMap;
 
@@ -43,10 +43,8 @@ int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
     if (p == q) return 0.0;
-    int index_p = toIndex(p.x, p.y);
-    int index_q = toIndex(q.x, q.y);
     float d = cellSize * length(vec2(p)-vec2(q));
-    return (hf[index_q] - hf[index_p]) / d;
+    return (imageLoad(tempBedrockMap, q).x - imageLoad(tempBedrockMap, p).x) / d;
 }
 
 int getOffsetToDownstream(ivec2 p) {
