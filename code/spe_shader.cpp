@@ -79,25 +79,18 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 
 	// Uniforms - just once
 
-	Box2 box = hf.Array2::GetBox();
 	Vector2 cellDiag = hf.CellDiagonal();
 	std::cout << "srcPos: " << srcPos[0] << " " << srcPos[1] << std::endl;
 	std::cout << "size: " << size[0] << " " << size[1] << std::endl;
 	std::cout << "nx ny: " << nx << " " << ny << std::endl;
 	std::cout << "cellDiag: " << float(cellDiag[0]) << " " << float(cellDiag[1]) << std::endl;
-	std::cout << "a: " << float(box[0][0]) << " " << float(box[0][1]) << std::endl;
-	std::cout << "b: " << float(box[1][0]) << " " << float(box[1][1]) << std::endl;
 
 	glUseProgram(simulationShader);
 
 	glUniform2i(glGetUniformLocation(simulationShader, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(simulationShader, "size"), size[0], size[1]);
 
-	glUniform1i(glGetUniformLocation(simulationShader, "nx"), nx);
-	glUniform1i(glGetUniformLocation(simulationShader, "ny"), ny);
 	glUniform2f(glGetUniformLocation(simulationShader, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-	glUniform2f(glGetUniformLocation(simulationShader, "a"), float(box[0][0]), float(box[0][1]));
-	glUniform2f(glGetUniformLocation(simulationShader, "b"), float(box[1][0]), float(box[1][1]));
 
 	glUseProgram(0);
 
@@ -106,11 +99,7 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glUniform2i(glGetUniformLocation(precalcShader, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(precalcShader, "size"), size[0], size[1]);
 
-	glUniform1i(glGetUniformLocation(precalcShader, "nx"), nx);
-	glUniform1i(glGetUniformLocation(precalcShader, "ny"), ny);
 	glUniform2f(glGetUniformLocation(precalcShader, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-	glUniform2f(glGetUniformLocation(precalcShader, "a"), float(box[0][0]), float(box[0][1]));
-	glUniform2f(glGetUniformLocation(precalcShader, "b"), float(box[1][0]), float(box[1][1]));
 
 	glUseProgram(0);
 
@@ -119,11 +108,7 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glUniform2i(glGetUniformLocation(simulationShader2, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(simulationShader2, "size"), size[0], size[1]);
 
-	glUniform1i(glGetUniformLocation(simulationShader2, "nx"), nx);
-	glUniform1i(glGetUniformLocation(simulationShader2, "ny"), ny);
 	glUniform2f(glGetUniformLocation(simulationShader2, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-	glUniform2f(glGetUniformLocation(simulationShader2, "a"), float(box[0][0]), float(box[0][1]));
-	glUniform2f(glGetUniformLocation(simulationShader2, "b"), float(box[1][0]), float(box[1][1]));
 
 	glUseProgram(0);
 
@@ -132,11 +117,7 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glUniform2i(glGetUniformLocation(precalcShader2, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(precalcShader2, "size"), size[0], size[1]);
 
-	glUniform1i(glGetUniformLocation(precalcShader2, "nx"), nx);
-	glUniform1i(glGetUniformLocation(precalcShader2, "ny"), ny);
 	glUniform2f(glGetUniformLocation(precalcShader2, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-	glUniform2f(glGetUniformLocation(precalcShader2, "a"), float(box[0][0]), float(box[0][1]));
-	glUniform2f(glGetUniformLocation(precalcShader2, "b"), float(box[1][0]), float(box[1][1]));
 
 	glUseProgram(0);
 }

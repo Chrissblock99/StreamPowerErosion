@@ -12,10 +12,6 @@ layout(binding = 5, r8i) writeonly uniform iimage2D steepestMap;
 uniform ivec2 srcPos;
 uniform ivec2 size;
 
-uniform int nx;
-uniform int ny;
-uniform vec2 a;
-uniform vec2 b;
 uniform vec2 cellDiag;
 
 // 0: Stream power
@@ -37,9 +33,6 @@ const ivec2 next9[9] = ivec2[9](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, 
 
 
 float cellSize = cellDiag.x;
-
-int toIndex(int i, int j) { return i + nx * j; }
-int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
     if (p == q) return 0.0;

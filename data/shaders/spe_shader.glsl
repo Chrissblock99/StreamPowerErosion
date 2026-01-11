@@ -19,10 +19,6 @@ layout(binding = 5, r8i) readonly uniform iimage2D steepestMap;
 uniform ivec2 srcPos;
 uniform ivec2 size;
 
-uniform int nx;
-uniform int ny;
-uniform vec2 a;
-uniform vec2 b;
 uniform vec2 cellDiag;
 
 // 0: Stream power
@@ -44,9 +40,6 @@ const ivec2 next9[9] = ivec2[9](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, 
 
 
 float cellSize = cellDiag.x;
-
-int toIndex(int i, int j) { return i + nx * j; }
-int toIndex(ivec2 p) { return p.x + nx * p.y; }
 
 float slope(ivec2 p, ivec2 q) {
     if (p == q) return 0.0;
@@ -85,8 +78,6 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 void main() {
     ivec2 p = srcPos + ivec2(gl_GlobalInvocationID.xy);
     if (p.x >= size.x || p.y >= size.y) return;
-
-    int id = toIndex(p);
 
     float h = imageLoad(bedrockMap, p).x;
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
