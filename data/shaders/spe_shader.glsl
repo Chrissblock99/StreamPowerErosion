@@ -8,7 +8,7 @@ layout(binding = 1, r32f) readonly uniform image2D streamMap;
 
 // Out
 layout(binding = 2, r32f) writeonly uniform image2D tempBedrockMap;
-layout(binding = 3, std430) writeonly buffer OutStreamArea { float out_stream[]; };
+layout(binding = 3, r32f) writeonly uniform image2D tempStreamMap;
 
 layout(binding = 4, r32f) readonly uniform image2D upliftMap;
 
@@ -108,7 +108,7 @@ void main() {
     h += dt * uplift * imageLoad(upliftMap, p).x;
 
     imageStore(tempBedrockMap, p, vec4(h));
-    out_stream[id] = da;
+    imageStore(tempStreamMap, p, vec4(da));
 }
 
 #endif

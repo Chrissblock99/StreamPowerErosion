@@ -8,7 +8,7 @@ layout(binding = 1, r32f) writeonly uniform image2D streamMap;
 
 // Out
 layout(binding = 2, r32f) readonly uniform image2D tempBedrockMap;
-layout(binding = 3, std430) readonly buffer OutStreamArea { float out_stream[]; };
+layout(binding = 3, r32f) readonly uniform image2D tempStreamMap;
 
 layout(binding = 4, r32f) readonly uniform image2D upliftMap;
 
@@ -75,7 +75,7 @@ float getDiffDrainageArea(ivec2 p) {
         ivec2 q = p + next9[i];
         ivec2 fd = next9[imageLoad(steepestMap, q).x];
         if (q + fd == p) {
-            water += out_stream[toIndex(q)];
+            water += imageLoad(tempStreamMap, q).x;
         }
     }
     return water;
