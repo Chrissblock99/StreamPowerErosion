@@ -74,8 +74,9 @@ float getDiffDrainageArea(ivec2 p) {
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 void main() {
-    ivec2 p = srcPos + ivec2(gl_GlobalInvocationID.xy);
-    if (p.x >= size.x || p.y >= size.y) return;
+    ivec2 offset = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 p = srcPos + offset;
+    if (offset.x >= size.x || offset.y >= size.y) return;
 
     float h = imageLoad(bedrockMap, p).x;
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
