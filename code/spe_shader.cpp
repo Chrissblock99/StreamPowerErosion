@@ -79,45 +79,29 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 
 	// Uniforms - just once
 
-	Vector2 cellDiag = hf.CellDiagonal();
 	std::cout << "srcPos: " << srcPos[0] << " " << srcPos[1] << std::endl;
 	std::cout << "size: " << size[0] << " " << size[1] << std::endl;
 	std::cout << "nx ny: " << nx << " " << ny << std::endl;
-	std::cout << "cellDiag: " << float(cellDiag[0]) << " " << float(cellDiag[1]) << std::endl;
 
 	glUseProgram(simulationShader);
 
 	glUniform2i(glGetUniformLocation(simulationShader, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(simulationShader, "size"), size[0], size[1]);
 
-	glUniform2f(glGetUniformLocation(simulationShader, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-
-	glUseProgram(0);
-
 	glUseProgram(precalcShader);
 
 	glUniform2i(glGetUniformLocation(precalcShader, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(precalcShader, "size"), size[0], size[1]);
-
-	glUniform2f(glGetUniformLocation(precalcShader, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-
-	glUseProgram(0);
 
 	glUseProgram(simulationShader2);
 
 	glUniform2i(glGetUniformLocation(simulationShader2, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(simulationShader2, "size"), size[0], size[1]);
 
-	glUniform2f(glGetUniformLocation(simulationShader2, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
-
-	glUseProgram(0);
-
 	glUseProgram(precalcShader2);
 
 	glUniform2i(glGetUniformLocation(precalcShader2, "srcPos"), srcPos[0], srcPos[1]);
 	glUniform2i(glGetUniformLocation(precalcShader2, "size"), size[0], size[1]);
-
-	glUniform2f(glGetUniformLocation(precalcShader2, "cellDiag"), float(cellDiag[0]), float(cellDiag[1]));
 
 	glUseProgram(0);
 }

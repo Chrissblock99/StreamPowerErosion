@@ -12,8 +12,6 @@ layout(binding = 5, r8i) writeonly uniform iimage2D steepestMap;
 uniform ivec2 srcPos;
 uniform ivec2 size;
 
-uniform vec2 cellDiag;
-
 // 0: Stream power
 // 1: Stream power + Hillslope (Laplacian)
 // 2: Stream power + Hillslope (Laplacian) + Debris slope
@@ -32,7 +30,7 @@ const ivec2 next9[9] = ivec2[9](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, 
                                 ivec2(0, 0));
 
 
-float cellSize = cellDiag.x;
+float cellSize = 1176.47;
 
 float slope(ivec2 p, ivec2 q) {
     if (p == q) return 0.0;
