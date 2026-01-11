@@ -30,7 +30,7 @@ uniform float k_d = 10.0f;
 uniform float k_h = 2.0f;
 uniform float p_sa = 0.8f;
 uniform float p_sl = 2.0f;
-uniform float dt = 50.0f;
+uniform float dt = 100.0f;
 
 const ivec2 next9[9] = ivec2[9](ivec2(0, 1), ivec2(1, 1), ivec2(1, 0), ivec2(1, -1),
                                 ivec2(0, -1), ivec2(-1, -1), ivec2(-1, 0), ivec2(-1, 1),
