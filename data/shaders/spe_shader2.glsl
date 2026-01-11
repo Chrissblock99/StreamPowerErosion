@@ -92,8 +92,8 @@ void main() {
     float da = sqrt(2.0) * cellSize + getDiffDrainageArea(p);
    
     // Erosion at p (relative to steepest)
-    ivec2 downout_stream = p+next9[imageLoad(steepestMap, p).x];
-    float pslope = abs(slope(downout_stream, p));
+    ivec2 downstream = p+next9[imageLoad(steepestMap, p).x];
+    float pslope = abs(slope(downstream, p));
 
     float spe = k * pow(da, p_sa) * pow(pslope, p_sl);
 
