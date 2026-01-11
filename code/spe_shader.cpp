@@ -129,7 +129,7 @@ void GPU_SPE::Step(int n) {
 
 		// dual buffering
 		glUseProgram(precalcShader2);
-        glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "tempBedrockMap"), 2);
+        glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(precalcShader2, "tempBedrockMap"), 2);
         glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(precalcShader2, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
@@ -137,9 +137,9 @@ void GPU_SPE::Step(int n) {
 
 		glUseProgram(simulationShader2);
         glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "bedrockMap"), 0);
-        glBindImageTexture(1, streamTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "streamMap"), 1);
-        glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "tempBedrockMap"), 2);
-        glBindImageTexture(3, tempStreamTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "tempStreamMap"), 3);
+        glBindImageTexture(1, streamTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "streamMap"), 1);
+        glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "tempBedrockMap"), 2);
+        glBindImageTexture(3, tempStreamTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "tempStreamMap"), 3);
         glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "upliftMap"), 4);
         glBindImageTexture(5, steepestTexture, 0, false, 0, GL_READ_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader2, "steepestMap"), 5);
 
