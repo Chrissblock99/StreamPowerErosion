@@ -5,7 +5,7 @@ GPU_SPE::~GPU_SPE() {
 	glDeleteBuffers(1, &bedrockTexture);
 	glDeleteBuffers(1, &tempBedrockTexture);
 
-	glDeleteBuffers(1, &streamBuffer);
+	glDeleteBuffers(1, &streamTexture);
 	glDeleteBuffers(1, &tempStreamBuffer);
 
 	glDeleteTextures(1, &upliftTexture);
@@ -57,9 +57,10 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 
-	if (streamBuffer == 0) glGenBuffers(1, &streamBuffer);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, streamBuffer);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float) * totalBufferSize, &tmpZeros.front(), GL_STREAM_READ);
+	if (streamTexture == 0) glGenTextures(1, &streamTexture);
+	glBindTexture(GL_TEXTURE_2D, streamTexture);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 
 	if (tempStreamBuffer == 0) glGenBuffers(1, &tempStreamBuffer);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, tempStreamBuffer);
@@ -151,7 +152,7 @@ void GPU_SPE::Step(int n) {
 
 		glUseProgram(simulationShader);
         glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "bedrockMap"), 0);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
+        glBindImageTexture(1, streamTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "streamMap"), 1);
         glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "tempBedrockMap"), 2);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
         glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "upliftMap"), 4);
@@ -170,7 +171,7 @@ void GPU_SPE::Step(int n) {
 
 		glUseProgram(simulationShader2);
         glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "bedrockMap"), 0);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, streamBuffer);
+        glBindImageTexture(1, streamTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "streamMap"), 1);
         glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "tempBedrockMap"), 2);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, tempStreamBuffer);
         glBindImageTexture(4, upliftTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "upliftMap"), 4);
@@ -230,7 +231,7 @@ void GPU_SPE::GetData(ScalarField2& sf, ScalarField2& sa) {
 	for (int i = 0; i < totalBufferSize; i++)
 		sf[i] = double(tmpData[i]);
 
-	glGetNamedBufferSubData(streamBuffer, 0, sizeof(float) * totalBufferSize, tmpData.data());
+	glGetTextureSubImage(streamTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
 
 	for (int i = 0; i < totalBufferSize; i++)
 		sa[i] = double(tmpData[i]);

@@ -18,7 +18,7 @@ private:
 	GLuint bedrockTexture = 0;				//!< Bedrock elevation buffer
 	GLuint tempBedrockTexture = 0;			//!< Output bedrock elevation buffer
 
-	GLuint streamBuffer = 0;				//!< Water elevation buffer
+	GLuint streamTexture = 0;				//!< Water elevation buffer
 	GLuint tempStreamBuffer = 0;				//!< Output water elevation buffer
 
 	GLuint upliftTexture = 0;		//!< Uplift buffer

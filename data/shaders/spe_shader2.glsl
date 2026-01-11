@@ -4,7 +4,7 @@
 
 // In
 layout(binding = 0, r32f) writeonly uniform image2D bedrockMap;
-layout(binding = 1, std430) writeonly buffer InStreamArea { float stream[]; };
+layout(binding = 1, r32f) writeonly uniform image2D streamMap;
 
 // Out
 layout(binding = 2, r32f) readonly uniform image2D tempBedrockMap;
@@ -104,11 +104,11 @@ void main() {
         h -= dt * (spe - k_h * laplacian_h(p));
     else if (erosionMode == 2)  // Stream power + Hillslope erosion (Laplacian) + Debris flow
         h -= dt * (spe - k_h * laplacian_h(p) - k_d * pslope);
-    h = max(h, imageLoad(tempBedrockMap, downout_stream).x);
+    h = max(h, imageLoad(tempBedrockMap, downstream).x);
     h += dt * uplift * imageLoad(upliftMap, p).x;
 
     imageStore(bedrockMap, p, vec4(h));
-    stream[id] = da;
+    imageStore(streamMap, p, vec4(da));
 }
 
 #endif
