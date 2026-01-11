@@ -114,7 +114,7 @@ void GPU_SPE::Step(int n) {
         glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(precalcShader, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 		glUseProgram(simulationShader);
         glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "bedrockMap"), 0);
@@ -125,7 +125,7 @@ void GPU_SPE::Step(int n) {
         glBindImageTexture(5, steepestTexture, 0, false, 0, GL_READ_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 		// dual buffering
 		glUseProgram(precalcShader2);
@@ -133,7 +133,7 @@ void GPU_SPE::Step(int n) {
         glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(precalcShader2, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 		glUseProgram(simulationShader2);
         glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader2, "bedrockMap"), 0);
@@ -144,7 +144,7 @@ void GPU_SPE::Step(int n) {
         glBindImageTexture(5, steepestTexture, 0, false, 0, GL_READ_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(simulationShader2, "steepestMap"), 5);
 
 		glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	}
 
 	glUseProgram(0);
