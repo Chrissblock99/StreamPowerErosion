@@ -190,6 +190,11 @@ void GPU_SPE::SetUplift(const ScalarField2& uplift) const {
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &uplift.GetFloatData()[0]);
 
 	glUseProgram(0);
+
+	
+	//std::cout << "maxUplift: " << uplift.GetMaxVal() << std::endl;
+	//std::string fileName = "/tmp/uplift";
+	//uplift.Save(fileName.c_str());
 }
 
 GLuint GPU_SPE::GetData() const {
@@ -201,6 +206,10 @@ void GPU_SPE::GetData(ScalarField2& sf) {
 
 	for (int i = 0; i < totalBufferSize; i++)
 		sf[i] = double(tmpData[i]);
+
+	//std::cout << "maxHeight: " << sf.GetMaxVal() << std::endl;
+	//std::string fileName = "/tmp/height";
+	//sf.Save(fileName.c_str());
 
 	/*double low, high;
 	sf.GetRange(low, high);

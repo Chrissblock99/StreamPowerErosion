@@ -651,3 +651,13 @@ std::vector<float> ScalarField2::GetFloatData() const {
     for (int i = 0; i < nx * ny; i++) res[i] = float(field[i]);
     return res;
 }
+
+float ScalarField2::GetMaxVal() const {
+    float max = 0.0;
+	  for (int i = 0; i < nx*ny; i++) {
+		    float val = field[i];
+		    if (val > max)
+			    max = val;
+	  }
+    return max;
+}
