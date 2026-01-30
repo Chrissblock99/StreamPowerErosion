@@ -166,11 +166,6 @@ void GPU_SPE::SetUplift(const ScalarField2& uplift) const {
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &uplift.GetFloatData()[0]);
 
 	glUseProgram(0);
-
-	
-	//std::cout << "maxUplift: " << uplift.GetMaxVal() << std::endl;
-	//std::string fileName = "/tmp/uplift";
-	//uplift.Save(fileName.c_str());
 }
 
 GLuint GPU_SPE::GetData() const {
@@ -182,14 +177,6 @@ void GPU_SPE::GetData(ScalarField2& sf) {
 
 	for (int i = 0; i < totalBufferSize; i++)
 		sf[i] = double(tmpData[i]);
-
-	//std::cout << "maxHeight: " << sf.GetMaxVal() << std::endl;
-	//std::string fileName = "/tmp/height";
-	//sf.Save(fileName.c_str());
-
-	/*double low, high;
-	sf.GetRange(low, high);
-	std::cout << low << " " << high << std::endl;*/
 }
 
 void GPU_SPE::GetData(ScalarField2& sf, ScalarField2& sa) {
@@ -205,6 +192,44 @@ void GPU_SPE::GetData(ScalarField2& sf, ScalarField2& sa) {
 
 	/*double low, high;
 	sa.GetRange(low, high);
+	std::cout << low << " " << high << std::endl;*/
+}
+
+void GPU_SPE::outputData() {
+	ScalarField2 data = ScalarField2(Box2(Vector2::Null, 150 * 1000), 256, 256, 0);
+
+	glGetTextureSubImage(streamTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
+
+	for (int i = 0; i < totalBufferSize; i++)
+		data[i] = sqrt(double(tmpData[i]) + 1.0);
+
+	std::string fileName = "/tmp/stream";
+	data.Save(fileName.c_str());
+
+
+
+	glGetTextureSubImage(upliftTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
+
+	for (int i = 0; i < totalBufferSize; i++)
+		data[i] = double(tmpData[i]);
+
+	//std::cout << "maxUplift: " << data.GetMaxVal() << std::endl;
+	fileName = "/tmp/uplift";
+	data.Save(fileName.c_str());
+
+
+
+	glGetTextureSubImage(bedrockTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
+
+	for (int i = 0; i < totalBufferSize; i++)
+		data[i] = double(tmpData[i]);
+
+	//std::cout << "maxHeight: " << data.GetMaxVal() << std::endl;
+	fileName = "/tmp/height";
+	data.Save(fileName.c_str());
+
+	/*double low, high;
+	data.GetRange(low, high);
 	std::cout << low << " " << high << std::endl;*/
 }
 
