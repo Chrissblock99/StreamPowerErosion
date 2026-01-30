@@ -127,6 +127,14 @@ static void GUI()
 			if (ImGui::Button("Reset Camera"))
 				ResetCamera();
 
+			ImGui::SameLine();
+			// Reset reset sim
+			if (ImGui::Button("Reset sim")) {
+				gpu_spe.resetSim();
+				if (output_data)
+					gpu_spe.outputData();
+			}
+
 			// Brushes
 			ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "CTRL + Left Click to draw mountains");
 			brushRadius, brushRadius_changed = ImGui::SliderFloat("radius", &brushRadius, 10, 100);

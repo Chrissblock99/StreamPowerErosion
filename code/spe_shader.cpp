@@ -195,6 +195,20 @@ void GPU_SPE::GetData(ScalarField2& sf, ScalarField2& sa) {
 	std::cout << low << " " << high << std::endl;*/
 }
 
+void GPU_SPE::resetSim() {
+	std::vector<float> tmpZeros(totalBufferSize, 0.);
+	ScalarField2 hf = ScalarField2(Box2(Vector2::Null, 150*1000), "../data/heightfields/hfTest2.png", 0.0, 1000.0);
+
+	tmpData.resize(totalBufferSize);
+	for (int i = 0; i < totalBufferSize; i++)
+		tmpData[i] = hf.at(i);
+
+	glBindTexture(GL_TEXTURE_2D, bedrockTexture);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpData.front());
+	glBindTexture(GL_TEXTURE_2D, streamTexture);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
+}
+
 void GPU_SPE::outputData() {
 	ScalarField2 data = ScalarField2(Box2(Vector2::Null, 150 * 1000), 256, 256, 0);
 
