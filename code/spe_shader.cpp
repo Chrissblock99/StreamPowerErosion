@@ -2,11 +2,11 @@
 
 
 GPU_SPE::~GPU_SPE() {
-	glDeleteBuffers(1, &bedrockTexture);
-	glDeleteBuffers(1, &tempBedrockTexture);
+	glDeleteTextures(1, &bedrockTexture);
+	glDeleteTextures(1, &tempBedrockTexture);
 
-	glDeleteBuffers(1, &streamTexture);
-	glDeleteBuffers(1, &tempStreamTexture);
+	glDeleteTextures(1, &streamTexture);
+	glDeleteTextures(1, &tempStreamTexture);
 
 	glDeleteTextures(1, &upliftTexture);
 
