@@ -26,11 +26,6 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_definitions(-DGLEW_STATIC)
 add_subdirectory(dependency/glfw EXCLUDE_FROM_ALL)
 add_subdirectory(dependency/glew EXCLUDE_FROM_ALL)
-include_directories(dependency/imgui)
-
-# imgui source files
-set(IMGUI_SRC_DIR dependency/imgui)
-aux_source_directory(${IMGUI_SRC_DIR} IMGUI_SRC_FILES)
 
 # Add dependencies
 find_package(OpenMP)
@@ -46,7 +41,6 @@ include_directories(${SRC_DIR})
 aux_source_directory(${SRC_DIR} SRC_FILES)
 if (WIN32)
 	add_executable(${DEMO} 
-		${IMGUI_SRC_FILES} 
 		${SRC_FILES}
 		${SRC_DIR}/mathematics.h
 		${SRC_DIR}/array2.h
@@ -65,14 +59,9 @@ if (WIN32)
 		${SRC_DIR}/stb_image.h
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/spe_shader.h
-		${IMGUI_SRC_DIR}/backends/imgui_impl_glfw.h
-		${IMGUI_SRC_DIR}/backends/imgui_impl_glfw.cpp
-		${IMGUI_SRC_DIR}/backends/imgui_impl_opengl3.h
-		${IMGUI_SRC_DIR}/backends/imgui_impl_opengl3.cpp
 	)
 else()
 	add_executable(${DEMO} 
-		${IMGUI_SRC_FILES} 
 		${SRC_FILES}
 		${SRC_DIR}/mathematics.h
 		${SRC_DIR}/array2.h
@@ -91,10 +80,6 @@ else()
 		${SRC_DIR}/stb_image.h
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/spe_shader.h
-		${IMGUI_SRC_DIR}/backends/imgui_impl_glfw.h
-		${IMGUI_SRC_DIR}/backends/imgui_impl_glfw.cpp
-		${IMGUI_SRC_DIR}/backends/imgui_impl_opengl3.h
-		${IMGUI_SRC_DIR}/backends/imgui_impl_opengl3.cpp
 	)
 endif()
 
@@ -116,5 +101,4 @@ endif()
 target_compile_definitions(
     ${DEMO} PUBLIC
     -DPATH_TO_SRC_DIRECTORY="${CMAKE_SOURCE_DIR}/"
-    -DIMGUI_IMPL_OPENGL_LOADER_GLFW
 )

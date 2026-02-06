@@ -21,7 +21,6 @@ public:
 	void SetWidget(TerrainRaytracingWidget* w);
 	bool Exit() const;
 	void Update();
-	void SetUICallback(void (*funPtr)());
 	bool GetKey(int key) const;
 	bool GetMousePressed(int mouse) const;
 	Vector2 GetMousePosition() const;

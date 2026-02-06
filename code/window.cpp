@@ -1,10 +1,6 @@
 #include "window.h"
 #include "terrainwidget.h"
 
-#include <imgui.h>
-#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_opengl3.h>
-
 /*!
 \brief Class for handling a window with GLFW3 library.
 */
@@ -65,12 +61,6 @@ Window::Window(const char* windowName, int w, int h)
 		return;
 	}
 
-	// Dear ImGui
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(windowPtr, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
 
 	glfwGetFramebufferSize(windowPtr, &width_internal, &height_internal);
 	glViewport(0, 0, width_internal, height_internal);
@@ -94,9 +84,6 @@ Window::Window(const char* windowName, int w, int h)
 Window::~Window()
 {
 	delete widget;
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 	glfwTerminate();
 }
 
@@ -118,27 +105,6 @@ void Window::SetWidget(TerrainRaytracingWidget* w)
 }
 
 /*!
-\brief Set the custom UI user callback, which is called in the Update function.
-\param funPtr user function pointer
-*/
-void Window::SetUICallback(void (*funPtr)())
-{
-	uiUserFunPtr = funPtr;
-}
-
-/*!
-\brief Returns true if the mouse is currently over a GUI item, false otherwise.
-*/
-bool Window::MouseOverGUI() const
-{
-	if (!ImGui::GetCurrentContext())
-		return false;
-	return ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)
-		|| ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)
-		|| ImGui::IsAnyItemHovered();
-}
-
-/*!
 \brief Base update function for each frame.
 */
 void Window::Update()
@@ -149,17 +115,6 @@ void Window::Update()
 		widget->Update();
 		widget->paintGL();
 	}
-
-	// UI Rendering
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-	{
-		if (uiUserFunPtr)
-			uiUserFunPtr();
-	}
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// Swap buffers
 	glfwSwapBuffers(windowPtr);

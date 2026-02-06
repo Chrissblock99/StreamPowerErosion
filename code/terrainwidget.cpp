@@ -5,8 +5,6 @@
 #include "window.h"
 #include "texture.h"
 
-#include <imgui.h>
-
 /*!
 \class TerrainRaytracingWidget terrainwidget.h
 \brief %Heightfield rendering widget based on sphere-tracing. The API is done so as to mimick Qt6 QOpenGLWidget API as close as possible.
@@ -100,9 +98,6 @@ void TerrainRaytracingWidget::paintGL()
 */
 void TerrainRaytracingWidget::ScrollCallback(GLFWwindow* w, double x, double y)
 {
-	// Don't move the camera is the mouse is over the GUI
-	if (parent->MouseOverGUI())
-		return;
 	const double MoveScale = Norm(camera.View()) * 0.025;
 	if (y > 0)
 		camera.BackForth(MoveScale);
@@ -117,12 +112,6 @@ void TerrainRaytracingWidget::Update()
 {
 	// Don't move the camera is the mouse is over the GUI
 	Vector2 mousePos = parent->GetMousePosition();
-	if (parent->MouseOverGUI())
-	{
-		x0 = mousePos[0];
-		y0 = mousePos[1];
-		return;
-	}
 
 	GLFWwindow* windowPtr = parent->getPointer();
 	const double MoveScale = Norm(camera.View()) * 0.015 * 0.05;
