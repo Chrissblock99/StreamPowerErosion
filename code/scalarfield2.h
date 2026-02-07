@@ -42,11 +42,6 @@ public:
   // Local editing
   void Gaussian(const Vector2&, const double&, const double&);
 
-  // Functions
-  void Normalize();
-  void Clamp(const double&, const double&);
-  void SetRange(const double&, const double&);
-
   friend std::ostream& operator<<(std::ostream&, const ScalarField2&);
   std::vector<double> GetData() const;
   std::vector<float> GetFloatData() const;
