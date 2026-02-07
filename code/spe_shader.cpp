@@ -142,18 +142,6 @@ void GPU_SPE::Step(int n) {
 	glUseProgram(0);
 }
 
-void GPU_SPE::SetDt(float dt) const {
-	glUseProgram(simulationShader);
-	glUniform1f(glGetUniformLocation(simulationShader, "dt"), dt);
-	glUseProgram(precalcShader);
-	glUniform1f(glGetUniformLocation(precalcShader, "dt"), dt);
-	glUseProgram(simulationShader2);
-	glUniform1f(glGetUniformLocation(simulationShader2, "dt"), dt);
-	glUseProgram(precalcShader2);
-	glUniform1f(glGetUniformLocation(precalcShader2, "dt"), dt);
-	glUseProgram(0);
-}
-
 void GPU_SPE::SetUplift(const ScalarField2& uplift) const {
 	glUseProgram(simulationShader);
 

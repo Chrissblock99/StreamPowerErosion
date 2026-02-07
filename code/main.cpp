@@ -18,7 +18,6 @@ static float brushStrength = 10.0;
 static bool brushStrength_changed = false;
 static bool ongoing_gpu_spe = true;
 static float delta_time = 100;
-static bool delta_time_changed = false;
 
 /*!
 \brief Compute the intersection between a plane and a ray.
@@ -87,9 +86,6 @@ int main()
 			}
 		}
 		if (ongoing_gpu_spe) {
-			// parameters changes
-			if (delta_time_changed) gpu_spe.SetDt(delta_time);
-
 			// simulation step
 			gpu_spe.Step(200);
 			gpu_spe.GetData(hf);

@@ -37,7 +37,6 @@ public:
 
 	void Init(const ScalarField2&);
 	void Step(int n);
-	void SetDt(float dt) const;
 
 	void SetUplift(const ScalarField2& uplift) const;
 	GLuint GetData() const;
