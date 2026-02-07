@@ -23,7 +23,6 @@ public:
   double Average() const;
 
   virtual Vector2 Gradient(int, int) const;
-  virtual double Value(int, int) const;
   virtual double K() const;
 
   // Access to elements
@@ -33,11 +32,6 @@ public:
   double& operator()(const Vec2I&);
   double at(int) const;
   double& operator[](int);
-
-  ScalarField2 SetResolution(int, int, bool = false) const;
-  virtual double Value(const Vector2&) const;
-
-  void Fill(const double&);
 
   // Local editing
   void Gaussian(const Vector2&, const double&, const double&);
