@@ -275,8 +275,6 @@ public:
   static bool SameSign(const double&, const double&, const double&);
   static double CopySign(const double&, const double&);
 
-  static long Binomial(int, int);
-
   static  double Unit(int, int);
 
   static double Gaussian(const double&, const double&);
@@ -288,9 +286,6 @@ public:
 
   static void Swap(double*&, double*&);
   static void Swap(int*&, int*&);
-
-  static void BernsteinSeries(const double&, int, double*);
-  static double Bernstein(const double&, int, int);
   
   static double LinearStep(const double& x, const double& a, const double& b);
   static double CubicSmooth(double x, double r);

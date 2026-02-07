@@ -92,25 +92,6 @@ const double Math::Sqrt2 = sqrt(2.0);
 
 const double Math::Golden = (sqrt(5.0) + 1.0) / 2.0;
 
-// B binomial coefficients up to 15
-int Math::binomials[16][16] = {
-  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 4, 6, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 5, 10, 10, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 6, 15, 20, 15, 6, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 7, 21, 35, 35, 21, 7, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 8, 28, 56, 70, 56, 28, 8, 1, 0, 0, 0, 0, 0, 0, 0 },
-  { 1, 9, 36, 84, 126, 126, 84, 36, 9, 1, 0, 0, 0, 0, 0, 0 },
-  { 1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1, 0, 0, 0, 0, 0 },
-  { 1, 11, 55, 165, 330, 462, 462, 330, 165, 55, 11, 1, 0, 0, 0, 0 },
-  { 1, 12, 66, 220, 495, 792, 924, 792, 495, 220, 66, 12, 1, 0, 0, 0 },
-  { 1, 13, 78, 286, 715, 1287, 1716, 1716, 1287, 715, 286, 78, 13, 1, 0, 0 },
-  { 1, 14, 91, 364, 1001, 2002, 3003, 3432, 3003, 2002, 1001, 364, 91, 14, 1, 0 },
-  { 1, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1 }
-};
 
 /*!
 \brief Sine wave over unit interval.
@@ -171,36 +152,6 @@ bool Math::IsFinite(double x)
   return (x <= Math::Infinity && x >= -Math::Infinity);
 }
 
-/*!
-\brief Calculate the %Binomial coefficent.
-\param n, r %Binomial coefficient parameters.
-*/
-long Math::Binomial(int n, int r)
-{
-  if (n < 0 || r<0 || r>n)
-  {
-    return 0;
-  }
-  else if (r == n)
-  {
-    return 1;
-  }
-  else if (r < 15 && n < 15)
-  {
-    return binomials[n][r];
-  }
-  else
-  {
-    long b = n;
-    for (int i = 1; i < r; i++)
-    {
-      b *= (n - i);
-      b /= (i + 1);
-    }
-
-    return b;
-  }
-}
 
 /*!
 \brief %Cubic Hermite interpolation.
@@ -345,54 +296,4 @@ Compute 1+x+x<SUP>2</SUP>+...+x<SUP>n-1</SUP>=(1-x<SUP>n</SUP>)/(1-x).
 double Math::Geometric(double x, int n)
 {
   return (1.0 - pow(x, double(n))) / (1.0 - x);
-}
-
-/*!
-\brief Compute the Bernstein terms.
-*/
-void Math::BernsteinSeries(const double& u, int n, double* b)
-{
-  static double ui[16];
-  static double umi[16];
-
-  Math::Powers(u, n, ui);
-  Math::Powers(1.0 - u, n, umi);
-
-  for (int i = 0; i < n; i++)
-  {
-    b[i] = Math::binomials[n - 1][i] * ui[i] * umi[n - 1 - i];
-  }
-}
-
-/*!
-\brief Compute the i-th Bernstein term.
-*/
-double Math::Bernstein(const double& u, int n, int i)
-{
-  if (n == 0)
-    return 1.0;
-
-  if (n == 1)
-  {
-    if (i == 0)
-    {
-      return u;
-    }
-    else if (i == n)
-    {
-      return 1.0 - u;
-    }
-  }
-
-  double ui = 1.0;
-  double uni = 1.0;
-  for (int k = 1; k <= i; k++)
-  {
-    ui *= u;
-  }
-  for (int k = 1; k <= n - i; k++)
-  {
-    uni *= 1.0 - u;
-  }
-  return Math::binomials[n - 1][i] * ui * uni;
 }
