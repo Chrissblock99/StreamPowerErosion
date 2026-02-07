@@ -17,7 +17,6 @@ static bool brushRadius_changed = false;
 static float brushStrength = 10.0;
 static bool brushStrength_changed = false;
 static bool ongoing_gpu_spe = true;
-static bool output_data = false;
 static float delta_time = 100;
 static bool delta_time_changed = false;
 
@@ -94,8 +93,6 @@ int main()
 			// simulation step
 			gpu_spe.Step(200);
 			gpu_spe.GetData(hf);
-			if (output_data)
-				gpu_spe.outputData();
 			widget->UpdateInternal();
 		}
 

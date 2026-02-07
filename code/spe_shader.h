@@ -43,8 +43,6 @@ public:
 	GLuint GetData() const;
 	void GetData(ScalarField2& sf);
 	void GetData(ScalarField2& sf, ScalarField2& sa);
-	void resetSim();
-	void outputData();
 };
 
 #endif
