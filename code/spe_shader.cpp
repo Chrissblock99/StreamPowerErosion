@@ -227,7 +227,6 @@ void GPU_SPE::outputData() {
 	for (int i = 0; i < totalBufferSize; i++)
 		data[i] = double(tmpData[i]);
 
-	//std::cout << "maxUplift: " << data.GetMaxVal() << std::endl;
 	fileName = "/tmp/uplift";
 	data.Save(fileName.c_str());
 
@@ -238,7 +237,6 @@ void GPU_SPE::outputData() {
 	for (int i = 0; i < totalBufferSize; i++)
 		data[i] = double(tmpData[i]);
 
-	//std::cout << "maxHeight: " << data.GetMaxVal() << std::endl;
 	fileName = "/tmp/height";
 	data.Save(fileName.c_str());
 

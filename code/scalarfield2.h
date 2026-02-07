@@ -59,7 +59,6 @@ public:
   friend std::ostream& operator<<(std::ostream&, const ScalarField2&);
   std::vector<double> GetData() const;
   std::vector<float> GetFloatData() const;
-  float GetMaxVal() const;
 };
 
 inline std::vector<double> ScalarField2::GetData() const
