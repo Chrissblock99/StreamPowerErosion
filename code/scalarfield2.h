@@ -54,7 +54,6 @@ public:
 
   // IO
   void Save(const char* filename) const;
-  Texture2D CreateImage() const;
 
   friend std::ostream& operator<<(std::ostream&, const ScalarField2&);
   std::vector<double> GetData() const;

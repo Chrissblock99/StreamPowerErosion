@@ -623,29 +623,6 @@ void ScalarField2::Save(const char* filename) const
     delete[] rawData;
 }
 
-Texture2D ScalarField2::CreateImage() const {
-    Color8 Cool(97, 130, 234, 255);
-    Color8 White(221, 221, 221, 255);
-    Color8 Warm(220, 94, 75, 255);
-
-    double low, high;
-    GetRange(low, high);
-    double norm_coeff = 1. / (high - low);
-    std::vector<Color8> colors(nx * ny, Color8());
-
-    for (int i = 0; i < nx * ny; i++) {
-        double u = norm_coeff * (field[i] - low);
-
-        if (u < 0.5) {
-            colors[i] = Color8::Lerp(u / 0.5, Cool, White);
-        } else {
-            colors[i] = Color8::Lerp((u - 0.5) / 0.5, White, Warm);
-        }
-    }
-
-    return Texture2D(colors, nx, ny);
-}
-
 std::vector<float> ScalarField2::GetFloatData() const {
     std::vector<float> res(nx * ny, 0);
     for (int i = 0; i < nx * ny; i++) res[i] = float(field[i]);
