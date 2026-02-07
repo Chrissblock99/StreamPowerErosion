@@ -11,13 +11,9 @@ static ScalarField2 uplift;
 static ScalarField2 gpu_drainage;
 static GPU_SPE gpu_spe;
 static Texture2D albedoTexture;
-static int shadingMode;
 static float brushRadius = 30;
-static bool brushRadius_changed = false;
 static float brushStrength = 10.0;
-static bool brushStrength_changed = false;
 static bool ongoing_gpu_spe = true;
-static float delta_time = 100;
 
 /*!
 \brief Compute the intersection between a plane and a ray.
@@ -73,7 +69,6 @@ int main()
 	while (!window->Exit()) {
 		// Heightfield editing
 		bool leftMouse = window->GetMousePressed(GLFW_MOUSE_BUTTON_LEFT);
-		bool rightMouse = window->GetMousePressed(GLFW_MOUSE_BUTTON_RIGHT);
 		if ((leftMouse) && window->GetKey(GLFW_KEY_LEFT_CONTROL)) {
 			Camera cam = widget->GetCamera();
 			double xpos, ypos;
