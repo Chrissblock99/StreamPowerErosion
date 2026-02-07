@@ -77,44 +77,6 @@ ScalarField2::~ScalarField2()
 }
 
 /*!
-\brief Get the integral of the scalar field.
-
-Compute the sum of all the elements and make the product by the area of small cell element.
-
-\sa Average()
-*/
-double ScalarField2::Integral() const
-{
-    double s = Average();
-
-    // Scale by the size of a cell element
-    s *= Box2(a, b).Area();
-
-    return s;
-}
-
-/*!
-\brief Compute the average value of the elements in the scalar field.
-
-\sa Integral()
-*/
-double ScalarField2::Average() const
-{
-  const int size = nx * ny; 
-  double s = 0.0;
-  // Process all elements
-
-  for (int i = 0; i < size; i++)
-  {
-    s += field.at(i);
-  }
-
-  // Scale by the size of a cell element
-  s /= size;
-  return s;
-}
-
-/*!
 \brief Get the range of the field.
 
 \param a,b Returned minimum and maximum.

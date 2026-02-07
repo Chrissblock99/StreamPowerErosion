@@ -19,8 +19,6 @@ public:
   ~ScalarField2();
 
   void GetRange(double&, double&) const;
-  double Integral() const;
-  double Average() const;
 
   virtual Vector2 Gradient(int, int) const;
   virtual double K() const;
