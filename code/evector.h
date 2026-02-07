@@ -68,7 +68,6 @@ public:
   // Norm
   friend double Norm(const Vector&);
   friend double SquaredNorm(const Vector&);
-  friend double NormInfinity(const Vector&);
 
   double Max() const;
   int MaxIndex() const;
@@ -392,28 +391,7 @@ inline Vector Vector::Floor() const
 }
 
 /*!
-\brief Compute the norm infinity of a vector.
-
-\sa Max
-\param u %Vector.
-*/
-inline double NormInfinity(const Vector& u)
-{
-  return Math::Max(fabs(u.c[0]), fabs(u.c[1]), fabs(u.c[2]));
-}
-
-/*!
 \brief Compute the maximum component of a vector.
-
-Note that this function is not the same as NormInfinity which computes
-the maximum of the absolute values of components. The codes are equivalent:
-\code
-Vector a(-1.0,-3.0,2.0);
-double s=NormInfinity(a);
-double t=Max(Abs(a));
-\endcode
-
-\sa NormInfinity
 */
 inline double Vector::Max() const
 {
@@ -627,7 +605,6 @@ public:
   // Norm
   friend double Norm(const Vector2&);
   friend double SquaredNorm(const Vector2&);
-  friend double NormInfinity(const Vector2&);
 
   double Max() const;
 
@@ -917,15 +894,6 @@ inline Vector2 Normalized(const Vector2& u)
 }
 
 /*!
-\brief Compute the infinity norm of a vector.
-\sa Norm, SquaredNorm
-*/
-inline double NormInfinity(const Vector2& u)
-{
-  return Math::Max(fabs(u.c[0]), fabs(u.c[1]));
-}
-
-/*!
 \brief Computes the absolute value of a vector.
 */
 inline Vector2 Abs(const Vector2& u)
@@ -934,9 +902,7 @@ inline Vector2 Abs(const Vector2& u)
 }
 
 /*!
-\brief Compute the maximum component of a vector.
-
-\sa NormInfinity
+\brief Compute the maximum component of a vector
 */
 inline double Vector2::Max() const
 {

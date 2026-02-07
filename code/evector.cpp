@@ -72,15 +72,6 @@ bool Vector::Coplanar(const Vector& a, const Vector& b, const Vector& c, const d
 
 /*!
 \brief Test if two vectors are almost equal.
-
-This function computes the difference between the two argument vectors, then the norm
-infinity of this difference and check the result againt the epsilon threshold value.
-This is a convenience function which is the same as:
-\code
-Vector a,b; // Two vectors
-double e; // Epsilon value
-bool e=NormInfinity(Abs(b-a))<e?true:false;
-\endcode
 */
 bool Vector::Equal(const Vector& a, const Vector& b, const double& epsilon)
 {
