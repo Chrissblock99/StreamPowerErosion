@@ -41,19 +41,11 @@ public:
 
   // Local editing
   void Gaussian(const Vector2&, const double&, const double&);
-  void Smooth();
-  void Smooth(int);
-  double SmoothPoint(int, int) const;
 
   // Functions
   void Normalize();
   void Clamp(const double&, const double&);
   void SetRange(const double&, const double&);
-  void Sqrt();
-  ScalarField2 Sqrted() const;
-
-  // IO
-  void Save(const char* filename) const;
 
   friend std::ostream& operator<<(std::ostream&, const ScalarField2&);
   std::vector<double> GetData() const;
