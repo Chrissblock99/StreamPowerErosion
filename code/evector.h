@@ -125,7 +125,6 @@ public:
   double Angle(const Vector&) const;
 
   Vector Fract() const;
-  Vector Floor() const;
 
   static Vector Solve(const Vector&, const Vector&, const double&, const double&);
 
@@ -379,15 +378,6 @@ inline Vector Normalized(const Vector& u)
 inline Vector Vector::Fract() const
 {
   return Vector(Math::Fract(c[0]), Math::Fract(c[1]), Math::Fract(c[2]));
-}
-
-/*!
-\brief Compute the numerator part of the coordinates.
-\sa Math::Floor
-*/
-inline Vector Vector::Floor() const
-{
-  return Vector(Math::Floor(c[0]), Math::Floor(c[1]), Math::Floor(c[2]));
 }
 
 /*!
@@ -663,7 +653,6 @@ public:
   static Vector2 Solve(const Vector2&, const Vector2&, const double&, const double&);
   static bool Clockwise(const Vector2&, const Vector2&, const Vector2&);
 
-  Vector2 Floor() const;
   Vector2 Fract() const;
 
 public:
@@ -1088,15 +1077,6 @@ This function inverses the components of the vector.
 inline Vector2 Vector2::Inverse() const
 {
   return Vector2(1.0 / c[0], 1.0 / c[1]);
-}
-
-/*!
-\brief Compute the numerator part of the coordinates.
-\sa Math::Floor
-*/
-inline Vector2 Vector2::Floor() const
-{
-  return Vector2(Math::Floor(c[0]), Math::Floor(c[1]));
 }
 
 /*!
