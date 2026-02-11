@@ -35,16 +35,16 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	std::vector<float> tmpZeros(totalBufferSize, 0.);
 
 	// Prepare shader & Init buffer - Just done once
-	std::string fullPath = "./data/shaders/spe_shader.glsl";
+	std::string fullPath = "./data/shaders/spe_shader.comp";
 	simulationShader = read_program(fullPath.c_str());
 
-	std::string fullPathPrecalc = "./data/shaders/spe_shader_precalc.glsl";
+	std::string fullPathPrecalc = "./data/shaders/spe_shader_precalc.comp";
 	precalcShader = read_program(fullPathPrecalc.c_str());
 
-	std::string fullPath2 = "./data/shaders/spe_shader2.glsl";
+	std::string fullPath2 = "./data/shaders/spe_shader2.comp";
 	simulationShader2 = read_program(fullPath2.c_str());
 
-	std::string fullPathPrecalc2 = "./data/shaders/spe_shader_precalc2.glsl";
+	std::string fullPathPrecalc2 = "./data/shaders/spe_shader_precalc2.comp";
 	precalcShader2 = read_program(fullPathPrecalc2.c_str());
 
 	if (bedrockTexture == 0) glGenTextures(1, &bedrockTexture);
