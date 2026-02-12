@@ -18,8 +18,6 @@ public:
   //! Empty
   ~ScalarField2();
 
-  virtual Vector2 Gradient(int, int) const;
-
   // Access to elements
   double at(int, int) const;
   double at(const Vec2I&) const;

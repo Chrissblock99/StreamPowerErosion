@@ -76,46 +76,6 @@ ScalarField2::~ScalarField2()
 {
 }
 
-/*!
-\brief Compute the gradient at a given array vertex.
-
-\param i,j Integer coordinates of the array vertex.
-*/
-Vector2 ScalarField2::Gradient(int i, int j) const
-{
-  Vector2 n;
-
-  // Gradient along x axis
-  if (i == 0)
-  {
-    n[0] = (at(i + 1, j) - at(i, j)) * inversecelldiagonal[0];
-  }
-  else if (i == nx - 1)
-  {
-    n[0] = (at(i, j) - at(i - 1, j)) * inversecelldiagonal[0];
-  }
-  else
-  {
-    n[0] = (at(i + 1, j) - at(i - 1, j)) * 0.5 * inversecelldiagonal[0];
-  }
-
-  // Gradient along y axis
-  if (j == 0)
-  {
-    n[1] = (at(i, j + 1) - at(i, j)) * inversecelldiagonal[1];
-  }
-  else if (j == ny - 1)
-  {
-    n[1] = (at(i, j) - at(i, j - 1)) * inversecelldiagonal[1];
-  }
-  else
-  {
-    n[1] = (at(i, j + 1) - at(i, j - 1)) * 0.5 * inversecelldiagonal[1];
-  }
-
-  return n;
-}
-
 std::vector<float> ScalarField2::GetFloatData() const {
     std::vector<float> res(nx * ny, 0);
     for (int i = 0; i < nx * ny; i++) res[i] = float(field[i]);
