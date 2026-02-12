@@ -56,15 +56,8 @@ public:
   constexpr int VertexIndex(int, int) const;
   int VertexIndex(const Vec2I&) const;
 
-  Vec2I Next(const Vec2I&, int) const;
   void ClampVertexIndex(int&, int&) const;
   
-protected:
-  constexpr void InverseVertexIndex(int, int&, int&) const;
-  Vec2I InverseVertexIndex(int) const;
-  
-public:
-  static Vec2I codeToDir(int);
 protected:
   static const Vec2I next[8]; //!< Array of points in the 1-ring neighborhood.
   static const double length[8]; //!< Length to the i-th neighbor.
@@ -179,26 +172,6 @@ inline int Array2::VertexIndex(const Vec2I& p) const
 }
 
 /*!
-\brief Compute the coordinates of a given cell.
-\param c Index of the cell.
-\param i,j Integer coordinates of the cell.
-*/
-inline constexpr void Array2::InverseVertexIndex(int c, int& i, int& j) const
-{
-  i = c % nx;
-  j = c / nx;
-}
-
-/*!
-\brief Compute the coordinates of a given cell.
-\param c Index of the cell.
-*/
-inline Vec2I Array2::InverseVertexIndex(int c) const
-{
-  return Vec2I(c % nx, c / nx);
-}
-
-/*!
 \brief Check if the indexes are within range.
 \param i,j Integer coordinates of the vertex.
 */
@@ -273,14 +246,4 @@ inline void Array2::ClampVertexIndex(int& i, int& j) const
   if (i > nx - 1) { i = nx - 1; }
   if (j < 0) { j = 0; }
   if (j > nx - 1) { j = nx - 1; }
-}
-
-/*!
-\brief Compute the point next to another one.
-\param p Point.
-\param n Next neighbor, should be in [0,7].
-*/
-inline Vec2I Array2::Next(const Vec2I& p, int n) const
-{
-  return p + next[n];
 }
