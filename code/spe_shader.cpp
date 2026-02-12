@@ -177,8 +177,4 @@ void GPU_SPE::GetData(ScalarField2& sf, ScalarField2& sa) {
 
 	for (int i = 0; i < totalBufferSize; i++)
 		sa[i] = double(tmpData[i]);
-
-	/*double low, high;
-	sa.GetRange(low, high);
-	std::cout << low << " " << high << std::endl;*/
 }

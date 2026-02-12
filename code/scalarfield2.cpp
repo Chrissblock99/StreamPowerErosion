@@ -77,38 +77,6 @@ ScalarField2::~ScalarField2()
 }
 
 /*!
-\brief Get the range of the field.
-
-\param a,b Returned minimum and maximum.
-*/
-void ScalarField2::GetRange(double& a, double& b) const
-{
-  const int size = nx * ny;
-  // Escape
-  if (size == 0)
-  {
-    a = b = 0.0;
-    return;
-  }
-
-  a = field.at(0);
-  b = a;
-  
-  for (int i = 1; i < field.size(); i++)
-  {
-    double x = field.at(i);
-    if (x < a)
-    {
-    a = x;
-    }
-    else if (x > b)
-    {
-    b = x;
-    }
-  }
-}
-
-/*!
 \brief Compute the gradient at a given array vertex.
 
 \param i,j Integer coordinates of the array vertex.

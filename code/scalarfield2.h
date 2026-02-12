@@ -18,8 +18,6 @@ public:
   //! Empty
   ~ScalarField2();
 
-  void GetRange(double&, double&) const;
-
   virtual Vector2 Gradient(int, int) const;
   virtual double K() const;
 
