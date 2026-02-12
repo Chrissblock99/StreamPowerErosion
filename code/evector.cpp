@@ -55,20 +55,6 @@ const Vector Vector::X = Vector(1.0, 0.0, 0.0);
 const Vector Vector::Y = Vector(0.0, 1.0, 0.0);
 const Vector Vector::Z = Vector(0.0, 0.0, 1.0);
 
-/*!
-\brief Check if three vectors are coplanar.
-
-Simply compute the cross product of a and b, and the dot product with c.
-Compare the result with a given tolerance.
-
-\param a,b,c Vectors.
-\param epsilon Tolerance parameter.
-*/
-bool Vector::Coplanar(const Vector& a, const Vector& b, const Vector& c, const double& epsilon)
-{
-  double s = Math::Sqr((a / b) * c) / (SquaredNorm(a) * SquaredNorm(b) * SquaredNorm(c));
-  return (s < epsilon* epsilon);
-}
 
 /*!
 \brief Test if two vectors are almost equal.
@@ -116,19 +102,6 @@ double Cosine(const Vector& u, const Vector& v)
 }
 
 /*!
-\brief Check if two vectors are aligned.
-
-Computes the cosine of the two vectors, and checks for unity.
-\param u, v Vectors.
-*/
-int Aligned(const Vector& u, const Vector& v)
-{
-  double c = Cosine(u, v);
-  c *= c;
-  return (c > (1.0 - 0.0001));
-}
-
-/*!
 \brief Swap two vectors.
 \param a, b Vectors.
 */
@@ -151,76 +124,6 @@ void Swap(Vector*& a, Vector*& b)
 }
 
 /*!
-\brief Check if four points are coplanar.
-\param a,b,c,d Four points.
-\param epsilon Tolerance parameter.
-*/
-bool Vector::Coplanar(const Vector& a, const Vector& b, const Vector& c, const Vector& d, const double& epsilon)
-{
-  return Coplanar(b - a, c - a, d - a, epsilon);
-}
-
-/*!
-\brief Returns a vector orthogonal to the argument vector.
-
-The returned orthogonal vector is not computed randomly.
-First, we find the two coordinates of the argument vector with
-maximum absolute value. The orthogonal vector is defined by
-swapping those two coordinates and changing one sign, whereas
-the third coordinate is set to 0.
-
-The returned orthogonal vector lies in the plane orthogonal
-to the first vector.
-*/
-Vector Vector::Orthogonal() const
-{
-  Vector a = Abs(*this);
-  int i = 0;
-  int j = 1;
-  if (a[0] > a[1])
-  {
-    if (a[2] > a[1])
-    {
-      j = 2;
-    }
-  }
-  else
-  {
-    i = 1;
-    j = 2;
-    if (a[0] > a[2])
-    {
-      j = 0;
-    }
-  }
-  a = Vector::Null;
-  a[i] = c[j];
-  a[j] = -c[i];
-  return a;
-}
-
-/*!
-\brief Computes two random orthonormal vectors to the argument vector.
-
-This function is expensive as it requires the computation
-of normalized vectors and the evaluation of a random number.
-
-\param i,j Orthonormal vectors.
-*/
-void Vector::RandomOrthonormal(Vector& i, Vector& j) const
-{
-  Vector x, y;
-  Orthonormal(x, y);
-
-  double r = Random::R239.Uniform(2.0 * Math::Pi);
-  double c = cos(r);
-  double s = sin(r);
-
-  i = c * x + s * y;
-  j = -s * x + c * y;
-}
-
-/*!
 \brief Overloaded output-stream operator.
 \param u Vector.
 \param s Stream.
@@ -229,18 +132,6 @@ std::ostream& operator<<(std::ostream& s, const Vector& u)
 {
   s << "Vector(" << u.c[0] << ',' << u.c[1] << ',' << u.c[2] << ')';
   return s;
-}
-
-/*!
-\brief Given a vector, creates two vectors xand y that form an orthogonal basis.
-
-This algorithm pickes the minor axis in order to reduce numerical instability
-\param x, y Returned vectors such that (x,y,n) form an orthonormal basis (provided n is normalized).
-*/
-void Vector::Orthonormal(Vector& x, Vector& y) const
-{
-  x = Normalized(Orthogonal());
-  y = Normalized(*this / x);
 }
 
 /*!

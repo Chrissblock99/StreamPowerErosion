@@ -88,18 +88,10 @@ public:
   // Abs
   friend Vector Abs(const Vector&);
 
-  // Orthogonal and orthonormal vectors
-  Vector Orthogonal() const;
-  void RandomOrthonormal(Vector&, Vector&) const;
-  void Orthonormal(Vector&, Vector&) const;
-
   // Swap
   friend void Swap(Vector&, Vector&);
   friend void Swap(Vector*&, Vector*&);
 
-  friend int Aligned(const Vector&, const Vector&);
-  static bool Coplanar(const Vector&, const Vector&, const Vector&, const double& = 1.0e-6);
-  static bool Coplanar(const Vector&, const Vector&, const Vector&, const Vector&, const double& = 1.0e-6);
   friend Vector Clamp(const Vector&, const Vector&, const Vector&);
   friend Vector Lerp(const Vector&, const Vector&, const double&);
   static Vector Bilinear(const Vector&, const Vector&, const Vector&, const Vector&, const double&, const double&);
@@ -540,8 +532,6 @@ public:
   double& operator[] (int);
   constexpr double operator[] (int) const;
 
-  Vector2 Orthogonal() const;
-
   // Unary operators
   Vector2 operator+ () const;
   Vector2 operator- () const;
@@ -951,14 +941,6 @@ inline void Vector2::Scale(const Vector2& a)
 {
   c[0] *= a[0];
   c[1] *= a[1];
-}
-
-/*!
-\brief Returns a direct orthogonal vector.
-*/
-inline Vector2 Vector2::Orthogonal() const
-{
-  return Vector2(-c[1], c[0]);
 }
 
 /*!
