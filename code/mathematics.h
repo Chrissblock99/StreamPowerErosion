@@ -195,9 +195,6 @@ public:
   static bool InRange(const double&, const double&, const double&, const double&);
   static int Integer(const double&);
 
-  static bool IsNumber(double);
-  static bool IsFinite(double);
-
   // Signs
   static int IntegerSign(const double&, const double& = 0.0);
   static bool SameSign(const double&, const double&);
@@ -205,10 +202,6 @@ public:
   static double CopySign(const double&, const double&);
 
   static  double Unit(int, int);
-
-  static double Gaussian(const double&, const double&);
-
-  static double Geometric(double, int);
 };
 
 /*!
@@ -359,16 +352,6 @@ inline int Math::IntegerSign(const double& x, const double& t)
   {
     return 0;
   }
-}
-
-/*!
-\brief Gaussian.
-\param x Real.
-\param s Sigma.
-*/
-inline double Math::Gaussian(const double& x, const double& s)
-{
-  return exp(-(x * x) / (s * s));
 }
 
 #endif

@@ -126,37 +126,3 @@ double Math::Triangle(const double& x)
     return (2.0 * offset);
   }
 }
-
-/*!
-\brief Check if a real number is not NaN.
-
-The code is simply:
-\code
-return (x == x);
-\endcode
-This looks like it should always be true, but it's false if x is a NaN.
-\param x Real value.
-*/
-bool Math::IsNumber(double x)
-{
-  return (x == x);
-}
-
-/*!
-\brief Check if a real is not infinite.
-\param x Real value.
-*/
-bool Math::IsFinite(double x)
-{
-  return (x <= Math::Infinity && x >= -Math::Infinity);
-}
-
-/*!
-\brief Compute the sum of the terms of a geometric series.
-
-Compute 1+x+x<SUP>2</SUP>+...+x<SUP>n-1</SUP>=(1-x<SUP>n</SUP>)/(1-x).
-*/
-double Math::Geometric(double x, int n)
-{
-  return (1.0 - pow(x, double(n))) / (1.0 - x);
-}
