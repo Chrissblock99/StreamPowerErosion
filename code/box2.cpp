@@ -61,55 +61,6 @@ std::ostream& operator<<(std::ostream& s, const Box2& box)
 }
 
 /*!
-\brief Inflates a box so that its dimensions should be a fraction of its maximum side length.
-
-\param n Fraction.
-\param x,y Two integers.
-*/
-void Box2::SetParallelepipedic(int n, int& x, int& y)
-{
-  // Diagonal
-  Vector2 d = (b - a);
-
-  // Maximum side length
-  double e = Math::Max(d[0], d[1]);
-
-  double size = e / n;
-
-  SetParallelepipedic(size, x, y);
-}
-
-/*!
-\brief Creates a parallelepipedic box whose dimensions are integer
-multiples of a given input reference size.
-
-\param size Reference size, the dimension of the box will be a multiple of this size.
-\param x,y Two integers.
-*/
-void Box2::SetParallelepipedic(const double& size, int& x, int& y)
-{
-  // Diagonal
-  Vector2 d = (b - a);
-
-  // Integer sizes
-  // Bug tracking: adding 0.99 avoids keeping track of which indexes are the maxima 
-  x = int(d[0] / size + 0.99);
-  y = int(d[1] / size + 0.99);
-
-  // Expand if necessary
-  if (x == 0) { x++; }
-  if (y == 0) { y++; }
-
-  // Center
-  Vector2 c = 0.5 * (a + b);
-
-  // Diagonal
-  Vector2 e = Vector2(x, y) * size / 2.0;
-  a = c - e;
-  b = c + e;
-}
-
-/*!
 \brief Compute the coordinates of a grid aligned point.
 
 This function computes the coordinates of a point inside the box as if the box was decomposed into a regular grid.

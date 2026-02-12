@@ -32,9 +32,6 @@ public:
   void Extend(const Vector2&);
   Box2 Extended(const double&) const;
 
-  void SetParallelepipedic(int, int&, int&);
-  void SetParallelepipedic(const double&, int&, int&);
-
   friend std::ostream& operator<<(std::ostream&, const Box2&);
 
 public:
