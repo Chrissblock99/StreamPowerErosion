@@ -175,14 +175,6 @@ public:
   static int binomials[16][16]; //!< %Array of binomial coefficients.
 public:
 
-  // Squares
-  static double Sqr(const double&);
-  static  double Cube(const double&);
-  static double Sqr4(const double&);
-  static double SymmetricSqr(const double&);
-  static double Pow(const double&, const double&);
-  static double Sqrt32(const double&);
-
   // Angles
   static  double DegreeToRadian(const double&);
   static  double RadianToDegree(const double&);
@@ -254,62 +246,6 @@ inline bool Math::InRange(const double& x, const double& a, const double& b, con
 }
 
 /*!
-\brief Squares a double value.
-\sa Math::SymmetricSqr
-\param x Real value.
-*/
-inline double Math::Sqr(const double& x)
-{
-  return x * x;
-}
-
-/*!
-\brief Compute x<SUP>3/2</SUP> as the square root of x<SUP>3</SUP>.
-
-This function is more efficient than pow() which is extremely slow.
-\code
-double y=Math::Sqrt32(7.0); // Equivalent but faster than y=pow(7.0,1.5);
-\endcode
-\param x Real value.
-*/
-inline double Math::Sqrt32(const double& x)
-{
-  return sqrt(x * x * x);
-}
-
-/*!
-\brief Cubes a double value.
-\param x Real value.
-*/
-inline  double Math::Cube(const double& x)
-{
-  return x * x * x;
-}
-
-/*!
-\brief Fourth power of a double value.
-\param x Real value.
-*/
-inline double Math::Sqr4(const double& x)
-{
-  double y = x * x;
-  return y * y;
-}
-
-/*!
-\brief Symmetric of square function over unit interval.
-
-Simply compute 1-(1-x)<SUP>2</SUP>.
-\image html mathquadrics.png
-\sa Math::Sqr
-\param x Real value.
-*/
-inline double Math::SymmetricSqr(const double& x)
-{
-  return 1.0 - Math::Sqr(1.0 - x);
-}
-
-/*!
 \brief Linear interpolation.
 
 Returns (1-t)a+tb.
@@ -331,30 +267,6 @@ This function handles negative values differently by subtracting 1 from the resu
 inline int Math::Integer(const double& x)
 {
   return (x > 0.0 ? int(x) : int(x) - 1);
-}
-
-/*!
-\brief Power.
-
-Returns base x raised to the power exponent e if x>0, and -x raised to the power exponent e otherwise.
-
-\param x Base.
-\param e Exponent.
-*/
-inline double Math::Pow(const double& x, const double& e)
-{
-  if (x == 0.0)
-  {
-    return 0.0;
-  }
-  else if (x > 0.0)
-  {
-    return pow(x, e);
-  }
-  else
-  {
-    return -pow(-x, e);
-  }
 }
 
 /*!
