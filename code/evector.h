@@ -83,18 +83,12 @@ public:
 
   friend Vector Clamp(const Vector&, const Vector&, const Vector&);
   friend Vector Lerp(const Vector&, const Vector&, const double&);
-  static Vector Bilinear(const Vector&, const Vector&, const Vector&, const Vector&, const double&, const double&);
-  static Vector Trilinear(const Vector&, const Vector&, const Vector&, const Vector&, const Vector&, const Vector&, const Vector&, const Vector&, const double&, const double&, const double&);
 
   static double Slope(const Vector&, const Vector&);
-
-  // Classification
-  int Octant(const Vector&) const;
 
   // Scale
   Vector Scaled(const Vector&) const;
   Vector Inverse() const;
-  Vector Sort() const;
 
   friend std::ostream& operator<<(std::ostream&, const Vector&);
 
@@ -466,21 +460,6 @@ inline Vector Vector::Polar(const double& t, const double& p)
 }
 
 /*!
-\brief Bi-linear interpolation between four vectors.
-
-The values are given in trigonometric order.
-
-\param a00,a10,a11,a01 Interpolated vectors.
-\param u,v Interpolation coefficients.
-
-\sa Math::Bilinear
-*/
-inline Vector Vector::Bilinear(const Vector& a00, const Vector& a10, const Vector& a11, const Vector& a01, const double& u, const double& v)
-{
-  return (1 - u) * (1 - v) * a00 + (1 - u) * (v)*a01 + (u) * (1 - v) * a10 + (u) * (v)*a11;
-}
-
-/*!
 \brief Compute the vertical slope between two vectors.
 
 This is a convenience function.
@@ -580,7 +559,6 @@ public:
 
   friend Vector2 Clamp(const Vector2&, const Vector2&, const Vector2&);
   static Vector2 Lerp(const Vector2&, const Vector2&, const double&);
-  static Vector2 Bilinear(const Vector2&, const Vector2&, const Vector2&, const Vector2&, const double&, const double&);
 
   // Position of a point
   friend double WhichSide(const Vector2&, const Vector2&, const Vector2&);
@@ -591,7 +569,6 @@ public:
 
   Vector2 Scaled(const Vector2&) const;
   void Scale(const Vector2&);
-  Vector2 Sort() const;
 
   static Vector2 Polar(const double&);
 
@@ -969,21 +946,6 @@ inline bool IsRight(const Vector2& p, const Vector2& a, const Vector2& b)
 inline Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, const double& t)
 {
   return a + t * (b - a);
-}
-
-/*!
-\brief Bi-linear interpolation between four vectors.
-
-The vectors are given in trigonometric order.
-
-\param a00,a10,a11,a01 Interpolated vectors.
-\param u,v Interpolation coefficients.
-
-\sa Math::Bilinear
-*/
-inline Vector2 Vector2::Bilinear(const Vector2& a00, const Vector2& a10, const Vector2& a11, const Vector2& a01, const double& u, const double& v)
-{
-  return (1 - u) * (1 - v) * a00 + (1 - u) * (v)*a01 + (u) * (1 - v) * a10 + (u) * (v)*a11;
 }
 
 /*!

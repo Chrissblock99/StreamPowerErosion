@@ -28,20 +28,3 @@ std::ostream& operator<<(std::ostream& s, const Vector2& u)
     s << "Vector2(" << u.c[0] << ',' << u.c[1] << ')';
     return s;
 }
-
-/*!
-\brief Sort the terms of the vector into ascending order.
-*/
-Vector2 Vector2::Sort() const
-{
-    // 0 > 1
-    if (c[0] > c[1])
-    {
-        return Vector2(c[1], c[0]);
-    }
-    // 1 > 0
-    else
-    {
-        return *this;
-    }
-}

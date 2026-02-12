@@ -26,8 +26,6 @@ public:
   int CellSizeY() const;
   Vector2 CellCenter(int, int) const;
 
-  Box2 Cell(int i, int j) const;
-  Box2 Cell(int c) const;
   Box2 GetBox() const;
   Vector2 CellDiagonal() const;
 

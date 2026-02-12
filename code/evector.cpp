@@ -31,16 +31,6 @@ or use the member function of the Triangle class:
 \code
 Vector n=Triangle(a,b,c).Normal(); // Compute the normal
 \endcode
-<P><I>How can I sort the three elements in a vector?</I>
-<BR>Use Vector::Sort() as follows:
-\code
-Vector s=Vector(2.0,3.0,-1.0).Sort(); // Sort components in ascending order
-\endcode
-
-<P><I>How do I perform bi-linear interpolation on vectors?</I>
-<BR>Use Vector::Bilinear() with four vectors and bilinear coordinates.
-Alternatively, some geometric classes implement bilinear interpolation,
-such as Quadrangle::Vertex().
 
 \ingroup MathGroup
 */
@@ -61,80 +51,3 @@ std::ostream& operator<<(std::ostream& s, const Vector& u)
   s << "Vector(" << u.c[0] << ',' << u.c[1] << ',' << u.c[2] << ')';
   return s;
 }
-
-/*!
-\brief Computes octant index of a vector with respect to the vector object.
-
-\sa Box::Octant(const Vector&)
-\param p %Vector.
-*/
-int Vector::Octant(const Vector& p) const
-{
-  return ((p[0] < c[0]) ? 0 : 1) | ((p[1] < c[1]) ? 0 : 2) | ((p[2] < c[2]) ? 0 : 4);
-}
-
-/*!
-\brief Sort the terms of the vector into ascending order.
-*/
-Vector Vector::Sort() const
-{
-  // 0 > 1
-  if (c[0] > c[1])
-  {
-    // 0 > {1,2}
-    if (c[0] > c[2])
-    {
-      // 0 > 1 > 2
-      if (c[1] > c[2])
-      {
-        return Vector(c[0], c[1], c[2]);
-      }
-      // 0 > 2 > 1
-      else
-      {
-        return Vector(c[0], c[2], c[1]);
-      }
-    }
-    // 0 > 1 && 2 > 0 so 2 > 0 > 1
-    else
-    {
-      return Vector(c[2], c[0], c[1]);
-    }
-  }
-  // 1 > 0
-  else
-  {
-    // 1 > {0,2}
-    if (c[1] > c[2])
-    {
-      // 1 > 0 > 2
-      if (c[0] > c[2])
-      {
-        return Vector(c[1], c[0], c[2]);
-      }
-      // 1 > 2 > 0
-      else
-      {
-        return Vector(c[1], c[2], c[0]);
-      }
-    }
-    // 1 > 0 && 2 > 1 so 2 > 1 > 0
-    else
-    {
-      return Vector(c[2], c[1], c[0]);
-    }
-  }
-}
-
-/*!
-\brief Trilinear interpolation between eight vectors.
-
-\sa Math::Bilinear()
-\param a,b,c,d,e,f,g,h Interpolated values.
-\param u,v,w Interpolation coefficients.
-*/
-Vector Vector::Trilinear(const Vector& a, const Vector& b, const Vector& c, const Vector& d, const Vector& e, const Vector& f, const Vector& g, const Vector& h, const double& u, const double& v, const double& w)
-{
-  return (1 - w) * Vector::Bilinear(a, b, c, d, u, v) + w * Vector::Bilinear(e, f, g, h, u, v);
-}
-

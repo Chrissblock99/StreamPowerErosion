@@ -233,8 +233,6 @@ public:
 
   // Linear interpolation
   static double Lerp(const double&, const double&, const double&);
-  static double Bilinear(const double&, const double&, const double&, const double&, const double&, const double&);
-  static double Trilinear(const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&);
 
   // Cubic interpolation
   static double Cubic(const double&, const double&, const double&, const double&, const double&);
@@ -255,8 +253,6 @@ public:
 
   static bool InRange(const double&, const double&, const double&, const double&);
   static int Integer(const double&);
-  static void Sort(double&, double&);
-  static void Sort(double&, double&, double&);
 
   static bool IsNumber(double);
   static bool IsFinite(double);
@@ -299,32 +295,6 @@ inline double Math::CubicSmooth(double x, double r)
 inline bool Math::InRange(const double& x, const double& a, const double& b, const double& epsilon)
 {
   return ((x + epsilon) >= a) && ((x - epsilon) <= b);
-}
-
-/*!
-\brief Bi-linear interpolation between four values.
-
-The values are given in trigonometric order.
-
-\image html bilinear.png
-\param a00, a10, a11, a01 Interpolated values.
-\param u,v Interpolation coefficients.
-*/
-inline double Math::Bilinear(const double& a00, const double& a10, const double& a11, const double& a01, const double& u, const double& v)
-{
-  return (1 - u) * (1 - v) * a00 + (1 - u) * (v)*a01 + (u) * (1 - v) * a10 + (u) * (v)*a11;
-}
-
-/*!
-\brief Trilinear interpolation between eight values.
-
-\sa Math::Bilinear()
-\param a,b,c,d,e,f,g,h Interpolated values.
-\param u,v,w Interpolation coefficients.
-*/
-inline double Math::Trilinear(const double& a, const double& b, const double& c, const double& d, const double& e, const double& f, const double& g, const double& h, const double& u, const double& v, const double& w)
-{
-  return (1 - w) * Math::Bilinear(a, b, c, d, u, v) + w * Math::Bilinear(e, f, g, h, u, v);
 }
 
 /*!

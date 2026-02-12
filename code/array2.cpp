@@ -51,27 +51,6 @@ Array2::Array2(const Box2& box, int n) :Array2(box, n, n)
 }
 
 /*!
-\brief Return the geometry of the cell.
-\param c Integer cell index.
-*/
-Box2 Array2::Cell(int c) const
-{
-  int i, j;
-  InverseCellIndex(c, i, j);
-  return Cell(i, j);
-}
-
-/*!
-\brief Return the geometry of the cell.
-\param i,j Integer coordinates of the cell.
-*/
-Box2 Array2::Cell(int i, int j) const
-{
-  Vector2 e = a + celldiagonal.Scaled(Vector2(i, j));
-  return Box2(e, e + celldiagonal);
-}
-
-/*!
 \brief Return the center of the cell.
 \param i,j Integer coordinates of the cell.
 */
