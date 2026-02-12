@@ -42,28 +42,6 @@ int Vector2::Quadrant(const Vector2& p) const
 }
 
 /*!
-\brief Returns the sine of two vectors.
-
-Computes the cross product of the vectors and normalizes the result.
-\param u, v Vectors.
-*/
-double Sine(const Vector2& u, const Vector2& v)
-{
-    return (u[0] * v[1] - u[1] * v[0]) / sqrt((u * u) * (v * v));
-}
-
-/*!
-\brief Returns the positive cosine of two vectors.
-
-Computes the dot product of the normalized vectors.
-\param u, v Vectors.
-*/
-double Cosine(const Vector2& u, const Vector2& v)
-{
-    return (u * v) / sqrt((u * u) * (v * v));
-}
-
-/*!
 \brief Test if two vectors are almost equal.
 
 \sa Vector::Equal

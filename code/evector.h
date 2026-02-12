@@ -77,10 +77,6 @@ public:
 
   static bool Equal(const Vector&, const Vector&, const double& = 0.0001);
 
-  // High level functions
-  friend double Sine(const Vector&, const Vector&);
-  friend double Cosine(const Vector&, const Vector&);
-
   // Compare functions
   static Vector Min(const Vector&, const Vector&);
   static Vector Max(const Vector&, const Vector&);
@@ -578,8 +574,6 @@ public:
   Vector ToVector(const double& = 0.0) const;
 
   // High level functions
-  friend double Sine(const Vector2&, const Vector2&);
-  friend double Cosine(const Vector2&, const Vector2&);
   Vector2 Inverse() const;
 
   // Compare functions

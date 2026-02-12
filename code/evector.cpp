@@ -20,11 +20,6 @@ have been implemented and behave as one could expect.
 Vector c=a/b; // Cross product
 \endcode
 computes the cross product of a and b.
-<P><I>How do I compute the sine of the angle between two vectors?</I>
-<BR>Simply use the Sine(const Vector&,const Vector&) function, which internally computes the norm of the cross product divided by the norm of the argument vectors.
-\code
-double s=Sine(a,b); // Equivalent to Norm(a/b)/(Norm(a)*Norm(b));
-\endcode
 <P><I>How can I get access to the x, y and z components of a vector?</I>
 <BR>Use v[0], v[1] and v[2] to get access to the x, y and z components of a vector v respectively.
 <P><I>How do I compute the normal of a triangle?</I>
@@ -77,28 +72,6 @@ which might resulting in errors.
 void Normalize(Vector& u)
 {
   u *= 1.0 / Norm(u);
-}
-
-/*!
-\brief Returns the positive sine of two vectors.
-
-Computes the cross product of the vectors and normalizes the result.
-\param u, v Vectors.
-*/
-double Sine(const Vector& u, const Vector& v)
-{
-  return Norm(u / v) / sqrt((u * u) * (v * v));
-}
-
-/*!
-\brief Returns the positive cosine of two vectors.
-
-Basically computes the dot product of the normalized vectors.
-\param u, v Vectors.
-*/
-double Cosine(const Vector& u, const Vector& v)
-{
-  return (u * v) / sqrt((u * u) * (v * v));
 }
 
 /*!
