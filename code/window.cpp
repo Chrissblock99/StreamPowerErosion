@@ -1,5 +1,5 @@
 #include "window.h"
-#include "terrainwidget.h"
+#include "tesselationWidget.h"
 
 /*!
 \brief Class for handling a window with GLFW3 library.
@@ -91,7 +91,7 @@ Window::~Window()
 \brief Set the rendering widget.
 \param w widget
 */
-void Window::SetWidget(TerrainRaytracingWidget* w)
+void Window::SetWidget(TesselationWidget* w)
 {
 	widget = w;
 	widget->SetWindowPtr(this);
@@ -99,7 +99,7 @@ void Window::SetWidget(TerrainRaytracingWidget* w)
 	glfwSetWindowUserPointer(windowPtr, widget);
 	glfwSetScrollCallback(windowPtr, [](GLFWwindow* win, double x, double y)
 	{
-		TerrainRaytracingWidget* ptr = (TerrainRaytracingWidget*) glfwGetWindowUserPointer(win);
+		TesselationWidget* ptr = (TesselationWidget*) glfwGetWindowUserPointer(win);
 		ptr->ScrollCallback(win, x, y);
 	});
 }

@@ -47,7 +47,6 @@ if (WIN32)
 		${SRC_DIR}/ray.h
 		${SRC_DIR}/noise.h
 		${SRC_DIR}/random.h
-		${SRC_DIR}/camera.h
 		${SRC_DIR}/texture.h
 		${SRC_DIR}/box2.h
 		${SRC_DIR}/evector.h
@@ -55,7 +54,7 @@ if (WIN32)
 		${SRC_DIR}/scalarfield2.h
 		${SRC_DIR}/shader-api.h
 		${SRC_DIR}/window.h
-		${SRC_DIR}/terrainwidget.h
+		${SRC_DIR}/tesselationWidget.h
 		${SRC_DIR}/stb_image.h
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/spe_shader.h
@@ -68,7 +67,6 @@ else()
 		${SRC_DIR}/noise.h
 		${SRC_DIR}/texture.h
 		${SRC_DIR}/random.h
-		${SRC_DIR}/camera.h
 		${SRC_DIR}/ray.h
 		${SRC_DIR}/box2.h
 		${SRC_DIR}/evector.h
@@ -76,7 +74,7 @@ else()
 		${SRC_DIR}/scalarfield2.h
 		${SRC_DIR}/shader-api.h
 		${SRC_DIR}/window.h
-		${SRC_DIR}/terrainwidget.h
+		${SRC_DIR}/tesselationWidget.h
 		${SRC_DIR}/stb_image.h
 		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/spe_shader.h

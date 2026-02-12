@@ -4,21 +4,21 @@
 #include "GLFW/glfw3.h"
 #include "evector.h"
 
-class TerrainRaytracingWidget;
+class TesselationWidget;
 
 class Window
 {
 protected:
 	GLFWwindow* windowPtr;
 	int width_internal, height_internal;
-	TerrainRaytracingWidget* widget;
+	TesselationWidget* widget;
 	void (*uiUserFunPtr)();
 
 public:
 	Window(const char* windowName, int w, int h);
 	~Window();
 
-	void SetWidget(TerrainRaytracingWidget* w);
+	void SetWidget(TesselationWidget* w);
 	bool Exit() const;
 	void Update();
 	bool GetKey(int key) const;
