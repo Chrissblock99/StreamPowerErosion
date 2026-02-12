@@ -259,8 +259,6 @@ public:
   static double Warp(const double&, const double&);
 
   static bool InRange(const double&, const double&, const double&, const double&);
-  static void SetMinMax(const double&, double&, double&);
-
   static int Integer(const double&);
   static void Sort(double&, double&);
   static void Sort(double&, double&, double&);
@@ -565,23 +563,6 @@ inline double Math::Clamp(const double& x, const double& a, const double& b)
 inline int Math::Clamp(int x, int a, int b)
 {
   return (x < a ? a : (x > b ? b : x));
-}
-
-/*!
-\brief Update the minimum and maximum values given a double value.
-\param x Input value.
-\param a, b Lower and upper bounds that will be updated according to x.
-*/
-inline void Math::SetMinMax(const double& x, double& a, double& b)
-{
-  if (x < a)
-  {
-    a = x;
-  }
-  else if (x > b)
-  {
-    b = x;
-  }
 }
 
 /*!

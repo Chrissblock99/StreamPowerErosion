@@ -84,7 +84,6 @@ public:
   // Compare functions
   static Vector Min(const Vector&, const Vector&);
   static Vector Max(const Vector&, const Vector&);
-  static void SetMinMax(const Vector&, Vector&, Vector&);
 
   // Abs
   friend Vector Abs(const Vector&);
@@ -615,8 +614,6 @@ public:
   static Vector2 Min(const Vector2&, const Vector2&);
   static Vector2 Max(const Vector2&, const Vector2&);
   int MaxIndex() const;
-
-  static void SetMinMax(const Vector2&, Vector2&, Vector2&);
 
   // Abs
   friend Vector2 Abs(const Vector2&);

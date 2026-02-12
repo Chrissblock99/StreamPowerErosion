@@ -75,26 +75,6 @@ void Swap(Vector2& a, Vector2& b)
 }
 
 /*!
-\brief Update the minimum and maximum values given a vector.
-\param x Input vector.
-\param a, b Lower and upper vectors that will be updated.
-*/
-void Vector2::SetMinMax(const Vector2& x, Vector2& a, Vector2& b)
-{
-    for (int i = 0; i < 2; i++)
-    {
-        if (x[i] < a[i])
-        {
-            a[i] = x[i];
-        }
-        else if (x[i] > b[i])
-        {
-            b[i] = x[i];
-        }
-    }
-}
-
-/*!
 \brief Test if two vectors are almost equal.
 
 \sa Vector::Equal

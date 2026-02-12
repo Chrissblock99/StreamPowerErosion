@@ -321,26 +321,6 @@ Vector Vector::Sort() const
 }
 
 /*!
-\brief Update the minimum and maximum values given a vector.
-\param x Input vector.
-\param a, b Lower and upper vectors that will be updated.
-*/
-void Vector::SetMinMax(const Vector& x, Vector& a, Vector& b)
-{
-  for (int i = 0; i < 3; i++)
-  {
-    if (x[i] < a[i])
-    {
-      a[i] = x[i];
-    }
-    else if (x[i] > b[i])
-    {
-      b[i] = x[i];
-    }
-  }
-}
-
-/*!
 \brief Trilinear interpolation between eight vectors.
 
 \sa Math::Bilinear()
