@@ -76,13 +76,9 @@ public:
 
   static double Slope(const Vector&, const Vector&);
 
-  // Scale
-  Vector Scaled(const Vector&) const;
   Vector Inverse() const;
 
   friend std::ostream& operator<<(std::ostream&, const Vector&);
-
-  static Vector Polar(const double&, const double&);
 
   Vector Fract() const;
 
@@ -162,15 +158,6 @@ inline Vector& Vector::operator*= (const double& a)
 {
   c[0] *= a; c[1] *= a; c[2] *= a;
   return *this;
-}
-
-/*!
-\brief Scale a vector.
-\param a Scaling vector.
-*/
-inline Vector Vector::Scaled(const Vector& a) const
-{
-  return Vector(c[0] * a[0], c[1] * a[1], c[2] * a[2]);
 }
 
 /*!
@@ -347,16 +334,6 @@ inline Vector Lerp(const Vector& a, const Vector& b, const double& t)
 }
 
 /*!
-\brief Creates a vector given polar coordinates.
-\param t Theta.
-\param p Phi.
-*/
-inline Vector Vector::Polar(const double& t, const double& p)
-{
-  return Vector(cos(t) * cos(p), sin(t) * cos(p), sin(p));
-}
-
-/*!
 \brief Compute the vertical slope between two vectors.
 
 This is a convenience function.
@@ -455,10 +432,6 @@ public:
 
   friend std::ostream& operator<<(std::ostream&, const Vector2&);
 
-  Vector2 Scaled(const Vector2&) const;
-  void Scale(const Vector2&);
-
-  static Vector2 Polar(const double&);
 
   static Vector2 Solve(const Vector2&, const Vector2&, const double&, const double&);
   static bool Clockwise(const Vector2&, const Vector2&, const Vector2&);
@@ -688,34 +661,6 @@ inline double SquaredNorm(const Vector2& u)
 inline Vector2 Abs(const Vector2& u)
 {
   return Vector2(u[0] > 0.0 ? u[0] : -u[0], u[1] > 0.0 ? u[1] : -u[1]);
-}
-
-/*!
-\brief Creates a vector given polar coordinates.
-\param t Theta.
-*/
-inline Vector2 Vector2::Polar(const double& t)
-{
-  return Vector2(cos(t), sin(t));
-}
-
-/*!
-\brief Scales the vector.
-\param a Scaling vector.
-*/
-inline Vector2 Vector2::Scaled(const Vector2& a) const
-{
-  return Vector2(c[0] * a[0], c[1] * a[1]);
-}
-
-/*!
-\brief Scales the vector.
-\param a Scaling vector.
-*/
-inline void Vector2::Scale(const Vector2& a)
-{
-  c[0] *= a[0];
-  c[1] *= a[1];
 }
 
 /*!
