@@ -33,7 +33,6 @@ arguments, a specific routine operating on an array should be written.
 \code
 double s = Math::Sqr((1.0-sqrt(5.0))/2.0); // Square of golden ratio
 \endcode
-For a Vector, use SquaredNorm(const Vector&);
 
 <P><I>Are there predefined square roots constants?</I>
 <BR>The sqrt function used not te be constexpr, so square roots of reals are not computed at compilation time.

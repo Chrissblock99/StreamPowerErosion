@@ -65,9 +65,6 @@ public:
   friend bool operator==(const Vector&, const Vector&);
   friend bool operator!=(const Vector&, const Vector&);
 
-  // Norm
-  friend double Norm(const Vector&);
-  friend double SquaredNorm(const Vector&);
 
   // Abs
   friend Vector Abs(const Vector&);
@@ -283,29 +280,6 @@ inline bool operator!= (const Vector& u, const Vector& v)
 }
 
 /*!
-\brief Compute the Euclidean norm of a vector.
-
-This function involves a square root computation, it is in general more efficient to rely on
-the squared norm of a vector instead.
-\param u %Vector.
-\sa SquaredNorm
-*/
-inline double Norm(const Vector& u)
-{
-  return sqrt(u.c[0] * u.c[0] + u.c[1] * u.c[1] + u.c[2] * u.c[2]);
-}
-
-/*!
-\brief Compute the squared Euclidean norm of a vector.
-\param u %Vector.
-\sa Norm
-*/
-inline double SquaredNorm(const Vector& u)
-{
-  return (u.c[0] * u.c[0] + u.c[1] * u.c[1] + u.c[2] * u.c[2]);
-}
-
-/*!
 \brief Compute the fractional part of the coordinates.
 \sa Math::Fract
 */
@@ -408,10 +382,6 @@ public:
   // Boolean functions
   friend bool operator==(const Vector2&, const Vector2&);
   friend bool operator!=(const Vector2&, const Vector2&);
-
-  // Norm
-  friend double Norm(const Vector2&);
-  friend double SquaredNorm(const Vector2&);
 
 
   // Conversion
@@ -634,25 +604,6 @@ inline bool operator== (const Vector2& u, const Vector2& v)
 inline bool operator!= (const Vector2& u, const Vector2& v)
 {
   return (!(u == v));
-}
-
-/*!
-\brief Compute the Euclidean norm of a vector.
-This function involves a square root computation, it is often more efficient to rely on
-the squared norm of a vector instead. \sa SquaredNorm
-*/
-inline double Norm(const Vector2& u)
-{
-  return sqrt(u.c[0] * u.c[0] + u.c[1] * u.c[1]);
-}
-
-/*!
-\brief Compute the squared Euclidean norm of a vector.
-\sa Norm
-*/
-inline double SquaredNorm(const Vector2& u)
-{
-  return (u.c[0] * u.c[0] + u.c[1] * u.c[1]);
 }
 
 /*!
