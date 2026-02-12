@@ -186,16 +186,6 @@ public:
   // Linear interpolation
   static double Lerp(const double&, const double&, const double&);
 
-  // Cubic interpolation
-  static double Cubic(const double&, const double&, const double&, const double&, const double&);
-  static double CubicPoints(const double&, const double&, const double&, const double&, const double&);
-  static double BiCubic(const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double&, const double& = 0.0, const double& = 0.0, const double& = 0.0, const double& = 0.0);
-  static double BiCubic(const double&, const double&, const double&, const double&, const double&, const double&);
-
-  // Sigmoid
-  static double Sigmoid(const double&, const double& = 1.0);
-  static double SigmoidQuadric(const double&);
-
   // Impulse
   static double Impulse(const double&, const double& = 1.0);
 
@@ -220,19 +210,7 @@ public:
   static double Gaussian(const double&, const double&);
 
   static double Geometric(double, int);
-  
-  static double CubicSmooth(double x, double r);
 };
-
-/*!
-\brief Compute the value of a C<SUP>2</SUP> smooth interpolating function (1-x/r)<SUP>3</SUP>.
-\param x Squared distance.
-\param r Squared radius.
-*/
-inline double Math::CubicSmooth(double x, double r)
-{
-    return (1.0f - x / r) * (1.0f - x / r) * (1.0f - x / r);
-}
 
 /*!
 \brief Check if a values lies within a prescribed range.
@@ -287,19 +265,6 @@ inline  double Math::Unit(int i, int n)
 }
 
 /*!
-\brief Sigmoid-like function.
-
-This function is more efficient than the real sigmoid function which requires the computation of the exponential.
-
-\param s Sigma.
-\param x Real.
-*/
-inline double Math::Sigmoid(const double& x, const double& s)
-{
-  return x / sqrt(s * s + x * x);
-}
-
-/*!
 \brief Impulse function.
 
 An impulse function that doesn't use exponentials, k controls the
@@ -313,46 +278,6 @@ Derivative is 2*sqrt(k)*(1-k*x*x)/(k*x*x+1), maximum is reached x = sqrt(1/k), v
 inline double Math::Impulse(const double& x, const double& k)
 {
   return 2.0 * sqrt(k) * x / (1.0 + k * x * x);
-}
-
-/*!
-\brief Compactly supported sigmoid-like function implemented using a C<SUP>1</SUP> piecewise symmetric quadric.
-
-The compact support is [-2,2] and the range [-1,1].
-
-The quadric was obtaied by solving the Hermite Cubic contraints:
-\code
-Cubic c=2.0*Cubic::Compose(Cubic::Hermite(0, 0.5, 1.0, 0.0), Linear(0.5, 0.0)) <<std::endl;
-\endcode
-
-\sa Math::Sigmoid
-
-\param x Real.
-*/
-inline double Math::SigmoidQuadric(const double& x)
-{
-  if (x > 0.0)
-  {
-    if (x > 2.0)
-    {
-      return 1.0;
-    }
-    else
-    {
-      return x * (1.0 - 0.25 * x);
-    }
-  }
-  else
-  {
-    if (x < -2.0)
-    {
-      return -1.0;
-    }
-    else
-    {
-      return x * (1.0 + 0.25 * x);
-    }
-  }
 }
 
 /*!
