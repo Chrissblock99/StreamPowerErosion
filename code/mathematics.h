@@ -188,7 +188,6 @@ public:
   static void Powers(const double&, int, double*);
 
   static double Floor(const double&);
-  static double Fract(const double&);
   static double FractFloor(const double&, double&);
   static double Ceil(const double&);
 
@@ -239,9 +238,6 @@ public:
   static  double Unit(int, int);
 
   static double Gaussian(const double&, const double&);
-  static double Fract(const double&, double&);
-  static double Fract(const double&, const double&, double&);
-  static double Fract(const double&, const double&, const double&, double&);
 
   static double Geometric(double, int);
   
@@ -362,20 +358,6 @@ This function handles negative values differently by subtracting 1 from the resu
 inline int Math::Integer(const double& x)
 {
   return (x > 0.0 ? int(x) : int(x) - 1);
-}
-
-/*!
-\brief Fractional part of a real.
-
-Implemented as:
-\code
-double y=x-Math::Floor(x);
-\endcode
-\param x Real.
-*/
-inline double Math::Fract(const double& x)
-{
-  return x - floor(x);
 }
 
 /*!
@@ -606,44 +588,6 @@ inline int Math::IntegerSign(const double& x, const double& t)
   {
     return 0;
   }
-}
-
-/*!
-\brief Compute integer and fractionnal parts.
-\param x Real.
-\param i Returned integer part.
-\return Fractional part.
-*/
-inline double Math::Fract(const double& x, double& i)
-{
-  i = floor(x);
-  return (x - i);
-}
-
-/*!
-\brief Compute integer and fractionnal parts.
-\param x Real.
-\param a Modulus.
-\param i Returned integer part.
-\return Fractional part.
-*/
-inline double Math::Fract(const double& x, const double& a, double& i)
-{
-  double y = x / a;
-  i = floor(y);
-  return (y - i) * a;
-}
-
-/*!
-\brief Compute integer and fractionnal parts given an interval
-\param x Real.
-\param a,b Interval.
-\param i Returned integer part.
-\return Fractional part.
-*/
-inline double Math::Fract(const double& x, const double& a, const double& b, double& i)
-{
-  return Math::Fract(x - a, b - a, i);
 }
 
 /*!

@@ -69,13 +69,9 @@ public:
 
   friend Vector Lerp(const Vector&, const Vector&, const double&);
 
-  static double Slope(const Vector&, const Vector&);
-
   Vector Inverse() const;
 
   friend std::ostream& operator<<(std::ostream&, const Vector&);
-
-  Vector Fract() const;
 
   static Vector Solve(const Vector&, const Vector&, const double&, const double&);
 
@@ -278,15 +274,6 @@ inline bool operator!= (const Vector& u, const Vector& v)
 }
 
 /*!
-\brief Compute the fractional part of the coordinates.
-\sa Math::Fract
-*/
-inline Vector Vector::Fract() const
-{
-  return Vector(Math::Fract(c[0]), Math::Fract(c[1]), Math::Fract(c[2]));
-}
-
-/*!
 \brief Linear interpolation between two vectors.
 \param a,b Interpolated points.
 \param t Interpolant.
@@ -294,18 +281,6 @@ inline Vector Vector::Fract() const
 inline Vector Lerp(const Vector& a, const Vector& b, const double& t)
 {
   return a + t * (b - a);
-}
-
-/*!
-\brief Compute the vertical slope between two vectors.
-
-This is a convenience function.
-\param a,b Argument vectors.
-*/
-inline double Vector::Slope(const Vector& a, const Vector& b)
-{
-  Vector ab = b - a;
-  return (ab[2]) / sqrt(ab[0] * ab[0] + ab[1] * ab[1]);
 }
 
 /*!
@@ -391,8 +366,6 @@ public:
 
   static Vector2 Solve(const Vector2&, const Vector2&, const double&, const double&);
   static bool Clockwise(const Vector2&, const Vector2&, const Vector2&);
-
-  Vector2 Fract() const;
 
 public:
   static const Vector2 Null; //!< Null vector.
@@ -661,15 +634,6 @@ This function inverses the components of the vector.
 inline Vector2 Vector2::Inverse() const
 {
   return Vector2(1.0 / c[0], 1.0 / c[1]);
-}
-
-/*!
-\brief Compute the fractional part of the coordinates.
-\sa Math::Fract
-*/
-inline Vector2 Vector2::Fract() const
-{
-  return Vector2(Math::Fract(c[0]), Math::Fract(c[1]));
 }
 
 #endif
