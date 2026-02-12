@@ -28,9 +28,6 @@ public:
   Vector2 Vertex(int, int, int, int) const;
   
   double Area() const;
-  void Extend(const double&);
-  void Extend(const Vector2&);
-  Box2 Extended(const double&) const;
 
   friend std::ostream& operator<<(std::ostream&, const Box2&);
 

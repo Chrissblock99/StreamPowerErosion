@@ -14,40 +14,6 @@ const Box2 Box2::Infinity(Vector2(-Math::Infinity), Vector2(Math::Infinity)); //
 const Box2 Box2::Null = Box2();                     //!< Null box, equivalent to \code Box2(Vector2(0.0)); \endcode
 const Box2 Box2::Unit(Vector2(0.0), Vector2(1.0));  //!< Unit box, defined as \code Box2(Vector2(0.0),Vector2(1.0)); \endcode
 
-/*!
-\brief Extend the limits of the box by a given distance.
-
-Note that this is the same as performing the Minkowski sum with a cubic box of size r.
-\param r Range.
-*/
-void Box2::Extend(const double& r)
-{
-  a -= Vector2(r);
-  b += Vector2(r);
-}
-
-/*!
-\brief Extend the limits of the box by a given distance.
-
-Note that this is the same as performing the Minkowski sum with a cubic box of size r.
-\param r Range.
-*/
-Box2 Box2::Extended(const double& r) const
-{
-  return Box2(a - Vector2(r), b + Vector2(r));
-}
-
-/*!
-\brief Extend the limits of the box given a point.
-
-If the point lies inside the box, the vertices of the box are unchanged.
-\param p Point.
-*/
-void Box2::Extend(const Vector2& p)
-{
-  a = Vector2::Min(a, p);
-  b = Vector2::Max(b, p);
-}
 
 /*!
 \brief Overloaded.

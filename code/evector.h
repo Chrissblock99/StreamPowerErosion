@@ -69,15 +69,6 @@ public:
   friend double Norm(const Vector&);
   friend double SquaredNorm(const Vector&);
 
-  double Max() const;
-  int MaxIndex() const;
-
-  friend Vector Normalized(const Vector&);
-
-  // Compare functions
-  static Vector Min(const Vector&, const Vector&);
-  static Vector Max(const Vector&, const Vector&);
-
   // Abs
   friend Vector Abs(const Vector&);
 
@@ -329,19 +320,6 @@ inline double SquaredNorm(const Vector& u)
 }
 
 /*!
-\brief Return a normalized vector.
-
-Compute the inverse of its norm and scale the components.
-
-This function does not check if the vector is null.
-\param u %Vector.
-*/
-inline Vector Normalized(const Vector& u)
-{
-  return u * (1.0 / Norm(u));
-}
-
-/*!
 \brief Compute the fractional part of the coordinates.
 \sa Math::Fract
 */
@@ -351,82 +329,12 @@ inline Vector Vector::Fract() const
 }
 
 /*!
-\brief Compute the maximum component of a vector.
-*/
-inline double Vector::Max() const
-{
-  return Math::Max(c[0], c[1], c[2]);
-}
-
-/*!
-\brief Compute the index of the maximum component of a vector.
-
-\code
-Vector a(-1.0,-3.0,2.0);
-int i=MaxIndex(Abs(a)); // Should be 1
-\endcode
-
-This function can be used to find the most stretched axis of a bounding box,
-for instance to cut the box in the middle of this stretched axis:
-
-\code
-Box box;
-int axis = box.Diagonal().MaxIndex();
-\endcode
-
-\sa Max
-*/
-inline int Vector::MaxIndex() const
-{
-  if (c[0] >= c[1])
-  {
-    if (c[0] >= c[2])
-    {
-      return 0;
-    }
-    else
-    {
-      return 2;
-    }
-  }
-  else
-  {
-    if (c[1] >= c[2])
-    {
-      return 1;
-    }
-    else
-    {
-      return 2;
-    }
-  }
-}
-
-/*!
 \brief Computes the absolute value of a vector.
 \param u %Vector.
 */
 inline Vector Abs(const Vector& u)
 {
   return Vector(u[0] > 0.0 ? u[0] : -u[0], u[1] > 0.0 ? u[1] : -u[1], u[2] > 0.0 ? u[2] : -u[2]);
-}
-
-/*!
-\brief Return a vector with coordinates set to the minimum coordinates
-of the two argument vectors.
-*/
-inline Vector Vector::Min(const Vector& a, const Vector& b)
-{
-  return Vector(a[0] < b[0] ? a[0] : b[0], a[1] < b[1] ? a[1] : b[1], a[2] < b[2] ? a[2] : b[2]);
-}
-
-/*!
-\brief Return a vector with coordinates set to the maximum coordinates
-of the two argument vectors.
-*/
-inline Vector Vector::Max(const Vector& a, const Vector& b)
-{
-  return Vector(a[0] > b[0] ? a[0] : b[0], a[1] > b[1] ? a[1] : b[1], a[2] > b[2] ? a[2] : b[2]);
 }
 
 /*!
@@ -539,20 +447,12 @@ public:
   friend double Norm(const Vector2&);
   friend double SquaredNorm(const Vector2&);
 
-  double Max() const;
-
-  friend Vector2 Normalized(const Vector2&);
 
   // Conversion
   Vector ToVector(const double& = 0.0) const;
 
   // High level functions
   Vector2 Inverse() const;
-
-  // Compare functions
-  static Vector2 Min(const Vector2&, const Vector2&);
-  static Vector2 Max(const Vector2&, const Vector2&);
-  int MaxIndex() const;
 
   // Abs
   friend Vector2 Abs(const Vector2&);
@@ -795,69 +695,11 @@ inline double SquaredNorm(const Vector2& u)
 }
 
 /*!
-\brief Return a Normalized a vector, computing the inverse of its norm and scaling the components.
-This function does not check if
-the vector is null, which might result in errors.
-*/
-inline Vector2 Normalized(const Vector2& u)
-{
-  return u * (1.0 / Norm(u));
-}
-
-/*!
 \brief Computes the absolute value of a vector.
 */
 inline Vector2 Abs(const Vector2& u)
 {
   return Vector2(u[0] > 0.0 ? u[0] : -u[0], u[1] > 0.0 ? u[1] : -u[1]);
-}
-
-/*!
-\brief Compute the maximum component of a vector
-*/
-inline double Vector2::Max() const
-{
-  return Math::Max(c[0], c[1]);
-}
-
-/*!
-\brief Return a vector with coordinates set to the minimum coordinates
-of the two argument vectors.
-*/
-inline Vector2 Vector2::Min(const Vector2& a, const Vector2& b)
-{
-  return Vector2(a[0] < b[0] ? a[0] : b[0], a[1] < b[1] ? a[1] : b[1]);
-}
-
-/*!
-\brief Return a vector with coordinates set to the maximum coordinates
-of the two argument vectors.
-*/
-inline Vector2 Vector2::Max(const Vector2& a, const Vector2& b)
-{
-  return Vector2(a[0] > b[0] ? a[0] : b[0], a[1] > b[1] ? a[1] : b[1]);
-}
-
-/*!
-\brief Compute the index of the maximum component of a vector.
-
-\code
-Vector a(-1.0,-3.0);
-int i=MaxIndex(Abs(a)); // Should be 1
-\endcode
-
-\sa Vector::MaxIndex()
-*/
-inline int Vector2::MaxIndex() const
-{
-  if (c[0] >= c[1])
-  {
-    return 0;
-  }
-  else
-  {
-    return 1;
-  }
 }
 
 /*!
