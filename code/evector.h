@@ -72,7 +72,6 @@ public:
   // Abs
   friend Vector Abs(const Vector&);
 
-  friend Vector Clamp(const Vector&, const Vector&, const Vector&);
   friend Vector Lerp(const Vector&, const Vector&, const double&);
 
   static double Slope(const Vector&, const Vector&);
@@ -338,16 +337,6 @@ inline Vector Abs(const Vector& u)
 }
 
 /*!
-\brief Clamp a vector between two bounds.
-\param x Input vector
-\param a, b %Vector bounds.
-*/
-inline Vector Clamp(const Vector& x, const Vector& a, const Vector& b)
-{
-  return Vector(Math::Clamp(x[0], a[0], b[0]), Math::Clamp(x[1], a[1], b[1]), Math::Clamp(x[2], a[2], b[2]));
-}
-
-/*!
 \brief Linear interpolation between two vectors.
 \param a,b Interpolated points.
 \param t Interpolant.
@@ -457,7 +446,6 @@ public:
   // Abs
   friend Vector2 Abs(const Vector2&);
 
-  friend Vector2 Clamp(const Vector2&, const Vector2&, const Vector2&);
   static Vector2 Lerp(const Vector2&, const Vector2&, const double&);
 
   // Position of a point
@@ -700,16 +688,6 @@ inline double SquaredNorm(const Vector2& u)
 inline Vector2 Abs(const Vector2& u)
 {
   return Vector2(u[0] > 0.0 ? u[0] : -u[0], u[1] > 0.0 ? u[1] : -u[1]);
-}
-
-/*!
-\brief Clamp a Vector2 between two bounds.
-\param x Input vector
-\param a, b Vector bounds.
-*/
-inline Vector2 Clamp(const Vector2& x, const Vector2& a, const Vector2& b)
-{
-  return Vector2(Math::Clamp(x[0], a[0], b[0]), Math::Clamp(x[1], a[1], b[1]));
 }
 
 /*!

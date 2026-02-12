@@ -122,12 +122,6 @@ inline int max(int a, int b, int c, int d)
   return max(max(a, b), max(c, d));
 }
 
-//! Clamps an integer value between two bounds.
-inline int Clamp(int x, int a, int b)
-{
-  return (x < a ? a : (x > b ? b : x));
-}
-
 /*!
 \brief Compute the next integer as s<SUP>p</SUP> >=n.
 \param n Integer.
@@ -161,18 +155,6 @@ inline int Log2(int n)
   return l;
 }
 
-//! Clamps a float value between two bounds.
-inline float Clamp(float x, float a, float b)
-{
-  return (x < a ? a : (x > b ? b : x));
-}
-
-//! Clamps a double value between two bounds.
-inline double Clamp(double x, double a, double b)
-{
-  return (x < a ? a : (x > b ? b : x));
-}
-
 // Math class for constants
 class Math
 {
@@ -192,8 +174,6 @@ public:
 
   static int binomials[16][16]; //!< %Array of binomial coefficients.
 public:
-  static double Clamp(const double&, const double& = 0.0, const double& = 1.0);
-  static int Clamp(int, int = 0, int = 255);
 
   // Squares
   static double Sqr(const double&);
@@ -214,12 +194,6 @@ public:
   static double Ceil(const double&);
 
   // Minimum and maximum
-  static double Min(const double&, const double&);
-  static double Max(const double&, const double&);
-  static double Min(const double&, const double&, const double&);
-  static double Max(const double&, const double&, const double&);
-  static double Min(const double&, const double&, const double&, const double&);
-  static double Max(const double&, const double&, const double&, const double&);
   static double MaxArray(double*, int);
 
   // Angles
@@ -389,80 +363,6 @@ This function handles negative values differently by subtracting 1 from the resu
 inline int Math::Integer(const double& x)
 {
   return (x > 0.0 ? int(x) : int(x) - 1);
-}
-
-/*!
-\brief Clamp a double value between two bounds.
-\param x Input value.
-\param a, b Lower and upper bounds.
-*/
-inline double Math::Clamp(const double& x, const double& a, const double& b)
-{
-  return (x < a ? a : (x > b ? b : x));
-}
-
-/*!
-\brief Clamp an integer value between two bounds.
-\param x Input value.
-\param a, b Lower and upper bounds.
-*/
-inline int Math::Clamp(int x, int a, int b)
-{
-  return (x < a ? a : (x > b ? b : x));
-}
-
-/*!
-\brief Minimum of two reals.
-\param a, b Real values.
-*/
-inline double Math::Min(const double& a, const double& b)
-{
-  return (a < b ? a : b);
-}
-
-/*!
-\brief Maximum of two reals.
-\param a, b Real values.
-*/
-inline double Math::Max(const double& a, const double& b)
-{
-  return (a > b ? a : b);
-}
-
-/*!
-\brief Maximum of three reals.
-\param a, b, c Real values.
-*/
-inline double Math::Max(const double& a, const double& b, const double& c)
-{
-  return Math::Max(Math::Max(a, b), c);
-}
-
-/*!
-\brief Minimum of three reals.
-\param a, b, c Real values.
-*/
-inline double Math::Min(const double& a, const double& b, const double& c)
-{
-  return Math::Min(Math::Min(a, b), c);
-}
-
-/*!
-\brief Maximum of four reals.
-\param a, b, c, d Real values.
-*/
-inline double Math::Max(const double& a, const double& b, const double& c, const double& d)
-{
-  return Math::Max(Math::Max(a, b), Math::Max(c, d));
-}
-
-/*!
-\brief Minimum of four reals.
-\param a, b, c, d Real values.
-*/
-inline double Math::Min(const double& a, const double& b, const double& c, const double& d)
-{
-  return Math::Min(Math::Min(a, b), Math::Min(c, d));
 }
 
 /*!
