@@ -161,19 +161,6 @@ bool Vector::Coplanar(const Vector& a, const Vector& b, const Vector& c, const V
 }
 
 /*!
-\brief Compute the angle between two vectors.
-
-The two input vectors implitly define a frame
-\param b %Argument vector forming the angle.
-*/
-double Vector::Angle(const Vector& b) const
-{
-  double angle = acos(Cosine(*this, b));
-  //angle = ((*this / b)[2] < 0.0) ? 2.0 * Math::Pi - angle : angle;
-  return angle;
-}
-
-/*!
 \brief Returns a vector orthogonal to the argument vector.
 
 The returned orthogonal vector is not computed randomly.

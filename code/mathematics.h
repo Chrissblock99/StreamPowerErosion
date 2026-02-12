@@ -208,9 +208,6 @@ public:
   // Series of powers
   static void Powers(const double&, int, double*);
 
-  // Modulo
-  static  double Mod(const double&, const double&);
-
   static double Floor(const double&);
   static double Fract(const double&);
   static double FractFloor(const double&, double&);
@@ -228,8 +225,6 @@ public:
   // Angles
   static  double DegreeToRadian(const double&);
   static  double RadianToDegree(const double&);
-  static  double Angle(int, int);
-  static  double Angle(const double&);
   static double ArcTan(const double&, const double&);
 
   static double Step(double, double);
@@ -465,33 +460,6 @@ inline double Math::Lerp(const double& a, const double& b, const double& t)
 }
 
 /*!
-\brief Convert degrees to randians.
-\param a Angle in degrees.
-*/
-inline  double Math::DegreeToRadian(const double& a)
-{
-  return a * Math::Pi / 180.0;
-}
-
-/*!
-\brief Convert radian to degrees.
-\param a Angle in radian.
-*/
-inline  double Math::RadianToDegree(const double& a)
-{
-  return a * 180.0 / Math::Pi;
-}
-
-/*!
-\brief Compute 2 k &pi; / n.
-\param k, n Integers.
-*/
-inline  double Math::Angle(int k, int n)
-{
-  return (2.0 * Math::Pi * k) / n;
-}
-
-/*!
 \brief Swap two reals.
 \sa Sort(double&,double&)
 \param a, b Arguments.
@@ -524,25 +492,6 @@ This function handles negative values differently by subtracting 1 from the resu
 inline int Math::Integer(const double& x)
 {
   return (x > 0.0 ? int(x) : int(x) - 1);
-}
-
-/*!
-\brief Modulus for reals with negative values handled properly.
-\param x %Real.
-\param a Modulo.
-*/
-inline  double Math::Mod(const double& x, const double& a)
-{
-  return (x >= 0.0) ? fmod(x, a) : a - fmod(-x, a);
-}
-
-/*!
-\brief Angle strictly in [0,2\pi[.
-\param a %Angle.
-*/
-inline  double Math::Angle(const double& a)
-{
-  return Math::Mod(a, 2.0 * Math::Pi);
 }
 
 /*!

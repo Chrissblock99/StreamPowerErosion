@@ -88,31 +88,6 @@ bool Vector2::Equal(const Vector2& a, const Vector2& b, const double& epsilon)
 }
 
 /*!
-\brief Compute the angle of a vector.
-
-The vector need not be normalized.
-*/
-double Vector2::Angle() const
-{
-    return atan2(c[1], c[0]);
-}
-
-/*!
-\brief Compute the angle between two vectors.
-
-Note that both vectors should be unit.
-
-\sa Vector2::Angle() const
-
-\param b %Argument vector forming the angle.
-*/
-double Vector2::Angle(const Vector2& b) const
-{
-    Vector2 ba(b * (*this), b * Orthogonal());
-    return ba.Angle();
-}
-
-/*!
 \brief Overloaded output-stream operator.
 \param u %Vector.
 \param s Stream.

@@ -88,9 +88,6 @@ public:
   // Abs
   friend Vector Abs(const Vector&);
 
-  // Modulo
-  static Vector Mod(const Vector&, const Vector&);
-
   // Orthogonal and orthonormal vectors
   Vector Orthogonal() const;
   void RandomOrthonormal(Vector&, Vector&) const;
@@ -121,7 +118,6 @@ public:
   friend std::ostream& operator<<(std::ostream&, const Vector&);
 
   static Vector Polar(const double&, const double&);
-  double Angle(const Vector&) const;
 
   Vector Fract() const;
 
@@ -489,16 +485,6 @@ inline Vector Vector::Polar(const double& t, const double& p)
 }
 
 /*!
-\brief Modulo of two Vectors.
-
-\param a,b Argument vectors.
-*/
-inline Vector Vector::Mod(const Vector& a, const Vector& b)
-{
-  return Vector(Math::Mod(a[0], b[0]), Math::Mod(a[1], b[1]), Math::Mod(a[2], b[2]));
-}
-
-/*!
 \brief Bi-linear interpolation between four vectors.
 
 The values are given in trigonometric order.
@@ -618,9 +604,6 @@ public:
   // Abs
   friend Vector2 Abs(const Vector2&);
 
-  // Modulo
-  static Vector2 Modulo(const Vector2&, const Vector2&);
-
   // Classification
   int Quadrant(const Vector2&) const;
 
@@ -643,9 +626,6 @@ public:
   Vector2 Sort() const;
 
   static Vector2 Polar(const double&);
-
-  double Angle(const Vector2&) const;
-  double Angle() const;
 
   static Vector2 Solve(const Vector2&, const Vector2&, const double&, const double&);
   static bool Clockwise(const Vector2&, const Vector2&, const Vector2&);
@@ -971,15 +951,6 @@ inline void Vector2::Scale(const Vector2& a)
 {
   c[0] *= a[0];
   c[1] *= a[1];
-}
-
-/*!
-\brief Modulo of two vectors.
-\param a,b Two vectors.
-*/
-inline Vector2 Vector2::Modulo(const Vector2& a, const Vector2& b)
-{
-  return Vector2(Math::Mod(a[0], b[0]), Math::Mod(a[1], b[1]));
 }
 
 /*!
