@@ -44,7 +44,6 @@ if (WIN32)
 		${SRC_FILES}
 		${SRC_DIR}/mathematics.h
 		${SRC_DIR}/array2.h
-		${SRC_DIR}/ray.h
 		${SRC_DIR}/noise.h
 		${SRC_DIR}/random.h
 		${SRC_DIR}/texture.h
@@ -67,7 +66,6 @@ else()
 		${SRC_DIR}/noise.h
 		${SRC_DIR}/texture.h
 		${SRC_DIR}/random.h
-		${SRC_DIR}/ray.h
 		${SRC_DIR}/box2.h
 		${SRC_DIR}/evector.h
 		${SRC_DIR}/ivector.h
