@@ -116,26 +116,6 @@ Vector2 ScalarField2::Gradient(int i, int j) const
   return n;
 }
 
-/*!
-\brief Overloaded.
-\param s Stream.
-\param scalar The scalar field.
-*/
-std::ostream& operator<<(std::ostream& s, const ScalarField2& scalar)
-{
-  s << Array2(scalar) << std::endl;
-
-  for (int j = scalar.ny - 1; j > -1; j--)
-  {
-    for (int i = 0; i < scalar.nx; i++)
-    {
-      s << scalar.at(i, j) << ' ';
-    }
-    s << std::endl;
-  }
-  return s;
-}
-
 std::vector<float> ScalarField2::GetFloatData() const {
     std::vector<float> res(nx * ny, 0);
     for (int i = 0; i < nx * ny; i++) res[i] = float(field[i]);
