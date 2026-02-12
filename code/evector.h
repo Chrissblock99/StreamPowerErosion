@@ -72,10 +72,7 @@ public:
   double Max() const;
   int MaxIndex() const;
 
-  friend void Normalize(Vector&);
   friend Vector Normalized(const Vector&);
-
-  static bool Equal(const Vector&, const Vector&, const double& = 0.0001);
 
   // Compare functions
   static Vector Min(const Vector&, const Vector&);
@@ -565,10 +562,7 @@ public:
 
   double Max() const;
 
-  friend void Normalize(Vector2&);
   friend Vector2 Normalized(const Vector2&);
-
-  static bool Equal(const Vector2&, const Vector2&, const double& = 0.0001);
 
   // Conversion
   Vector ToVector(const double& = 0.0) const;
@@ -583,9 +577,6 @@ public:
 
   // Abs
   friend Vector2 Abs(const Vector2&);
-
-  // Classification
-  int Quadrant(const Vector2&) const;
 
   friend Vector2 Clamp(const Vector2&, const Vector2&, const Vector2&);
   static Vector2 Lerp(const Vector2&, const Vector2&, const double&);

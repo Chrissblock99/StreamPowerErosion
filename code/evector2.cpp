@@ -17,42 +17,6 @@ const Vector2 Vector2::Null = Vector2(0.0, 0.0);
 const Vector2 Vector2::X = Vector2(1.0, 0.0);
 const Vector2 Vector2::Y = Vector2(0.0, 1.0);
 
-/*!
-\brief Normalize a two dimensional vector.
-
-It computes the inverse of its norm and scaling the components.
-This function does not check if the vector is null, which might yield errors.
-
-\param u %Vector.
-*/
-void Normalize(Vector2& u)
-{
-    u *= 1.0 / Norm(u);
-}
-
-/*!
-\brief Computes quadrant index of a vector with respect to the vector object.
-
-\sa Box2::Quadrant(const Vector&)
-\param p %Vector.
-*/
-int Vector2::Quadrant(const Vector2& p) const
-{
-    return ((p[0] < c[0]) ? 0 : 1) | ((p[1] < c[1]) ? 0 : 2);
-}
-
-/*!
-\brief Test if two vectors are almost equal.
-
-\sa Vector::Equal
-*/
-bool Vector2::Equal(const Vector2& a, const Vector2& b, const double& epsilon)
-{
-    Vector2 ab = Abs(b - a);
-    if (ab[0] > epsilon || ab[1] > epsilon)
-        return false;
-    return true;
-}
 
 /*!
 \brief Overloaded output-stream operator.

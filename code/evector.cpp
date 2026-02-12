@@ -52,29 +52,6 @@ const Vector Vector::Z = Vector(0.0, 0.0, 1.0);
 
 
 /*!
-\brief Test if two vectors are almost equal.
-*/
-bool Vector::Equal(const Vector& a, const Vector& b, const double& epsilon)
-{
-  Vector ab = Abs(b - a);
-  if (ab[0] > epsilon || ab[1] > epsilon || ab[2] > epsilon)
-    return false;
-  return true;
-}
-
-/*!
-\brief Normalize a vector, computing the inverse of its norm and scaling
-the components.
-
-This function does not check if the vector is null,
-which might resulting in errors.
-*/
-void Normalize(Vector& u)
-{
-  u *= 1.0 / Norm(u);
-}
-
-/*!
 \brief Overloaded output-stream operator.
 \param u Vector.
 \param s Stream.
