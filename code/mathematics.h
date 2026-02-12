@@ -187,10 +187,6 @@ public:
   // Series of powers
   static void Powers(const double&, int, double*);
 
-  static double Floor(const double&);
-  static double FractFloor(const double&, double&);
-  static double Ceil(const double&);
-
   // Minimum and maximum
   static double MaxArray(double*, int);
 
@@ -358,44 +354,6 @@ This function handles negative values differently by subtracting 1 from the resu
 inline int Math::Integer(const double& x)
 {
   return (x > 0.0 ? int(x) : int(x) - 1);
-}
-
-/*!
-\brief Fractional part of a real.
-
-Implemented as:
-\code
-double y=x-Math::Floor(x);
-\endcode
-\param x Real.
-\param y Return floor.
-*/
-inline double Math::FractFloor(const double& x, double& y)
-{
-  y = floor(x);
-  return x - y;
-}
-
-/*!
-\brief %Floor function.
-
-While it is easier to use c++ function, this has been implemented to be consistent with Fract().
-\param x Real.
-*/
-inline double Math::Floor(const double& x)
-{
-  return floor(x);
-}
-
-/*!
-\brief %Ceil function.
-
-\sa Floor
-\param x Real.
-*/
-inline double Math::Ceil(const double& x)
-{
-  return ceil(x);
 }
 
 /*!
