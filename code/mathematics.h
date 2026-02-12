@@ -181,7 +181,6 @@ public:
   static double Sqr4(const double&);
   static double SymmetricSqr(const double&);
   static double Pow(const double&, const double&);
-  static double Abs(const double&);
   static double Sqrt32(const double&);
   static double Sqrt4(const double&);
 
@@ -439,16 +438,6 @@ inline double Math::Pow(const double& x, const double& e)
   {
     return -pow(-x, e);
   }
-}
-
-/*!
-\brief Absolute value.
-
-\param x Real.
-*/
-inline double Math::Abs(const double& x)
-{
-  return fabs(x);
 }
 
 /*!

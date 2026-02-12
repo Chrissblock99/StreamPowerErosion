@@ -66,8 +66,6 @@ public:
   friend bool operator!=(const Vector&, const Vector&);
 
 
-  // Abs
-  friend Vector Abs(const Vector&);
 
   friend Vector Lerp(const Vector&, const Vector&, const double&);
 
@@ -289,15 +287,6 @@ inline Vector Vector::Fract() const
 }
 
 /*!
-\brief Computes the absolute value of a vector.
-\param u %Vector.
-*/
-inline Vector Abs(const Vector& u)
-{
-  return Vector(u[0] > 0.0 ? u[0] : -u[0], u[1] > 0.0 ? u[1] : -u[1], u[2] > 0.0 ? u[2] : -u[2]);
-}
-
-/*!
 \brief Linear interpolation between two vectors.
 \param a,b Interpolated points.
 \param t Interpolant.
@@ -389,9 +378,6 @@ public:
 
   // High level functions
   Vector2 Inverse() const;
-
-  // Abs
-  friend Vector2 Abs(const Vector2&);
 
   static Vector2 Lerp(const Vector2&, const Vector2&, const double&);
 
@@ -604,14 +590,6 @@ inline bool operator== (const Vector2& u, const Vector2& v)
 inline bool operator!= (const Vector2& u, const Vector2& v)
 {
   return (!(u == v));
-}
-
-/*!
-\brief Computes the absolute value of a vector.
-*/
-inline Vector2 Abs(const Vector2& u)
-{
-  return Vector2(u[0] > 0.0 ? u[0] : -u[0], u[1] > 0.0 ? u[1] : -u[1]);
 }
 
 /*!
