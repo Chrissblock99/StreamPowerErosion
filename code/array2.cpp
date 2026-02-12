@@ -69,26 +69,6 @@ Vector2 Array2::CellDiagonal() const
   return celldiagonal;
 }
 
-/*!
-\brief Convert a direction to an 8 bit integer code.
-\param a,b Neighbor direction vector.
-*/
-int Array2::NeighborCode(int a, int b)
-{
-  int c = 0;
-
-  if (a == 1 && b == 0) 		c = 1;
-  if (a == 1 && b == -1)		c = 2;
-  if (a == 0 && b == -1)		c = 4;
-  if (a == -1 && b == -1)		c = 8;
-  if (a == -1 && b == 0)		c = 16;
-  if (a == -1 && b == 1)		c = 32;
-  if (a == 0 && b == 1)		c = 64;
-  if (a == 1 && b == 1)		c = 128;
-
-  return c;
-}
-
 /*
 int NeighborCodeBIS(int a, int b)
 {

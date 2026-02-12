@@ -62,15 +62,8 @@ public:
 protected:
   constexpr void InverseVertexIndex(int, int&, int&) const;
   Vec2I InverseVertexIndex(int) const;
-
-  // Indexes for storing elements at cells
-  constexpr int CellIndex(int, int) const;
-  constexpr bool InsideCellIndex(int, int) const;
-  bool InsideCellIndex(const Vec2I&) const;
-  void InverseCellIndex(int, int&, int&) const;
   
 public:
-  static int NeighborCode(int, int);
   static Vec2I codeToDir(int);
 protected:
   static const Vec2I next[8]; //!< Array of points in the 1-ring neighborhood.
@@ -209,24 +202,6 @@ inline Vec2I Array2::InverseVertexIndex(int c) const
 \brief Check if the indexes are within range.
 \param i,j Integer coordinates of the vertex.
 */
-inline constexpr bool Array2::InsideCellIndex(int i, int j) const
-{
-  return (i >= 0) && (i < nx - 1) && (j >= 0) && (j < ny - 1);
-}
-
-/*!
-\brief Check if the indexes are within range.
-\param p Point.
-*/
-inline bool Array2::InsideCellIndex(const Vec2I& p) const
-{
-  return (p[0] >= 0) && (p[0] < nx - 1) && (p[1] >= 0) && (p[1] < ny - 1);
-}
-
-/*!
-\brief Check if the indexes are within range.
-\param i,j Integer coordinates of the vertex.
-*/
 inline constexpr bool Array2::InsideVertexIndex(int i, int j) const
 {
   return (i >= 0) && (i < nx) && (j >= 0) && (j < ny);
@@ -289,17 +264,6 @@ inline constexpr bool Array2::InsideVertexIndex(int i, int j, int k) const
 }
 
 /*!
-\brief Compute the coordinates of a given cell.
-\param c Index of the cell.
-\param i,j Integer coordinates of the cell.
-*/
-inline void Array2::InverseCellIndex(int c, int& i, int& j) const
-{
-  i = c % (nx - 1);
-  j = c / (nx - 1);
-}
-
-/*!
 \brief Clamp vertex indexes to the size of the array.
 \param i,j %Vertex indexes
 */
@@ -309,15 +273,6 @@ inline void Array2::ClampVertexIndex(int& i, int& j) const
   if (i > nx - 1) { i = nx - 1; }
   if (j < 0) { j = 0; }
   if (j > nx - 1) { j = nx - 1; }
-}
-
-/*!
-\brief Compute the index of a given cell.
-\param i,j Integer coordinates of the cell.
-*/
-inline constexpr int Array2::CellIndex(int i, int j) const
-{
-  return i + (nx - 1) * j;
 }
 
 /*!
