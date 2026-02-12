@@ -40,8 +40,6 @@ public:
   // Indexes for storing elements at vertices
   constexpr int VertexIndex(int, int) const;
   int VertexIndex(const Vec2I&) const;
-
-  void ClampVertexIndex(int&, int&) const;
   
 protected:
   static const Vec2I next[8]; //!< Array of points in the 1-ring neighborhood.
@@ -145,16 +143,4 @@ inline int Array2::VertexIndex(const Vec2I& p) const
 inline bool Array2::Inside(const Vector2& p) const
 {
   return Box2::Inside(p);
-}
-
-/*!
-\brief Clamp vertex indexes to the size of the array.
-\param i,j %Vertex indexes
-*/
-inline void Array2::ClampVertexIndex(int& i, int& j) const
-{
-  if (i < 0) { i = 0; }
-  if (i > nx - 1) { i = nx - 1; }
-  if (j < 0) { j = 0; }
-  if (j > nx - 1) { j = nx - 1; }
 }
