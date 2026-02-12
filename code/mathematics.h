@@ -178,7 +178,6 @@ public:
   // Angles
   static  double DegreeToRadian(const double&);
   static  double RadianToDegree(const double&);
-  static double ArcTan(const double&, const double&);
 
   static double Cycloidal(const double&);
   static double Triangle(const double&);

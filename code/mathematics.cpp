@@ -152,43 +152,6 @@ bool Math::IsFinite(double x)
 }
 
 /*!
-\brief Inline version of the atan2() function.
-*/
-
-double Math::ArcTan(const double& y, const double& x)
-{
-  if (x > 0.0)
-  {
-    return atan(y / x);
-  }
-  else if (x < 0.0)
-  {
-    if (y >= 0.0)
-    {
-      return atan(y / x) + Math::Pi;
-    }
-    else
-    {  // y < 0
-      return atan(y / x) - Math::Pi;
-    }
-  }
-  else
-  {  // x == 0
-    if (y > 0.0)
-    {
-      return Math::HalfPi;
-    }
-    else if (y < 0.0)
-    {
-      return -Math::HalfPi;
-    }
-    else {  // y == 0
-      return 0.0;
-    }
-  }
-}
-
-/*!
 \brief Compute the sum of the terms of a geometric series.
 
 Compute 1+x+x<SUP>2</SUP>+...+x<SUP>n-1</SUP>=(1-x<SUP>n</SUP>)/(1-x).
