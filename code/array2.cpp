@@ -68,19 +68,3 @@ Vector2 Array2::CellDiagonal() const
 {
   return celldiagonal;
 }
-
-/*!
-\brief Change the resolution.
- 
-Increases the resolution by two.
-*/
-void Array2::Subdivide()
-{   
-  // Change resolution
-  nx = nx * 2 - 1;
-  ny = ny * 2 - 1;
-
-  // Change diagonals
-  celldiagonal = Vector2((b[0] - a[0]) / (nx - 1), (b[1] - a[1]) / (ny - 1));
-  inversecelldiagonal = celldiagonal.Inverse();
-}

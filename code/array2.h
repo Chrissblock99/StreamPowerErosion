@@ -28,29 +28,14 @@ public:
   Box2 GetBox() const;
   Vector2 CellDiagonal() const;
 
-  Vector2 ArrayVertex(int, int) const;
-  Vector2 ArrayVertex(const Vec2I&) const;
-
   Vector2 Size() const;
-
-  // Subdivision
-  void Subdivide();
 
   // Empty
   bool IsEmpty() const;
 
   friend std::ostream& operator<<(std::ostream&, const Array2&);
 
-  // Domain queries
-  constexpr bool InsideVertexIndex(int, int) const;
-  constexpr bool OutsideVertexIndex(int, int) const;
-  bool InsideVertexIndex(const Vec2I&) const;
-  constexpr bool InsideVertexIndex(int, int, int) const;
-
   bool Inside(const Vector2&) const;
-
-  constexpr bool BorderVertexIndex(int, int) const;
-  bool BorderVertexIndex(const Vec2I&) const;
 
   // Indexes for storing elements at vertices
   constexpr int VertexIndex(int, int) const;
@@ -129,24 +114,6 @@ inline int Array2::CellSize() const
 }
 
 /*!
-\brief Compute the coordinates of a point on the grid.
-\param i,j Integer coordinates.
-*/
-inline Vector2 Array2::ArrayVertex(int i, int j) const
-{
-  return Vector2(a[0] + i * celldiagonal[0], a[1] + j * celldiagonal[1]);
-}
-
-/*!
-\brief Compute the coordinates of a point on the grid.
-\param p Point.
-*/
-inline Vector2 Array2::ArrayVertex(const Vec2I& p) const
-{
-  return Vector2(a[0] + p[0] * celldiagonal[0], a[1] + p[1] * celldiagonal[1]);
-}
-
-/*!
 \brief Get the box of the array.
 */
 inline Box2 Array2::GetBox() const
@@ -172,68 +139,12 @@ inline int Array2::VertexIndex(const Vec2I& p) const
 }
 
 /*!
-\brief Check if the indexes are within range.
-\param i,j Integer coordinates of the vertex.
-*/
-inline constexpr bool Array2::InsideVertexIndex(int i, int j) const
-{
-  return (i >= 0) && (i < nx) && (j >= 0) && (j < ny);
-}
-
-/*!
-\brief Check if the indexes are outside or on the border.
-\param i,j Integer coordinates of the vertex.
-*/
-inline constexpr bool Array2::OutsideVertexIndex(int i, int j) const
-{
-  if (i <= 0 || j <= 0 || i >= nx - 1 || j >= ny - 1) return false;
-  return true;
-}
-
-/*!
-\brief Check if the indexes are within range.
-\param p Point.
-*/
-inline bool Array2::InsideVertexIndex(const Vec2I& p) const
-{
-  return (p[0] >= 0) && (p[0] < nx) && (p[1] >= 0) && (p[1] < ny);
-}
-
-/*!
-\brief Check if the indexes are on the border.
-\param i,j Integer coordinates of the vertex.
-*/
-inline constexpr bool Array2::BorderVertexIndex(int i, int j) const
-{
-  return (i == 0) || (i == nx - 1) || (j == 0) || (j == ny - 1);
-}
-
-/*!
-\brief Check if the indexes are on the border.
-\param p Point.
-*/
-inline bool Array2::BorderVertexIndex(const Vec2I& p) const
-{
-  return (p[0] == 0) || (p[0] == nx - 1) || (p[1] == 0) || (p[1] == ny - 1);
-}
-
-/*!
 \brief Check if a point is in the rectangular domain.
 \param p Point.
 */
 inline bool Array2::Inside(const Vector2& p) const
 {
   return Box2::Inside(p);
-}
-
-/*!
-\brief Check if the indexes are within k-range.
-\param i,j Integer coordinates of the vertex.
-\param k Thickness of the boundary around the domain
-*/
-inline constexpr bool Array2::InsideVertexIndex(int i, int j, int k) const
-{
-  return (i >= 0 + k) && (i < nx - k) && (j >= 0 + k) && (j < ny - k);
 }
 
 /*!
