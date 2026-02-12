@@ -35,14 +35,7 @@ public:
   void SetParallelepipedic(int, int&, int&);
   void SetParallelepipedic(const double&, int&, int&);
 
-  bool Inside(const Vector2&) const;
-  bool Inside(const Vector2&, const double&) const;
-
   friend std::ostream& operator<<(std::ostream&, const Box2&);
-
-  Vector2 RandomInside(Random&) const;
-  Vector2 RandomOn(Random&) const;
-  std::vector<Vector2> Poisson(const double&, int, Random&) const;
 
 public:
   static const double epsilon;

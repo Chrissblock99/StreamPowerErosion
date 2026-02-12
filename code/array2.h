@@ -35,8 +35,6 @@ public:
 
   friend std::ostream& operator<<(std::ostream&, const Array2&);
 
-  bool Inside(const Vector2&) const;
-
   // Indexes for storing elements at vertices
   constexpr int VertexIndex(int, int) const;
   int VertexIndex(const Vec2I&) const;
@@ -134,13 +132,4 @@ inline constexpr int Array2::VertexIndex(int i, int j) const
 inline int Array2::VertexIndex(const Vec2I& p) const
 {
   return p[0] + nx * p[1];
-}
-
-/*!
-\brief Check if a point is in the rectangular domain.
-\param p Point.
-*/
-inline bool Array2::Inside(const Vector2& p) const
-{
-  return Box2::Inside(p);
 }
