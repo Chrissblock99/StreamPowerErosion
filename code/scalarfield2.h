@@ -19,7 +19,6 @@ public:
   ~ScalarField2();
 
   virtual Vector2 Gradient(int, int) const;
-  virtual double K() const;
 
   // Access to elements
   double at(int, int) const;
@@ -28,9 +27,6 @@ public:
   double& operator()(const Vec2I&);
   double at(int) const;
   double& operator[](int);
-
-  // Local editing
-  void Gaussian(const Vector2&, const double&, const double&);
 
   friend std::ostream& operator<<(std::ostream&, const ScalarField2&);
   std::vector<double> GetData() const;

@@ -117,60 +117,6 @@ Vector2 ScalarField2::Gradient(int i, int j) const
 }
 
 /*!
-\brief Compute the Lipschitz constant of the elevation function.
-
-Note that this is equivalent to the following code, with the
-difference that this function does not store the norm of the gradient in memory.
-\code
-ScalarField2 n=f.GradientNorm();
-double k=0.0;
-for (int i=0;i<f.VertexSize();i++)
-{
-k=Math::Max(k,f.at(i));
-}
-\endcode
-*/
-double ScalarField2::K() const
-{
-  double k = 0.0;
-
-  for (int i = 0; i < nx; i++)
-  {
-    for (int j = 0; j < ny; j++)
-    {
-      k = Math::Max(k, Norm(Gradient(i, j)));
-    }
-  }
-  return k;
-}
-
-
-/*!
-\brief Add material with gaussian distribution.
-\param center Center of the distribution.
-\param radius Radius
-\param height Maximum height of the distribution.
-*/
-void ScalarField2::Gaussian(const Vector2& center, const double& radius, const double& height)
-{
-    // Compute modification Area
-    Vec2I pa, pb;
-    VertexIntegerArea(Box2(center, radius), pa, pb);
-
-    // Compute thickness
-    for (int y = pa[1]; y <= pb[1]; y++)
-    {
-        for (int x = pa[0]; x <= pb[0]; x++)
-        {
-            // Distance between central point and current point
-            double u = SquaredNorm(center - ArrayVertex(x, y));
-            if (u < radius * radius)
-                field[VertexIndex(x, y)] += height * Math::CubicSmooth(u, radius * radius);
-        }
-    }
-}
-
-/*!
 \brief Overloaded.
 \param s Stream.
 \param scalar The scalar field.
