@@ -102,28 +102,6 @@ double Cosine(const Vector& u, const Vector& v)
 }
 
 /*!
-\brief Swap two vectors.
-\param a, b Vectors.
-*/
-void Swap(Vector& a, Vector& b)
-{
-  Vector t = a;
-  a = b;
-  b = t;
-}
-
-/*!
-\brief Swap two pointers to (arrays) vectors.
-\param a, b Vectors.
-*/
-void Swap(Vector*& a, Vector*& b)
-{
-  Vector* t = a;
-  a = b;
-  b = t;
-}
-
-/*!
 \brief Overloaded output-stream operator.
 \param u Vector.
 \param s Stream.

@@ -64,17 +64,6 @@ double Cosine(const Vector2& u, const Vector2& v)
 }
 
 /*!
-\brief Swap two vectors.
-\param a, b Vectors.
-*/
-void Swap(Vector2& a, Vector2& b)
-{
-    Vector2 t = a;
-    a = b;
-    b = t;
-}
-
-/*!
 \brief Test if two vectors are almost equal.
 
 \sa Vector::Equal

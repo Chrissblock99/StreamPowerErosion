@@ -88,10 +88,6 @@ public:
   // Abs
   friend Vector Abs(const Vector&);
 
-  // Swap
-  friend void Swap(Vector&, Vector&);
-  friend void Swap(Vector*&, Vector*&);
-
   friend Vector Clamp(const Vector&, const Vector&, const Vector&);
   friend Vector Lerp(const Vector&, const Vector&, const double&);
   static Vector Bilinear(const Vector&, const Vector&, const Vector&, const Vector&, const double&, const double&);
@@ -596,9 +592,6 @@ public:
 
   // Classification
   int Quadrant(const Vector2&) const;
-
-  // Swap
-  friend void Swap(Vector2&, Vector2&);
 
   friend Vector2 Clamp(const Vector2&, const Vector2&, const Vector2&);
   static Vector2 Lerp(const Vector2&, const Vector2&, const double&);

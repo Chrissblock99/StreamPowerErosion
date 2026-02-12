@@ -257,7 +257,6 @@ public:
   static int Integer(const double&);
   static void Sort(double&, double&);
   static void Sort(double&, double&, double&);
-  static void Swap(double&, double&);
 
   static bool IsNumber(double);
   static bool IsFinite(double);
@@ -276,9 +275,6 @@ public:
   static double Fract(const double&, const double&, const double&, double&);
 
   static double Geometric(double, int);
-
-  static void Swap(double*&, double*&);
-  static void Swap(int*&, int*&);
   
   static double LinearStep(const double& x, const double& a, const double& b);
   static double CubicSmooth(double x, double r);
@@ -402,51 +398,6 @@ inline double Math::SymmetricSqr(const double& x)
 }
 
 /*!
-\brief Sort two reals.
-
-\sa Math::Swap(double&,double&)
-\param a, b Real arguments, which will be swapped so that a<=b.
-*/
-inline void Math::Sort(double& a, double& b)
-{
-  if (a > b)
-  {
-    double c = a;
-    a = b;
-    b = c;
-  }
-}
-
-/*!
-\brief Sort three reals.
-
-\sa Math::Sort(double&,double&)
-\param a, b, c Real arguments, which will be swapped so that a<=b<=c.
-*/
-inline void Math::Sort(double& a, double& b, double& c)
-{
-  if (a > b)
-  {
-    Swap(a, b);
-  }
-  // a b C : do nothing
-  if (c >= b)
-    return;
-
-  // C a b : move and place
-  if (c <= a)
-  {
-    double t = c;
-    c = b;
-    b = a;
-    a = t;
-    return;
-  }
-  // a C b : swap b and c
-  Swap(b, c);
-}
-
-/*!
 \brief Linear interpolation.
 
 Returns (1-t)a+tb.
@@ -457,30 +408,6 @@ Returns (1-t)a+tb.
 inline double Math::Lerp(const double& a, const double& b, const double& t)
 {
   return a + t * (b - a);
-}
-
-/*!
-\brief Swap two reals.
-\sa Sort(double&,double&)
-\param a, b Arguments.
-*/
-inline void Math::Swap(double& a, double& b)
-{
-  double t = a;
-  a = b;
-  b = t;
-}
-
-/*!
-\brief Swap two integers.
-\sa Swap(double&,double&)
-\param a, b Arguments.
-*/
-inline void Swap(int& a, int& b)
-{
-  int t = a;
-  a = b;
-  b = t;
 }
 
 /*!
@@ -858,20 +785,6 @@ inline double Math::Fract(const double& x, const double& a, double& i)
 inline double Math::Fract(const double& x, const double& a, const double& b, double& i)
 {
   return Math::Fract(x - a, b - a, i);
-}
-
-inline void Math::Swap(double*& a, double*& b)
-{
-  double* t = a;
-  a = b;
-  b = t;
-}
-
-inline void Math::Swap(int*& a, int*& b)
-{
-  int* t = a;
-  a = b;
-  b = t;
 }
 
 /*!
