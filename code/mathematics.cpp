@@ -232,24 +232,6 @@ double Math::BiCubic(const double& u, const double& v, const double& a00, const 
   return hu00 * (a00 * hv00 + a01 * hv01) + hu01 * (a10 * hv00 + a11 * hv01);
 }
 
-/*
-\brief Maximum of an array of reals.
-\param a %Array.
-\param n Size.
-*/
-double Math::MaxArray(double* a, int n)
-{
-  double t = a[0];
-  for (int i = 0; i < n; i++)
-  {
-    if (a[i] > t)
-    {
-      t = a[i];
-    }
-  }
-  return t;
-}
-
 /*!
 \brief Inline version of the atan2() function.
 */

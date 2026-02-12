@@ -182,13 +182,6 @@ public:
   static double SymmetricSqr(const double&);
   static double Pow(const double&, const double&);
   static double Sqrt32(const double&);
-  static double Sqrt4(const double&);
-
-  // Series of powers
-  static void Powers(const double&, int, double*);
-
-  // Minimum and maximum
-  static double MaxArray(double*, int);
 
   // Angles
   static  double DegreeToRadian(const double&);
@@ -282,20 +275,6 @@ double y=Math::Sqrt32(7.0); // Equivalent but faster than y=pow(7.0,1.5);
 inline double Math::Sqrt32(const double& x)
 {
   return sqrt(x * x * x);
-}
-
-/*!
-\brief Compute the fourth root of x<SUP>3</SUP>.
-
-This function is more efficient than pow() which is extremely slow.
-\code
-double y=Math::Sqrt4(7.0); // Equivalent to y=sqrt(sqrt(7.0));
-\endcode
-\param x Real value.
-*/
-inline double Math::Sqrt4(const double& x)
-{
-  return sqrt(sqrt(x));
 }
 
 /*!
@@ -554,24 +533,6 @@ inline int Math::IntegerSign(const double& x, const double& t)
 inline double Math::Gaussian(const double& x, const double& s)
 {
   return exp(-(x * x) / (s * s));
-}
-
-/*!
-\brief Compute the powers series of a real value 1, x, ... , x<SUP>n-1</SUP>.
-\param x Real.
-\param n Maximum power.
-\param a Array of real, should be at least of size n.
-*/
-inline void Math::Powers(const double& x, int n, double* a)
-{
-  a[0] = 1.0;
-  a[1] = x;
-  double y = x;
-  for (int k = 2; k < n; k++)
-  {
-    y *= x;
-    a[k] = y;
-  }
 }
 
 #endif
