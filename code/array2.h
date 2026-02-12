@@ -24,7 +24,6 @@ public:
   int CellSize() const;
   int CellSizeX() const;
   int CellSizeY() const;
-  Vector2 CellCenter(int, int) const;
 
   Box2 GetBox() const;
   Vector2 CellDiagonal() const;
@@ -39,18 +38,6 @@ public:
 
   // Empty
   bool IsEmpty() const;
-
-  // Vertex queries
-  void VertexInteger(const Vector2&, int&, int&) const;
-  Vec2I VertexInteger(const Vector2&) const;
-  Vec2I VertexInteger(const Vector2&, double&, double&) const;
-  void VertexIntegerArea(const Box2& box, Vec2I& pa, Vec2I& pb) const;
-
-  // Cell queries
-  void CellInteger(const Vector2&, int&, int&) const;
-  void CellInteger(const Vector2&, int&, int&, double&, double&) const;
-  Vec2I CellInteger(const Vector2&) const;
-  Vec2I CellInteger(const Vector2&, double&, double&) const;
 
   friend std::ostream& operator<<(std::ostream&, const Array2&);
 
@@ -313,104 +300,6 @@ inline void Array2::InverseCellIndex(int c, int& i, int& j) const
 }
 
 /*!
-\brief Compute the point on the grid given an input point.
-\param p Point.
-\param i,j Integer coordinates of the cell.
-\param u,v Coordinates of the point in the corresponding cell.
-*/
-inline void Array2::CellInteger(const Vector2& p, int& i, int& j, double& u, double& v) const
-{
-  Vector2 q = p - a;
-
-  /*
-    Vector2 d = b - a;
-
-    u = q[0] / d[0];
-    v = q[1] / d[1];
-
-    // Scale
-    u *= (nx - 1);
-    v *= (ny - 1);
-  */
-  u = q[0] * inversecelldiagonal[0];
-  v = q[1] * inversecelldiagonal[1];
-
-  // Integer coordinates
-  i = int(u);
-  j = int(v);
-
-  // Local coordinates within cell
-  u -= i;
-  v -= j;
-}
-
-/*!
-\brief Compute the point on the grid given an input point.
-\param p Point.
-\param u,v Coordinates of the point in the corresponding cell.
-*/
-inline Vec2I Array2::CellInteger(const Vector2& p, double& u, double& v) const
-{
-  Vector2 q = p - a;
-
-  /*
-    Vector2 d = b - a;
-
-    u = q[0] / d[0];
-    v = q[1] / d[1];
-
-    // Scale
-    u *= (nx - 1);
-    v *= (ny - 1);
-  */
-  u = q[0] * inversecelldiagonal[0];
-  v = q[1] * inversecelldiagonal[1];
-
-  // Integer coordinates
-  int i = int(u);
-  int j = int(v);
-
-  // Local coordinates within cell
-  u -= i;
-  v -= j;
-
-  return Vec2I(i, j);
-}
-
-/*!
-\brief Compute the point on the grid given an input point.
-\param p Point.
-\param u, v Coordinates of the point in the corresponding cell.
-*/
-inline Vec2I Array2::VertexInteger(const Vector2& p, double& u, double& v) const
-{
-  Vector2 q = p - a;
-
-  /*
-    Vector2 d = b - a;
-
-    u = q[0] / d[0];
-    v = q[1] / d[1];
-
-    // Scale
-    u *= (nx - 1);
-    v *= (ny - 1);
-  */
-  u = q[0] * inversecelldiagonal[0];
-  v = q[1] * inversecelldiagonal[1];
-
-  // Integer coordinates
-  int i = int(u);
-  int j = int(v);
-
-  // Local coordinates within cell
-  u -= i;
-  v -= j;
-
-  return Vec2I(i, j);
-}
-
-/*!
 \brief Clamp vertex indexes to the size of the array.
 \param i,j %Vertex indexes
 */
@@ -429,68 +318,6 @@ inline void Array2::ClampVertexIndex(int& i, int& j) const
 inline constexpr int Array2::CellIndex(int i, int j) const
 {
   return i + (nx - 1) * j;
-}
-
-/*!
-\brief Compute the coordinates of a vertex inside a cell.
-\param p Point.
-\param i,j Integer coordinates of the cell.
-*/
-inline void Array2::VertexInteger(const Vector2& p, int& i, int& j) const
-{
-  Vector2 q = p - a;
-  /*
-  Vector2 d = b - a;
-
-  double u = q[0] / d[0];
-  double v = q[1] / d[1];
-
-  i = int(u * (nx - 1));
-  j = int(v * (ny - 1));
-  */
-  i = int(q[0] * inversecelldiagonal[0]);
-  j = int(q[1] * inversecelldiagonal[1]);
-}
-
-/*!
-\brief Compute the coordinates of a vertex inside a cell.
-\param p Point.
-*/
-inline Vec2I Array2::VertexInteger(const Vector2& p) const
-{
-  int i, j;
-  VertexInteger(p, i, j);
-  return Vec2I(i, j);
-}
-
-/*!
-\brief Compute the coordinates of a vertex inside a cell.
-\param p Point.
-*/
-inline Vec2I Array2::CellInteger(const Vector2& p) const
-{
-  int i, j;
-  CellInteger(p, i, j);
-  return Vec2I(i, j);
-}
-
-/*!
-\brief Compute the coordinates of a vertex inside a cell.
-\param p Point.
-\param i,j Integer coordinates of the cell.
-*/
-inline void Array2::CellInteger(const Vector2& p, int& i, int& j) const
-{
-  Vector2 q = p - a;
-  /*
-  Vector2 d = b - a;
-  double u = q[0] / d[0];
-  double v = q[1] / d[1];
-  i = int(u * (nx - 1));
-  j = int(v * (ny - 1));
-  */
-  i = int(q[0] * inversecelldiagonal[0]);
-  j = int(q[1] * inversecelldiagonal[1]);
 }
 
 /*!

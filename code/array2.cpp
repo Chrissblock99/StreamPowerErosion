@@ -51,15 +51,6 @@ Array2::Array2(const Box2& box, int n) :Array2(box, n, n)
 }
 
 /*!
-\brief Return the center of the cell.
-\param i,j Integer coordinates of the cell.
-*/
-Vector2 Array2::CellCenter(int i, int j) const
-{
-  return  a + celldiagonal.Scaled(Vector2(i, j)) + 0.5 * celldiagonal;
-}
-
-/*!
 \brief Overloaded.
 \param s Stream.
 \param a The array.
@@ -76,35 +67,6 @@ std::ostream& operator<<(std::ostream& s, const Array2& a)
 Vector2 Array2::CellDiagonal() const
 {
   return celldiagonal;
-}
-
-/*!
-\brief Compute the integer coordinates of the vertices embedding a box.
-
-The coordinates are clamped to the size of the array.
-\param box %Box.
-*/
-void Array2::VertexIntegerArea(const Box2& box, Vec2I& pa, Vec2I& pb) const
-{
-    pa = VertexInteger(box[0]);
-    pb = VertexInteger(box[1]);
-
-    // Rectangle
-    struct MyRect {
-        Vec2I v[2];
-    };
-    MyRect area = { pa, pa + Vec2I(pb[0] - pa[0] + 1, pb[1] - pa[1] + 1) };
-
-    // Limit to domain
-    MyRect mask = { Vec2I(0, 0), Vec2I(nx - 1, ny - 1) };
-    pa = Vec2I(
-        max(area.v[0][0], mask.v[0][0]),
-        max(area.v[0][1], mask.v[0][1])
-    );
-    pb = Vec2I(
-        min(area.v[1][0], mask.v[1][0]),
-        min(area.v[1][1], mask.v[1][1])
-    );
 }
 
 /*!
