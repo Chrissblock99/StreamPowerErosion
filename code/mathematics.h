@@ -195,7 +195,6 @@ public:
   static  double RadianToDegree(const double&);
   static double ArcTan(const double&, const double&);
 
-  static double Step(double, double);
   static double Cycloidal(const double&);
   static double Triangle(const double&);
 
@@ -237,7 +236,6 @@ public:
 
   static double Geometric(double, int);
   
-  static double LinearStep(const double& x, const double& a, const double& b);
   static double CubicSmooth(double x, double r);
 };
 
@@ -574,39 +572,6 @@ inline void Math::Powers(const double& x, int n, double* a)
     y *= x;
     a[k] = y;
   }
-}
-
-/*!
-\brief Step function.
-\param e Step position.
-\param x Variable.
-*/
-inline double Math::Step(double e, double x)
-{
-  return (x < e) ? 0.0 : 1.0;
-}
-
-/*!
-\brief Create a linear step.
-\param x Value
-\param a, b Interval values.
-\return Real in unit inverval.
-\sa Cubic::SmoothStep, Quintic::SmoothStep
-*/
-inline double Math::LinearStep(const double& x, const double& a, const double& b)
-{
-    if (x < a)
-    {
-        return 0.0;
-    }
-    else if (x > b)
-    {
-        return 1.0;
-    }
-    else
-    {
-        return (x - a) / (b - a);
-    }
 }
 
 #endif
