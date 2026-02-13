@@ -73,8 +73,6 @@ public:
 
   friend std::ostream& operator<<(std::ostream&, const Vector&);
 
-  static Vector Solve(const Vector&, const Vector&, const double&, const double&);
-
 public:
   static const Vector Null; //!< Null vector.
   static const Vector X; //!< Vector(1,0,0).
@@ -283,19 +281,6 @@ inline Vector Lerp(const Vector& a, const Vector& b, const double& t)
   return a + t * (b - a);
 }
 
-/*!
-\brief Compute the point on a segment such that the linear function satisfies f(a)=va and f(b)=vb.
-
-This function can be used as a first approximation for computing the intersection between a segment and an implicit surface.
-\image html intersection.png
-
-\sa Linear::Solve(const double& a, const double& b, const Vector&, const Vector&);
-*/
-inline Vector Vector::Solve(const Vector& a, const Vector& b, const double& va, const double& vb)
-{
-  return (vb * a - va * b) / (vb - va);
-}
-
 // Class
 class Vector2
 {
@@ -356,16 +341,7 @@ public:
 
   static Vector2 Lerp(const Vector2&, const Vector2&, const double&);
 
-  // Position of a point
-  friend double WhichSide(const Vector2&, const Vector2&, const Vector2&);
-  friend bool IsLeft(const Vector2&, const Vector2&, const Vector2&);
-  friend bool IsRight(const Vector2&, const Vector2&, const Vector2&);
-
   friend std::ostream& operator<<(std::ostream&, const Vector2&);
-
-
-  static Vector2 Solve(const Vector2&, const Vector2&, const double&, const double&);
-  static bool Clockwise(const Vector2&, const Vector2&, const Vector2&);
 
 public:
   static const Vector2 Null; //!< Null vector.
@@ -566,46 +542,6 @@ inline bool operator!= (const Vector2& u, const Vector2& v)
 }
 
 /*!
-\brief Compute the position of a point with respect to a line.
-\param p Point
-\param a, b Vertices of the line.
-*/
-inline double WhichSide(const Vector2& p, const Vector2& a, const Vector2& b)
-{
-  return (b - a) / (p - a);
-}
-
-/*!
-\brief Returns true if the three points make a clockwise turn.
-\param a,b,c Points.
-\sa WhichSide
-*/
-inline bool Vector2::Clockwise(const Vector2& a, const Vector2& b, const Vector2& c)
-{
-  return (b - a) / (c - a) < 0.0;
-}
-
-/*!
-\brief Compute the position of a point with respect to a line.
-\param p Point
-\param a,b Vertices of the line.
-*/
-inline bool IsLeft(const Vector2& p, const Vector2& a, const Vector2& b)
-{
-  return (b - a) / (p - a) > 0.0;
-}
-
-/*!
-\brief Compute the position of a point with respect to a line.
-\param p Point
-\param a,b Vertices of the line.
-*/
-inline bool IsRight(const Vector2& p, const Vector2& a, const Vector2& b)
-{
-  return (b - a) / (p - a) < 0.0;
-}
-
-/*!
 \brief Linear interpolation between two vectors.
 \param a,b Interpolated points.
 \param t Interpolant.
@@ -613,16 +549,6 @@ inline bool IsRight(const Vector2& p, const Vector2& a, const Vector2& b)
 inline Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, const double& t)
 {
   return a + t * (b - a);
-}
-
-/*!
-\brief Compute the point on a segment such that the linear function satisfies f(a)=va and f(b)=vb.
-
-\sa Vector::Solve(const double& a, const double& b, const Vector&, const Vector&);
-*/
-inline Vector2 Vector2::Solve(const Vector2& a, const Vector2& b, const double& va, const double& vb)
-{
-  return (vb * a - va * b) / (vb - va);
 }
 
 /*!
