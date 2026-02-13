@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 
-#include "scalarfield2.h"
 #include "shader-api.h"
 
 class GPU_SPE {
@@ -27,20 +26,18 @@ private:
 
 	GLuint steepestTexture = 0;
 
-	Vec2I srcPos = Vec2I(0);
-	Vec2I size = Vec2I(0);
+	int srcPosX = 1;
+	int srcPosY = 1;
+	int sizeX = 0;
+	int sizeY = 0;
 	int nx = 0;
 	int ny = 0;
-	int totalBufferSize = 0;					//!< Total buffer size defined as nx * ny
-	std::vector<float> tmpData;			//!< Temporary array for retreiving GPU data
 public:
 	GPU_SPE() {};
 	~GPU_SPE();
 
-	void Init(const ScalarField2&);
+	void Init(int inSizeX, int inSizeY);
 	void Step(int n);
-
-	void SetUplift(const ScalarField2& uplift) const;
 };
 
 #endif

@@ -48,7 +48,6 @@ if (WIN32)
 		${SRC_DIR}/box2.h
 		${SRC_DIR}/evector.h
 		${SRC_DIR}/ivector.h
-		${SRC_DIR}/scalarfield2.h
 		${SRC_DIR}/shader-api.h
 		${SRC_DIR}/window.h
 		${SRC_DIR}/tesselationWidget.h
@@ -64,7 +63,6 @@ else()
 		${SRC_DIR}/box2.h
 		${SRC_DIR}/evector.h
 		${SRC_DIR}/ivector.h
-		${SRC_DIR}/scalarfield2.h
 		${SRC_DIR}/shader-api.h
 		${SRC_DIR}/window.h
 		${SRC_DIR}/tesselationWidget.h
