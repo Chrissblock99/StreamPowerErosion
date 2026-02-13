@@ -13,8 +13,6 @@ An array is a two-dimensional rectangle virtually decomposed into cells.
 \ingroup StructureGroup
 */
 
-const Vec2I Array2::next[8] = { Vec2I(1, 0), Vec2I(1, 1), Vec2I(0, 1), Vec2I(-1, 1), Vec2I(-1, 0), Vec2I(-1, -1), Vec2I(0, -1), Vec2I(1, -1) };
-
 /*!
 \brief Empty array, with empty box.
 */

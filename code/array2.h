@@ -38,9 +38,6 @@ public:
   // Indexes for storing elements at vertices
   constexpr int VertexIndex(int, int) const;
   int VertexIndex(const Vec2I&) const;
-  
-protected:
-  static const Vec2I next[8]; //!< Array of points in the 1-ring neighborhood.
 };
 
 /*!
