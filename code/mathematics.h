@@ -179,9 +179,6 @@ public:
   static  double DegreeToRadian(const double&);
   static  double RadianToDegree(const double&);
 
-  static double Cycloidal(const double&);
-  static double Triangle(const double&);
-
   // Linear interpolation
   static double Lerp(const double&, const double&, const double&);
 

@@ -90,39 +90,3 @@ const double Math::Sqrt3 = sqrt(3.0);
 const double Math::Sqrt2 = sqrt(2.0);
 
 const double Math::Golden = (sqrt(5.0) + 1.0) / 2.0;
-
-
-/*!
-\brief Sine wave over unit interval.
-\param x Real value.
-*/
-double Math::Cycloidal(const double& x)
-{
-  return sin(x - floor(x) * 2.0 * Math::Pi);
-}
-
-/*!
-\brief %Triangle wave over unit interval.
-\param x Real value.
-*/
-double Math::Triangle(const double& x)
-{
-  double offset;
-
-  if (x >= 0.0)
-  {
-    offset = x - floor(x);
-  }
-  else
-  {
-    offset = x - (-1.0 - floor(fabs(x)));
-  }
-  if (offset >= 0.5)
-  {
-    return (2.0 * (1.0 - offset));
-  }
-  else
-  {
-    return (2.0 * offset);
-  }
-}
