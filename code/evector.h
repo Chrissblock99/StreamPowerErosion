@@ -66,9 +66,6 @@ public:
   friend bool operator!=(const Vector&, const Vector&);
 
 
-
-  friend Vector Lerp(const Vector&, const Vector&, const double&);
-
   Vector Inverse() const;
 
   friend std::ostream& operator<<(std::ostream&, const Vector&);
@@ -271,16 +268,6 @@ inline bool operator!= (const Vector& u, const Vector& v)
   return (!(u == v));
 }
 
-/*!
-\brief Linear interpolation between two vectors.
-\param a,b Interpolated points.
-\param t Interpolant.
-*/
-inline Vector Lerp(const Vector& a, const Vector& b, const double& t)
-{
-  return a + t * (b - a);
-}
-
 // Class
 class Vector2
 {
@@ -338,8 +325,6 @@ public:
 
   // High level functions
   Vector2 Inverse() const;
-
-  static Vector2 Lerp(const Vector2&, const Vector2&, const double&);
 
   friend std::ostream& operator<<(std::ostream&, const Vector2&);
 
@@ -539,16 +524,6 @@ inline bool operator== (const Vector2& u, const Vector2& v)
 inline bool operator!= (const Vector2& u, const Vector2& v)
 {
   return (!(u == v));
-}
-
-/*!
-\brief Linear interpolation between two vectors.
-\param a,b Interpolated points.
-\param t Interpolant.
-*/
-inline Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, const double& t)
-{
-  return a + t * (b - a);
 }
 
 /*!
