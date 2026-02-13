@@ -20,11 +20,9 @@ int main()
 	widget = new TesselationWidget();
 	window->SetWidget(widget);
 	hf = ScalarField2(Box2(Vector2::Null, 150*1000), "../data/heightfields/hfTest2.png", 0.0, 1000.0);
-	uplift = ScalarField2(Box2(Vector2::Null, 150*1000), "../data/uplifts/lambda.png", 0.4, 10.0);
 
 	// gpu_spe init
 	gpu_spe.Init(hf);
-	gpu_spe.SetUplift(uplift);
 
 	// Main loop
 	while (!window->Exit()) {

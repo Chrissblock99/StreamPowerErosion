@@ -12,6 +12,7 @@ GPU_SPE::~GPU_SPE() {
 
 	glDeleteTextures(1, &steepestTexture);
 
+	release_program(initShader);
 	release_program(simulationShader);
 	release_program(precalcShader);
 	release_program(simulationShader2);
@@ -35,6 +36,9 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	std::vector<float> tmpZeros(totalBufferSize, 0.);
 
 	// Prepare shader & Init buffer - Just done once
+	std::string fullPathInit = "./data/shaders/texture_init.comp";
+	initShader = read_program(fullPathInit.c_str());
+
 	std::string fullPath = "./data/shaders/spe_shader.comp";
 	simulationShader = read_program(fullPath.c_str());
 
@@ -55,33 +59,42 @@ void GPU_SPE::Init(const ScalarField2& hf) {
 	if (tempBedrockTexture == 0) glGenTextures(1, &tempBedrockTexture);
 	glBindTexture(GL_TEXTURE_2D, tempBedrockTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 
 	if (streamTexture == 0) glGenTextures(1, &streamTexture);
 	glBindTexture(GL_TEXTURE_2D, streamTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 
 	if (tempStreamTexture == 0) glGenTextures(1, &tempStreamTexture);
 	glBindTexture(GL_TEXTURE_2D, tempStreamTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 
 	if (upliftTexture == 0) glGenTextures(1, &upliftTexture);
 	glBindTexture(GL_TEXTURE_2D, upliftTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, nx, ny);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_FLOAT, &tmpZeros.front());
 	
 	if (steepestTexture == 0) glGenTextures(1, &steepestTexture);
 	glBindTexture(GL_TEXTURE_2D, steepestTexture);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_R8I, nx, ny);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, nx, ny, GL_RED, GL_BYTE, &tmpZeros.front());
 
 	// Uniforms - just once
 
 	std::cout << "srcPos: " << srcPos[0] << " " << srcPos[1] << std::endl;
 	std::cout << "size: " << size[0] << " " << size[1] << std::endl;
 	std::cout << "nx ny: " << nx << " " << ny << std::endl;
+
+	glUseProgram(initShader);
+	glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(initShader, "bedrockMap"), 0);
+	glBindImageTexture(1, streamTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(initShader, "streamMap"), 1);
+	glBindImageTexture(2, tempBedrockTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(initShader, "tempBedrockMap"), 2);
+	glBindImageTexture(3, tempStreamTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(initShader, "tempStreamMap"), 3);
+	glBindImageTexture(4, upliftTexture, 0, false, 0, GL_WRITE_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(initShader, "upliftMap"), 4);
+	glBindImageTexture(5, steepestTexture, 0, false, 0, GL_WRITE_ONLY, GL_R8I); glUniform1i(glGetUniformLocation(initShader, "steepestMap"), 5);
+	glUniform2i(glGetUniformLocation(initShader, "srcPos"), srcPos[0], srcPos[1]);
+	glUniform2i(glGetUniformLocation(initShader, "size"), size[0], size[1]);
+	//run init
+	glUseProgram(initShader);
+	glDispatchCompute((size[0] / 8) + 1, (size[1] / 8) + 1, 1);
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 	glUseProgram(simulationShader);
 	glBindImageTexture(0, bedrockTexture, 0, false, 0, GL_READ_ONLY, GL_R32F); glUniform1i(glGetUniformLocation(simulationShader, "bedrockMap"), 0);

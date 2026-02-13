@@ -10,7 +10,9 @@
 
 class GPU_SPE {
 private:
-	GLuint simulationShader = 0;			//!< Compute shader
+	GLuint initShader = 0;			//!< Compute shader
+
+	GLuint simulationShader = 0;
 	GLuint precalcShader = 0;
 	GLuint simulationShader2 = 0;
 	GLuint precalcShader2 = 0;
