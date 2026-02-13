@@ -77,7 +77,7 @@ void main() {
     vec2 position = (p11 - p00) * uv + p00;
     ivec2 texPosition = ivec2(position)+128;
 
-    float height = imageLoad(bedrockMap, texPosition).x/1176.0;
+    float height = imageLoad(bedrockMap, texPosition).x/1176.47;
 
     gl_Position =  vec4(position.x, height, position.y, 1);
 }
