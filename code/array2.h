@@ -20,8 +20,6 @@ public:
   int GetSizeX() const;
   int GetSizeY() const;
 
-  Vector2 Size() const;
-
   // Empty
   bool IsEmpty() const;
 
@@ -31,14 +29,6 @@ public:
   constexpr int VertexIndex(int, int) const;
   int VertexIndex(const Vec2I&) const;
 };
-
-/*!
-\brief Return the size of the array.
-*/
-inline Vector2 Array2::Size() const
-{
-  return Box2::Size();
-}
 
 /*!
 \brief Detect if the array is empty, i.e., any dimension equal to zero.

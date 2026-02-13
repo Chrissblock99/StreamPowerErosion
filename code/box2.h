@@ -17,17 +17,10 @@ public:
   Vector2& operator[] (int);
   Vector2 operator[] (int) const;
 
-  Vector2 Size() const;
-  double Width() const;
-  double Height() const;
-  Vector2 Diagonal() const;
-
   // Access to vertices
-  Vector2 Center() const;
   Vector2 Vertex(int) const;
   Vector2 Vertex(int, int, int, int) const;
   
-  double Area() const;
 
   friend std::ostream& operator<<(std::ostream&, const Box2&);
 
@@ -75,56 +68,6 @@ inline Vector2 Box2::operator[] (int i) const
 {
   if (i == 0) return a;
   else return b;
-}
-
-//! Compute the surface area of a box.
-inline double Box2::Area() const
-{
-	return Width() * Height();
-}
-
-/*!
-\brief Compute the size (width and height) of a box.
-*/
-inline Vector2 Box2::Size() const
-{
-  return b - a;
-}
-
-/*!
-\brief Compute the width of a box.
-
-\sa Box2::Size()
-*/
-inline double Box2::Width() const
-{
-  return b[0] - a[0];
-}
-
-/*!
-\brief Compute the height of a box.
-
-\sa Box2::Size()
-*/
-inline double Box2::Height() const
-{
-  return b[1] - a[1];
-}
-
-/*!
-\brief Returns the diagonal of the box.
-*/
-inline Vector2 Box2::Diagonal() const
-{
-  return (b - a);
-}
-
-/*!
-\brief Returns the center of the box.
-*/
-inline Vector2 Box2::Center() const
-{
-  return 0.5 * (a + b);
 }
 
 /*!
