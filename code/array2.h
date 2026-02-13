@@ -20,12 +20,6 @@ public:
   int GetSizeX() const;
   int GetSizeY() const;
 
-  int CellSize() const;
-  int CellSizeX() const;
-  int CellSizeY() const;
-
-  Box2 GetBox() const;
-
   Vector2 Size() const;
 
   // Empty
@@ -71,43 +65,11 @@ inline int Array2::GetSizeY() const
 }
 
 /*!
-\brief Get the cell size of the array for x axis.
-*/
-inline int Array2::CellSizeX() const
-{
-  return nx - 1;
-}
-
-/*!
-\brief Get the cell size of the array for y axis.
-*/
-inline int Array2::CellSizeY() const
-{
-  return ny - 1;
-}
-
-/*!
 \brief Return the size of the vertex array.
 */
 inline int Array2::VertexSize() const
 {
   return nx * ny;
-}
-
-/*!
-\brief Return the size of the cell array.
-*/
-inline int Array2::CellSize() const
-{
-  return (nx - 1) * (ny - 1);
-}
-
-/*!
-\brief Get the box of the array.
-*/
-inline Box2 Array2::GetBox() const
-{
-  return Box2(a, b);
 }
 
 /*!
