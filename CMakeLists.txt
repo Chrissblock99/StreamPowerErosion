@@ -53,7 +53,6 @@ if (WIN32)
 		${SRC_DIR}/window.h
 		${SRC_DIR}/tesselationWidget.h
 		${SRC_DIR}/stb_image.h
-		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/spe_shader.h
 	)
 else()
@@ -70,7 +69,6 @@ else()
 		${SRC_DIR}/window.h
 		${SRC_DIR}/tesselationWidget.h
 		${SRC_DIR}/stb_image.h
-		${SRC_DIR}/stb_image_write.h
 		${SRC_DIR}/spe_shader.h
 	)
 endif()
