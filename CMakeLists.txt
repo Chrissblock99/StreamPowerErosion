@@ -42,7 +42,6 @@ aux_source_directory(${SRC_DIR} SRC_FILES)
 if (WIN32)
 	add_executable(${DEMO} 
 		${SRC_FILES}
-		${SRC_DIR}/mathematics.h
 		${SRC_DIR}/array2.h
 		${SRC_DIR}/noise.h
 		${SRC_DIR}/random.h
@@ -61,7 +60,6 @@ if (WIN32)
 else()
 	add_executable(${DEMO} 
 		${SRC_FILES}
-		${SRC_DIR}/mathematics.h
 		${SRC_DIR}/array2.h
 		${SRC_DIR}/noise.h
 		${SRC_DIR}/texture.h

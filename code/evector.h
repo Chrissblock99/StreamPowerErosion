@@ -11,8 +11,8 @@
 #ifndef __Vector__
 #define __Vector__
 
-// Mathematics fundamentals
-#include "mathematics.h"
+#include <math.h>
+#include <iostream>
 
 // Class
 class Vector

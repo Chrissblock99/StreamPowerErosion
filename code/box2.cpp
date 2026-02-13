@@ -10,7 +10,6 @@
 */
 
 const double Box2::epsilon = 1.0e-5; //!< Epsilon value used to check intersections and some round off errors.
-const Box2 Box2::Infinity(Vector2(-Math::Infinity), Vector2(Math::Infinity)); //!< Huge bounding box, which should enclose any other 
 const Box2 Box2::Null = Box2();                     //!< Null box, equivalent to \code Box2(Vector2(0.0)); \endcode
 const Box2 Box2::Unit(Vector2(0.0), Vector2(1.0));  //!< Unit box, defined as \code Box2(Vector2(0.0),Vector2(1.0)); \endcode
 

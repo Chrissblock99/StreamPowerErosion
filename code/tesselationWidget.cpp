@@ -92,7 +92,7 @@ void TesselationWidget::Update()
 	if (parent->GetMousePressed(GLFW_MOUSE_BUTTON_LEFT) && !parent->GetKey(GLFW_KEY_LEFT_CONTROL))
 	{
 		psi -= (x0 - mousePos[0]) * 0.01;
-		theta = min(max(0.0, theta + (y0 - mousePos[1]) * 0.005), 3.1415926535);
+		theta = std::min(std::max(0.0, theta + (y0 - mousePos[1]) * 0.005), 3.1415926535);
 	}
 	x0 = mousePos[0];
 	y0 = mousePos[1];

@@ -33,7 +33,6 @@ public:
 
 public:
   static const double epsilon;
-  static const Box2 Infinity;
   static const Box2 Null;
   static const Box2 Unit;
 };
