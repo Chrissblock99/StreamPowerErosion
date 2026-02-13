@@ -303,10 +303,6 @@ public:
   friend bool operator==(const Vector2&, const Vector2&);
   friend bool operator!=(const Vector2&, const Vector2&);
 
-
-  // Conversion
-  Vector ToVector(const double& = 0.0) const;
-
   friend std::ostream& operator<<(std::ostream&, const Vector2&);
 
 public:
@@ -348,15 +344,6 @@ inline double& Vector2::operator[] (int i)
 inline constexpr double Vector2::operator[] (int i) const
 {
   return c[i];
-}
-
-/*!
-\brief Convert a Vector2 to a Vector.
-\param z Extra coordinate.
-*/
-inline Vector Vector2::ToVector(const double& z) const
-{
-  return Vector(c[0], c[1], z);
 }
 
 // Unary operators
