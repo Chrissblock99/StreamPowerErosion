@@ -5,7 +5,6 @@
 #include <vector>
 #include "evector.h"
 
-class ScalarField2;
 class Window;
 class Texture2D;
 

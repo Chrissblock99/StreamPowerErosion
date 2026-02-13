@@ -1,7 +1,6 @@
 #include "tesselationWidget.h"
 #include "shader-api.h"
 #include "box2.h"
-#include "scalarfield2.h"
 #include "window.h"
 #include "texture.h"
 
