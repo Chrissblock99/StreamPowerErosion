@@ -1,8 +1,8 @@
+#include <math.h>
+
 #include "tesselationWidget.h"
 #include "shader-api.h"
-#include "box2.h"
 #include "window.h"
-#include "texture.h"
 
 /*!
 \class TesselationWidget tesselationWidget.h
@@ -85,16 +85,17 @@ void TesselationWidget::ScrollCallback(GLFWwindow* w, double x, double y)
 */
 void TesselationWidget::Update()
 {
-	// Don't move the camera is the mouse is over the GUI
-	Vector2 mousePos = parent->GetMousePosition();
+	double mousePosX;
+	double mousePosY;
+	parent->GetMousePosition(&mousePosX, &mousePosY);
 
 	if (parent->GetMousePressed(GLFW_MOUSE_BUTTON_LEFT) && !parent->GetKey(GLFW_KEY_LEFT_CONTROL))
 	{
-		psi -= (x0 - mousePos[0]) * 0.01;
-		theta = std::min(std::max(0.0, theta + (y0 - mousePos[1]) * 0.005), 3.1415926535);
+		psi -= (x0 - mousePosX) * 0.01;
+		theta = std::min(std::max(0.0, theta + (y0 - mousePosY) * 0.005), 3.1415926535);
 	}
-	x0 = mousePos[0];
-	y0 = mousePos[1];
+	x0 = mousePosX;
+	y0 = mousePosY;
 }
 
 /*!

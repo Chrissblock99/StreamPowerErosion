@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "window.h"
 #include "tesselationWidget.h"
 
@@ -142,11 +144,9 @@ bool Window::GetMousePressed(int mouse) const
 /*!
 \brief Get the current mouse position.
 */
-Vector2 Window::GetMousePosition() const
+void Window::GetMousePosition(double *x, double *y) const
 {
-	Vector2 ret;
-	glfwGetCursorPos(windowPtr, &ret[0], &ret[1]);
-	return ret;
+	glfwGetCursorPos(windowPtr, x, y);
 }
 
 /*!

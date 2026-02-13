@@ -1,7 +1,6 @@
 #include "window.h"
 #include "tesselationWidget.h"
 #include "spe_shader.h"
-#include "texture.h"
 
 static Window* window;
 static TesselationWidget* widget;

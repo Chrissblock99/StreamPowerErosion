@@ -2,7 +2,6 @@
 
 #include <GL/glew.h>
 #include "GLFW/glfw3.h"
-#include "evector.h"
 
 class TesselationWidget;
 
@@ -23,7 +22,7 @@ public:
 	void Update();
 	bool GetKey(int key) const;
 	bool GetMousePressed(int mouse) const;
-	Vector2 GetMousePosition() const;
+	void GetMousePosition(double *x, double *y) const;
 	bool MouseOverGUI() const;
 
 	int width() const;
