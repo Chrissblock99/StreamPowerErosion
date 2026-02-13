@@ -65,9 +65,6 @@ public:
   friend bool operator==(const Vector&, const Vector&);
   friend bool operator!=(const Vector&, const Vector&);
 
-
-  Vector Inverse() const;
-
   friend std::ostream& operator<<(std::ostream&, const Vector&);
 
 public:
@@ -144,19 +141,6 @@ inline Vector& Vector::operator*= (const double& a)
 {
   c[0] *= a; c[1] *= a; c[2] *= a;
   return *this;
-}
-
-/*!
-\brief Inverse of a vector.
-
-This function inverses the components of the vector. This is the same as:
-\code
-Vector v=Vector(1.0/u[0],1.0/u[1],1.0/u[2]);
-\endcode
-*/
-inline Vector Vector::Inverse() const
-{
-  return Vector(1.0 / c[0], 1.0 / c[1], 1.0 / c[2]);
 }
 
 //! Destructive division by a scalar.
@@ -322,9 +306,6 @@ public:
 
   // Conversion
   Vector ToVector(const double& = 0.0) const;
-
-  // High level functions
-  Vector2 Inverse() const;
 
   friend std::ostream& operator<<(std::ostream&, const Vector2&);
 
@@ -524,17 +505,6 @@ inline bool operator== (const Vector2& u, const Vector2& v)
 inline bool operator!= (const Vector2& u, const Vector2& v)
 {
   return (!(u == v));
-}
-
-/*!
-\brief Inverse of a vector.
-
-This function inverses the components of the vector.
-\sa Vector::Inverse()
-*/
-inline Vector2 Vector2::Inverse() const
-{
-  return Vector2(1.0 / c[0], 1.0 / c[1]);
 }
 
 #endif
