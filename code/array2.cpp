@@ -14,8 +14,6 @@ An array is a two-dimensional rectangle virtually decomposed into cells.
 */
 
 const Vec2I Array2::next[8] = { Vec2I(1, 0), Vec2I(1, 1), Vec2I(0, 1), Vec2I(-1, 1), Vec2I(-1, 0), Vec2I(-1, -1), Vec2I(0, -1), Vec2I(1, -1) };
-const double Array2::length[8] = { 1.0, sqrt(2.0), 1.0, sqrt(2.0), 1.0, sqrt(2.0), 1.0, sqrt(2.0) };
-const double Array2::inverselength[8] = { 1.0, 1.0 / sqrt(2.0), 1.0, 1.0 / sqrt(2.0), 1.0, 1.0 / sqrt(2.0), 1.0, 1.0 / sqrt(2.0) };
 
 /*!
 \brief Empty array, with empty box.

@@ -41,8 +41,6 @@ public:
   
 protected:
   static const Vec2I next[8]; //!< Array of points in the 1-ring neighborhood.
-  static const double length[8]; //!< Length to the i-th neighbor.
-  static const double inverselength[8]; //!< Inverse length.
 };
 
 /*!
