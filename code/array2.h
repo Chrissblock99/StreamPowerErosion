@@ -25,7 +25,6 @@ public:
   int CellSizeY() const;
 
   Box2 GetBox() const;
-  Vector2 CellDiagonal() const;
 
   Vector2 Size() const;
 

@@ -54,11 +54,3 @@ std::ostream& operator<<(std::ostream& s, const Array2& a)
   s << "Array2(" << a.a << ',' << a.b << "," << a.nx << ',' << a.ny << ')';
   return s;
 }
-
-/*!
-\brief Return the cell diagonal vector.
-*/
-Vector2 Array2::CellDiagonal() const
-{
-  return celldiagonal;
-}
