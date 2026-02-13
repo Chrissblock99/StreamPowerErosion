@@ -155,26 +155,3 @@ void GPU_SPE::SetUplift(const ScalarField2& uplift) const {
 
 	glUseProgram(0);
 }
-
-GLuint GPU_SPE::GetData() const {
-	return bedrockTexture;
-}
-
-void GPU_SPE::GetData(ScalarField2& sf) {
-	glGetTextureSubImage(bedrockTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
-
-	for (int i = 0; i < totalBufferSize; i++)
-		sf[i] = double(tmpData[i]);
-}
-
-void GPU_SPE::GetData(ScalarField2& sf, ScalarField2& sa) {
-	glGetTextureSubImage(bedrockTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
-
-	for (int i = 0; i < totalBufferSize; i++)
-		sf[i] = double(tmpData[i]);
-
-	glGetTextureSubImage(streamTexture, 0, 0, 0, 0, nx, ny, 1, GL_RED, GL_FLOAT, sizeof(float) * totalBufferSize, tmpData.data());
-
-	for (int i = 0; i < totalBufferSize; i++)
-		sa[i] = double(tmpData[i]);
-}

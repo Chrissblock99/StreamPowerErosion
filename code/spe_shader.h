@@ -39,9 +39,6 @@ public:
 	void Step(int n);
 
 	void SetUplift(const ScalarField2& uplift) const;
-	GLuint GetData() const;
-	void GetData(ScalarField2& sf);
-	void GetData(ScalarField2& sf, ScalarField2& sa);
 };
 
 #endif
