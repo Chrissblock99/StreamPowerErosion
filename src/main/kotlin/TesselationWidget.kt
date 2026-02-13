@@ -68,6 +68,6 @@ class TesselationWidget {
 	}
 
 	fun reloadShaders() {
-		shaderProgram = readProgram("./data/shaders/tesselation.glsl");
+		shaderProgram = readProgram("./src/main/glsl/tesselation.glsl");
 	}
 }

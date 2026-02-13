@@ -13,13 +13,13 @@ class SpeShader(inSizeX: Int, inSizeY: Int) {
 	val ny = inSizeY
 
 
-	val initShader = readProgram("./data/shaders/texture_init.comp")
+	val initShader = readProgram("./src/main/glsl/texture_init.comp")
 
-	val simulationShader = readProgram("./data/shaders/spe_shader.comp")
-	val precalcShader = readProgram("./data/shaders/spe_shader_precalc.comp")
+	val simulationShader = readProgram("./src/main/glsl/spe_shader.comp")
+	val precalcShader = readProgram("./src/main/glsl/spe_shader_precalc.comp")
 
-	val simulationShader2 = readProgram("./data/shaders/spe_shader2.comp")
-	val precalcShader2 = readProgram("./data/shaders/spe_shader_precalc2.comp")
+	val simulationShader2 = readProgram("./src/main/glsl/spe_shader2.comp")
+	val precalcShader2 = readProgram("./src/main/glsl/spe_shader_precalc2.comp")
 	
 	
 	val bedrockTexture = 0				//!< Bedrock elevation buffer

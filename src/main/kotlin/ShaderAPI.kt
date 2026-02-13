@@ -83,7 +83,7 @@ fun compileShader(program: Int, shaderType: Int, source: List<String>): Int {
 	val shader = glCreateShader(shaderType)
 	glAttachShader(program, shader)
 
-	glShaderSource(shader, *source.toTypedArray())
+	glShaderSource(shader, *source.map { "$it\n" }.toTypedArray())
 	glCompileShader(shader)
 
 	val status = intArrayOf(0)
@@ -110,7 +110,7 @@ fun reloadProgram(program: Int, filename: String, definitions: List<String>): In
 	glObjectLabel(GL_PROGRAM, program, filename)
 
 	val commonSource = read(filename)
-	for (i in 0..shaderKeysMax) {
+	for (i in 0..<shaderKeysMax) {
 		if (commonSource.indexOfFirst { it.contains(shaderKeys[i]) } != -1) {
 			val source = prepareSource(commonSource, definitions.toMutableList().apply { add("#define ${shaderKeys[i]}") })
 			val shader = compileShader(program, shaderTypes[i], source)
@@ -164,7 +164,7 @@ fun releaseProgram(program: Int): Int {
 
 
 fun printLine(errors: MutableList<String>, source: List<String>, beginId: Int, lineId: Int) {
-	for (lineIndex in beginId..min(lineId, source.size)) {
+	for (lineIndex in beginId..<min(lineId, source.size)) {
 		val line = "  ${lineIndex.toString().padStart(4, '0')}  " + source[lineIndex]
 		errors.add(line.replace("\t", "    "))
 	}
