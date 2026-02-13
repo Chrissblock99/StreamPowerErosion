@@ -115,7 +115,7 @@ fun reloadProgram(program: Int, filename: String, definitions: List<String>): In
 			val source = prepareSource(commonSource, definitions.toMutableList().apply { add("#define ${shaderKeys[i]}") })
 			val shader = compileShader(program, shaderTypes[i], source)
 			if (shader == 0) {
-				println("[error] compiling ${shaderString(shaderTypes[i])}...\n$definitions\n")
+				println("[error] compiling ${shaderString(shaderTypes[i])}...\n${definitions.fold("") { sum, line -> "$sum$line\n"}}")
 				println("Failed to compile source program")
 			}
 		}
@@ -164,17 +164,17 @@ fun releaseProgram(program: Int): Int {
 
 
 fun printLine(errors: MutableList<String>, source: List<String>, beginId: Int, lineId: Int) {
-	for (lineIndex in beginId..<min(lineId, source.size)) {
-		val line = "  ${lineIndex.toString().padStart(4, '0')}  " + source[lineIndex]
+	for (lineIndex in beginId..min(lineId, source.size-1)) {
+		val line = "  ${lineIndex.toString().padStart(4, '0')}  " + source[lineIndex-1]
 		errors.add(line.replace("\t", "    "))
 	}
 }
 
 val patterns = listOf(
-	Pattern.compile("(\\d+)\\((\\d+)\\):([^\\n])"),       // nvidia syntax
-	Pattern.compile("(\\d+):(\\d+)\\(\\d+\\):([^\\n])"),  // mesa syntax
-	Pattern.compile("ERROR:(\\d+):(\\d+):([^\\n])"),      // ati syntax
-	Pattern.compile("WARNING:(\\d+):(\\d+):([^\\n])")     // ati syntax
+	Pattern.compile("(\\d+)\\((\\d+)\\):(.*)"),       // nvidia syntax
+	Pattern.compile("(\\d+):(\\d+)\\(\\d+\\):(.*)"),  // mesa syntax
+	Pattern.compile("ERROR:(\\d+):(\\d+):(.*)"),      // ati syntax
+	Pattern.compile("WARNING:(\\d+):(\\d+):(.*)")     // ati syntax
 )
 
 fun printErrors(errors: MutableList<String>, log: List<String>, source: List<String>) {
@@ -183,7 +183,7 @@ fun printErrors(errors: MutableList<String>, log: List<String>, source: List<Str
 	val logData = log.mapNotNull { line -> patterns.map { it.matcher(line) }.firstOrNull(Matcher::matches) }
 		.map { Triple(it.group(1)!!.toInt(), it.group(2)!!.toInt(), it.group(3)!!) }.sortedBy { it.second }
 
-	var lastLine = -1
+	var lastLine = 0
 	for ((stringId, line, message) in logData) {
 		errors.add("\n")
 		printLine(errors, source, lastLine + 1, line)
