@@ -20,23 +20,12 @@ public:
   int GetSizeX() const;
   int GetSizeY() const;
 
-  // Empty
-  bool IsEmpty() const;
-
   friend std::ostream& operator<<(std::ostream&, const Array2&);
 
   // Indexes for storing elements at vertices
   constexpr int VertexIndex(int, int) const;
   int VertexIndex(const Vec2I&) const;
 };
-
-/*!
-\brief Detect if the array is empty, i.e., any dimension equal to zero.
-*/
-inline bool Array2::IsEmpty() const
-{
-  return (nx <= 0) || (ny <= 0);
-}
 
 /*!
 \brief Get the vertex size of the array for x axis.

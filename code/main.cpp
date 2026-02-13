@@ -8,7 +8,6 @@ static Window* window;
 static TesselationWidget* widget;
 static ScalarField2 hf;
 static ScalarField2 uplift;
-static ScalarField2 gpu_drainage;
 static GPU_SPE gpu_spe;
 static float brushRadius = 30;
 static float brushStrength = 10.0;
@@ -26,14 +25,12 @@ int main()
 	// gpu_spe init
 	gpu_spe.Init(hf);
 	gpu_spe.SetUplift(uplift);
-	gpu_drainage = hf;
 
 	// Main loop
 	while (!window->Exit()) {
 		if (ongoing_gpu_spe) {
 			// simulation step
 			gpu_spe.Step(200);
-			gpu_spe.GetData(hf);
 		}
 
 		window->Update();
