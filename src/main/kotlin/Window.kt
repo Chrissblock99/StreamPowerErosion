@@ -8,97 +8,97 @@ import org.lwjgl.opengl.GL45.*
 class Window(windowName: String, var width: Int, var height: Int) {
 	var widget: TesselationWidget? = null
 		set(value) {
-			field = value;
-			field!!.parent = this;
-			field!!.initializeGL();
+			field = value
+			field!!.parent = this
+			field!!.initializeGL()
 			/*
-			glfwSetWindowUserPointer(windowPtr, widget);
+			glfwSetWindowUserPointer(windowPtr, widget)
 			glfwSetScrollCallback(windowPtr, [](GLFWwindow* win, double x, double y) {
-				TesselationWidget* ptr = (TesselationWidget*) glfwGetWindowUserPointer(win);
-				ptr->ScrollCallback(win, x, y);
-			});
+				TesselationWidget* ptr = (TesselationWidget*) glfwGetWindowUserPointer(win)
+				ptr->ScrollCallback(win, x, y)
+			})
 			*/
 		}
-	//void (*uiUserFunPtr)();
+	//void (*uiUserFunPtr)()
 
 	init {
 		// Window
 		if (!glfwInit()) {
-			glfwTerminate();
+			glfwTerminate()
 			throw RuntimeException("GLFW failed to initialize")
 		}
 
-		val monitor = glfwGetPrimaryMonitor();
+		val monitor = glfwGetPrimaryMonitor()
 		if (monitor == 0L) {
-			glfwTerminate();
+			glfwTerminate()
 			throw RuntimeException("GLFW failed to get primary monitor")
 		}
 
 		val mode = glfwGetVideoMode(monitor)
 		if (mode == null) {
-			glfwTerminate();
+			glfwTerminate()
 			throw RuntimeException("GLFW failed to get video mode")
 		}
 		width = if (width <= 0) mode.width() else width
 		height = if (height <= 0) mode.height() else height
 
-		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-		glfwWindowHint(GLFW_SAMPLES, 4);
+		glfwDefaultWindowHints()
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
+		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE)
+		glfwWindowHint(GLFW_SAMPLES, 4)
 	}
 
-	val windowPtr = glfwCreateWindow(width, height, windowName, 0, 0);
+	val windowPtr = glfwCreateWindow(width, height, windowName, 0, 0)
 	init {
 		if (windowPtr == 0L) {
-			glfwTerminate();
+			glfwTerminate()
 			throw RuntimeException("GLFW failed to create window")
 		}
-		glfwMakeContextCurrent(windowPtr);
-		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwMakeContextCurrent(windowPtr)
+		glfwSetInputMode(windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL)
 
 		// OpenGL
 		if (!GL.createCapabilities().OpenGL45) {
-			glfwTerminate();
+			glfwTerminate()
 			throw RuntimeException("OpenGL failed to initialize")
 		}
 
-		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST)
 
 		val widthArr = intArrayOf(0)
 		val heightArr = intArrayOf(0)
-		glfwGetFramebufferSize(windowPtr, widthArr, heightArr);
+		glfwGetFramebufferSize(windowPtr, widthArr, heightArr)
 		width = widthArr[0]
 		height = heightArr[0]
-		glViewport(0, 0, width, height);
+		glViewport(0, 0, width, height)
 
 		// vsync
-		glfwSwapInterval(1);
+		glfwSwapInterval(1)
 
 		// TODO(Axel): log this into the console.
-		//spdlog::info("All systems were correctly initialized");
-		//spdlog::info("OpenGL device information: Vendor: {}", (const char*)glGetString(GL_VENDOR));
-		//spdlog::info("OpenGL device information: Renderer: {}", (const char*)glGetString(GL_RENDERER));
-		//spdlog::info("OpenGL device information: Version: {}", (const char*)glGetString(GL_VERSION));
-		//spdlog::info("OpenGL device information: GLSL: {}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
-		//spdlog::info("Framebuffer size: {}x{}", width, height);
-		//spdlog::info("Dear ImGui: {}", ImGui::GetVersion());
+		//spdlog::info("All systems were correctly initialized")
+		//spdlog::info("OpenGL device information: Vendor: {}", (const char*)glGetString(GL_VENDOR))
+		//spdlog::info("OpenGL device information: Renderer: {}", (const char*)glGetString(GL_RENDERER))
+		//spdlog::info("OpenGL device information: Version: {}", (const char*)glGetString(GL_VERSION))
+		//spdlog::info("OpenGL device information: GLSL: {}", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION))
+		//spdlog::info("Framebuffer size: {}x{}", width, height)
+		//spdlog::info("Dear ImGui: {}", ImGui::GetVersion())
 	}
 
 	fun delete() {
-		widget!!.delete();
-		glfwTerminate();
+		widget!!.delete()
+		glfwTerminate()
 	}
 
 	fun update() {
 		// Widget rendering
-		widget!!.update();
-		widget!!.paintGL();
+		widget!!.update()
+		widget!!.paintGL()
 
 		// Swap buffers
-		glfwSwapBuffers(windowPtr);
-		glfwPollEvents();
+		glfwSwapBuffers(windowPtr)
+		glfwPollEvents()
 	}
 
 	fun getKey(key: Int) = glfwGetKey(windowPtr, key) == GLFW_PRESS
