@@ -43,7 +43,6 @@ if (WIN32)
 	add_executable(${DEMO} 
 		${SRC_FILES}
 		${SRC_DIR}/array2.h
-		${SRC_DIR}/noise.h
 		${SRC_DIR}/random.h
 		${SRC_DIR}/texture.h
 		${SRC_DIR}/box2.h
@@ -61,7 +60,6 @@ else()
 	add_executable(${DEMO} 
 		${SRC_FILES}
 		${SRC_DIR}/array2.h
-		${SRC_DIR}/noise.h
 		${SRC_DIR}/texture.h
 		${SRC_DIR}/random.h
 		${SRC_DIR}/box2.h
