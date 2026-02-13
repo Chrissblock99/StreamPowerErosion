@@ -105,19 +105,3 @@ void TesselationWidget::ReloadShaders()
 {
 	shaderProgram = read_program("./data/shaders/tesselation.glsl");
 }
-
-/*!
-\brief Get the width of the associated window.
-*/
-int TesselationWidget::width() const
-{
-	return parent->width();
-}
-
-/*!
-\brief Get the height of the associated window.
-*/
-int TesselationWidget::height() const
-{
-	return parent->height();
-}

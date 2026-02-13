@@ -25,8 +25,6 @@ public:
 	TesselationWidget();
 	~TesselationWidget();
 
-	int width() const;
-	int height() const;
 	void SetWindowPtr(Window* ptr);
 	void ScrollCallback(GLFWwindow* w, double x, double y);
 	void Update();
