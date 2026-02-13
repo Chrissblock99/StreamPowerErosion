@@ -22,15 +22,15 @@ class SpeShader(inSizeX: Int, inSizeY: Int) {
 	val precalcShader2 = readProgram("./src/main/glsl/spe_shader_precalc2.comp")
 	
 	
-	val bedrockTexture = 0				//!< Bedrock elevation buffer
-	val tempBedrockTexture = 0			//!< Output bedrock elevation buffer
+	val bedrockTexture = glGenTextures()
+	val tempBedrockTexture = glGenTextures()
 
-	val streamTexture = 0				//!< Water elevation buffer
-	val tempStreamTexture = 0				//!< Output water elevation buffer
+	val streamTexture = glGenTextures()
+	val tempStreamTexture = glGenTextures()
 
-	val upliftTexture = 0		//!< Uplift buffer
+	val upliftTexture = glGenTextures()
 
-	val steepestTexture = 0
+	val steepestTexture = glGenTextures()
 
 	init {
 		glBindTexture(GL_TEXTURE_2D, bedrockTexture)
