@@ -21,7 +21,6 @@ Array2::Array2() :Box2(Box2::Null)
   nx = 0;
   ny = 0;
   celldiagonal = Vector2::Null;
-  inversecelldiagonal = Vector2::Null;
 }
 
 /*!
@@ -34,7 +33,6 @@ Array2::Array2(const Box2& box, int x, int y) :Box2(box)
   nx = x;
   ny = y;
   celldiagonal = Vector2((b[0] - a[0]) / (nx - 1), (b[1] - a[1]) / (ny - 1));
-  inversecelldiagonal = celldiagonal.Inverse();
 }
 
 /*!

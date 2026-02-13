@@ -8,7 +8,6 @@ class Array2 : protected Box2
 protected:
   int nx=0, ny=0; //!< Sizes.
   Vector2 celldiagonal= Vector2::Null; //!< Cell diagonal.
-  Vector2 inversecelldiagonal= Vector2::Null; //!< Inverse cell diagonal.
 public:
   Array2();
   explicit Array2(const Box2&, int, int);
