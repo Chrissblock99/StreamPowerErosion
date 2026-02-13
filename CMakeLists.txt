@@ -42,11 +42,6 @@ aux_source_directory(${SRC_DIR} SRC_FILES)
 if (WIN32)
 	add_executable(${DEMO} 
 		${SRC_FILES}
-		${SRC_DIR}/array2.h
-		${SRC_DIR}/random.h
-		${SRC_DIR}/box2.h
-		${SRC_DIR}/evector.h
-		${SRC_DIR}/ivector.h
 		${SRC_DIR}/shader-api.h
 		${SRC_DIR}/window.h
 		${SRC_DIR}/tesselationWidget.h
@@ -56,11 +51,6 @@ if (WIN32)
 else()
 	add_executable(${DEMO} 
 		${SRC_FILES}
-		${SRC_DIR}/array2.h
-		${SRC_DIR}/random.h
-		${SRC_DIR}/box2.h
-		${SRC_DIR}/evector.h
-		${SRC_DIR}/ivector.h
 		${SRC_DIR}/shader-api.h
 		${SRC_DIR}/window.h
 		${SRC_DIR}/tesselationWidget.h
