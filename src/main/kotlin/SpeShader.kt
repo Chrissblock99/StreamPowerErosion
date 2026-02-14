@@ -108,7 +108,7 @@ class SpeShader(inSizeX: Int, inSizeY: Int) {
 	}
 
 	fun step(n: Int) {
-		for (i in 0..n) {
+		for (i in 0..<n) {
 			glUseProgram(precalcShader)
 			glDispatchCompute((sizeX / 8) + 1, (sizeY / 8) + 1, 1)
 			glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT)
