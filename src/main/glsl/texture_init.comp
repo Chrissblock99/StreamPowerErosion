@@ -342,6 +342,12 @@ void main() {
     dist -= 75;
     dist = abs(dist)/25;
     dist = 1-dist;
+
+    vec2 src = vec2(0);
+    vec2 dir = normalize(vec2(1));
+
+    float lineDist = distance(src + dir * clamp(0, 10, dot(pos, dir)), pos)/30;
+    dist = min(dist, lineDist*lineDist*lineDist*lineDist);
     dist = smoothstep(0, 1, dist)*10;
 
 
